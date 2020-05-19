@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>1.0.1</Version>
+    <Authors>Scott Ferguson</Authors>
+    <Company>Relay Technologies</Company>
+    <Product>Fluent Commander</Product>
+    <Description>A lightweight ADO.NET abstraction featuring a fluent API and command pattern implementation</Description>
+    <Copyright>Copyright ©2020</Copyright>
+    <PackageProjectUrl>https://github.com/relay-dev/fluent-commander</PackageProjectUrl>
+    <PackageIconUrl>https://imgur.com/KLdrWTh.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/relay-dev/fluent-commander.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
