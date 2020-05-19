@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\setup-sample-database-batch-1.sql" />
+    <None Remove="Resources\setup-sample-database-batch-2.sql" />
+    <None Remove="Resources\setup-sample-database-batch-3.sql" />
+    <None Remove="Resources\teardown-sample-database.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-1.sql" />
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-2.sql" />
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-3.sql" />
+    <EmbeddedResource Include="Resources\teardown-sample-database.sql" />
+  </ItemGroup>
+
+</Project>
