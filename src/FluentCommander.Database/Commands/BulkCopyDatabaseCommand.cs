@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FluentCommander.Database.Utility;
+using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Database.Utility;
 
 namespace FluentCommander.Database.Commands
 {

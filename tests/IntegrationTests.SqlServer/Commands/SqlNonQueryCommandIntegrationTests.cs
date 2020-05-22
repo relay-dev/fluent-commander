@@ -1,6 +1,6 @@
-﻿using System;
-using FluentCommander.Database;
+﻿using FluentCommander.Database;
 using Shouldly;
+using System;
 using Xunit;
 using Xunit.Abstractions;
 

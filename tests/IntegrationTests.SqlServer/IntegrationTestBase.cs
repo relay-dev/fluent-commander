@@ -1,10 +1,10 @@
-﻿using System;
-using System.Data;
-using Core.Plugins.Extensions;
+﻿using Core.Plugins.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
+using System;
+using System.Data;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer

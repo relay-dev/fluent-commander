@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentCommander.Database;
+﻿using FluentCommander.Database;
 using Shouldly;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using Xunit;
 using Xunit.Abstractions;

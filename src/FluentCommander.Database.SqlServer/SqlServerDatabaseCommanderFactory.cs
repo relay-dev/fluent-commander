@@ -1,5 +1,5 @@
-﻿using System.Data.SqlClient;
-using FluentCommander.Core;
+﻿using FluentCommander.Core;
+using System.Data.SqlClient;
 
 namespace FluentCommander.Database.SqlServer
 {

@@ -26,15 +26,6 @@ namespace ConsoleApplication.SqlServer.Samples
             return dataTable;
         }
 
-        protected void ExecuteNonQuery(string sql)
-        {
-            // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
-            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_config.GetConnectionString("DefaultConnection"));
-
-            Server server = new Server(new ServerConnection(connection));
-            server.ConnectionContext.ExecuteNonQuery(sql);
-        }
-
         protected TResult ExecuteScalar<TResult>(string sql)
         {
             // Intentionally avoiding the use of DatabaseCommander to execute commands against the database

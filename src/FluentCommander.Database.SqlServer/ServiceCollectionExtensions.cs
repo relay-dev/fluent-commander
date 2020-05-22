@@ -1,11 +1,11 @@
-﻿using System.Data.SqlClient;
-using FluentCommander.Core;
+﻿using FluentCommander.Core;
 using FluentCommander.Core.Impl;
 using FluentCommander.Database.Commands;
 using FluentCommander.Database.Utility;
 using FluentCommander.Database.Utility.Impl;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data.SqlClient;
 
 namespace FluentCommander.Database.SqlServer
 {

@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using FluentCommander.Database.SqlServer;
+﻿using FluentCommander.Database.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 
 namespace IntegrationTests.SqlServer
 {

@@ -59,10 +59,7 @@ namespace FluentCommander.Database.Commands
 
         public PaginationCommandResult Execute()
         {
-            if (string.IsNullOrEmpty(_paginationRequest.TableName))
-            {
-                throw new Exception("From(target) must be called before calling the Execute() method");
-            }
+            Validate();
 
             PaginationResult paginationResult = _databaseCommander.Paginate(_paginationRequest);
 
@@ -71,14 +68,19 @@ namespace FluentCommander.Database.Commands
 
         public async Task<PaginationCommandResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(_paginationRequest.TableName))
-            {
-                throw new Exception("From(target) must be called before calling the Execute() method");
-            }
+            Validate();
 
             PaginationResult paginationResult = await _databaseCommander.PaginateAsync(_paginationRequest, cancellationToken);
 
             return new PaginationCommandResult(paginationResult);
+        }
+
+        private void Validate()
+        {
+            if (string.IsNullOrEmpty(_paginationRequest.TableName))
+            {
+                throw new Exception("From(target) must be called before calling the Execute() method");
+            }
         }
     }
 }
