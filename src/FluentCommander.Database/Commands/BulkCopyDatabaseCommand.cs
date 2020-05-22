@@ -10,6 +10,7 @@ namespace FluentCommander.Database.Commands
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly IAutoMapper _autoMapper;
+        private readonly BulkCopyMappingOptions _options;
         private string _tableName;
         private DataTable _dataTable;
         private ColumnMapping _columnMapping;
@@ -19,6 +20,7 @@ namespace FluentCommander.Database.Commands
         {
             _databaseCommander = databaseCommander;
             _autoMapper = autoMapper;
+            _options = new BulkCopyMappingOptions(this);
         }
 
         public BulkCopyDatabaseCommand From(DataTable dataTable)
@@ -35,28 +37,17 @@ namespace FluentCommander.Database.Commands
             return this;
         }
 
-        public BulkCopyDatabaseCommand AddMap(ColumnMapping columnMapping)
+        public BulkCopyDatabaseCommand MappingOptions(Func<BulkCopyMappingOptions, BulkCopyMappingOptions> opt)
         {
-            _columnMapping = columnMapping;
-            _isSuppressAutoMapping = true;
+            opt.Invoke(_options);
 
             return this;
         }
-
-        public BulkCopyDatabaseCommand AddPartialMap(ColumnMapping columnMapping)
-        {
-            _columnMapping = columnMapping;
-
-            return this;
-        }
-
+        
         public BulkCopyCommandResult Execute()
         {
-            if (_dataTable == null)
-            {
-                throw new Exception("From(dataTable) must be called before calling the Execute() method");
-            }
-
+            Validate();
+            
             if (!_isSuppressAutoMapping)
             {
                 _autoMapper.MapDataTableToTable(_tableName, _dataTable, _columnMapping);
@@ -69,10 +60,7 @@ namespace FluentCommander.Database.Commands
 
         public async Task<BulkCopyCommandResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (_dataTable == null)
-            {
-                throw new Exception("DataTable was not set. Please call From(dataTable) before calling the Execute() method");
-            }
+            Validate();
 
             if (!_isSuppressAutoMapping)
             {
@@ -82,6 +70,51 @@ namespace FluentCommander.Database.Commands
             await _databaseCommander.BulkCopyAsync(_tableName, _dataTable, _columnMapping, cancellationToken);
 
             return new BulkCopyCommandResult(_dataTable.Rows.Count);
+        }
+
+        private void Validate()
+        {
+            if (_dataTable == null)
+            {
+                throw new InvalidOperationException("From(dataTable) must be called before calling the Execute() method");
+            }
+
+            if (string.IsNullOrEmpty(_tableName))
+            {
+                throw new InvalidOperationException("To(tableName) must be called before calling the Execute() method");
+            }
+        }
+
+        public class BulkCopyMappingOptions
+        {
+            private readonly BulkCopyDatabaseCommand _command;
+
+            public BulkCopyMappingOptions(BulkCopyDatabaseCommand command)
+            {
+                _command = command;
+            }
+
+            public BulkCopyMappingOptions UseAutoMap()
+            {
+                _command._isSuppressAutoMapping = false;
+
+                return this;
+            }
+
+            public BulkCopyMappingOptions UsePartialMap(ColumnMapping columnMapping)
+            {
+                _command._columnMapping = columnMapping;
+
+                return this;
+            }
+
+            public BulkCopyMappingOptions UseMap(ColumnMapping columnMapping)
+            {
+                _command._columnMapping = columnMapping;
+                _command._isSuppressAutoMapping = true;
+
+                return this;
+            }
         }
     }
 }

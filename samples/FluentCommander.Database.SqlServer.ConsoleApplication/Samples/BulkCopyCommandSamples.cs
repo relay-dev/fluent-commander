@@ -1,7 +1,7 @@
-﻿using System;
-using ConsoleApplication.SqlServer.Framework;
+﻿using ConsoleApplication.SqlServer.Framework;
 using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -33,8 +33,10 @@ namespace ConsoleApplication.SqlServer.Samples
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
             BulkCopyCommandResult result = _databaseCommander.BuildCommand()
-                .ForBulkCopy("[dbo].[SampleTable]")
+                .ForBulkCopy()
                 .From(dataTable)
+                .To("[dbo].[SampleTable]")
+                .MappingOptions(opt => opt.UseAutoMap())
                 .Execute();
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -66,9 +68,10 @@ namespace ConsoleApplication.SqlServer.Samples
 
             // Bulk Copy
             BulkCopyCommandResult result = _databaseCommander.BuildCommand()
-                .ForBulkCopy("[dbo].[SampleTable]")
+                .ForBulkCopy()
                 .From(dataTable)
-                .AddPartialMap(columnMapping)
+                .To("[dbo].[SampleTable]")
+                .MappingOptions(opt => opt.UsePartialMap(columnMapping))
                 .Execute();
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -112,9 +115,10 @@ namespace ConsoleApplication.SqlServer.Samples
 
             // Bulk Copy
             BulkCopyCommandResult result = _databaseCommander.BuildCommand()
-                .ForBulkCopy("[dbo].[SampleTable]")
+                .ForBulkCopy()
                 .From(dataTable)
-                .AddMap(columnMapping)
+                .To("[dbo].[SampleTable]")
+                .MappingOptions(opt => opt.UseMap(columnMapping))
                 .Execute();
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");

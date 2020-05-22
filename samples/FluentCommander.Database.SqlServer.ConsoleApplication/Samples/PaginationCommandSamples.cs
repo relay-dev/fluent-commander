@@ -1,9 +1,9 @@
 ﻿using ConsoleApplication.SqlServer.Framework;
+using Core.Plugins.Extensions;
 using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using Core.Plugins.Extensions;
 
 namespace ConsoleApplication.SqlServer.Samples
 {

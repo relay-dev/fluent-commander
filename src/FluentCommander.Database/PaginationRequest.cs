@@ -5,16 +5,6 @@
     /// </summary>
     public class PaginationRequest
     {
-        // Set the defaults
-        public PaginationRequest()
-        {
-            PageNumber = 1;
-            PageSize = 100;
-            Columns = "*";
-            Conditions = string.Empty;
-            OrderBy = "1";
-        }
-
         /// <summary>
         /// The name of the table or view to paginate
         /// </summary>
@@ -52,6 +42,40 @@
         public string GetWhereClause()
         {
             return string.IsNullOrEmpty(Conditions) ? string.Empty : $"AND {Conditions}";
+        }
+
+        /// <summary>
+        /// Interprets this instance and sets defaults where they have not been set by the client
+        /// </summary>
+        /// <returns>This instance</returns>
+        public PaginationRequest SetDefaults()
+        {
+            if (PageNumber == 0)
+            {
+                PageNumber = 1;
+            }
+
+            if (PageSize == 0)
+            {
+                PageSize = 100;
+            }
+
+            if (string.IsNullOrEmpty(Columns))
+            {
+                Columns = "*";
+            }
+
+            if (Conditions == null)
+            {
+                Conditions = string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(OrderBy))
+            {
+                OrderBy = "1";
+            }
+
+            return this;
         }
     }
 }

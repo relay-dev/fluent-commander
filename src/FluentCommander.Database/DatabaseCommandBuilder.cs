@@ -11,9 +11,9 @@ namespace FluentCommander.Database
             _commandFactory = commandFactory;
         }
 
-        public BulkCopyDatabaseCommand ForBulkCopy(string tableName)
+        public BulkCopyDatabaseCommand ForBulkCopy()
         {
-            return _commandFactory.Create<BulkCopyDatabaseCommand>().To(tableName);
+            return _commandFactory.Create<BulkCopyDatabaseCommand>();
         }
 
         public PaginationDatabaseCommand ForPagination()

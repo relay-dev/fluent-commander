@@ -406,6 +406,8 @@ FETCH NEXT {5} ROWS ONLY";
 
             string offset = (paginationRequest.PageSize * (paginationRequest.PageNumber - 1)).ToString();
 
+            paginationRequest.SetDefaults();
+
             return string.Format(sql, paginationRequest.Columns, paginationRequest.TableName, paginationRequest.GetWhereClause(), paginationRequest.OrderBy, offset, paginationRequest.PageSize.ToString());
         }
     }
