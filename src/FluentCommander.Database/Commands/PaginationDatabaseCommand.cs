@@ -79,7 +79,7 @@ namespace FluentCommander.Database.Commands
         {
             if (string.IsNullOrEmpty(_paginationRequest.TableName))
             {
-                throw new Exception("From(target) must be called before calling the Execute() method");
+                throw new InvalidOperationException("From(target) must be called before calling the Execute() method");
             }
         }
     }

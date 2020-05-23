@@ -77,7 +77,7 @@ namespace FluentCommander.Database.SqlServer
 
             try
             {
-                await connection.OpenAsync(cancellationToken);
+                connection.Open();
                 await command.WriteToServerAsync(dataTable, cancellationToken);
                 connection.Close();
             }
@@ -122,7 +122,7 @@ namespace FluentCommander.Database.SqlServer
                 command.Parameters.AddRange(ToSqlParameters(databaseParameters));
             }
 
-            await connection.OpenAsync(cancellationToken);
+            connection.Open();
             var numberOfRowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
             connection.Close();
 
@@ -164,7 +164,7 @@ namespace FluentCommander.Database.SqlServer
                 command.Parameters.AddRange(ToSqlParameters(databaseParameters));
             }
 
-            await connection.OpenAsync(cancellationToken);
+            connection.Open();
             var result = await command.ExecuteScalarAsync(cancellationToken);
             connection.Close();
 
@@ -210,62 +210,15 @@ namespace FluentCommander.Database.SqlServer
 
             var dataTable = new DataTable();
 
-            await connection.OpenAsync(cancellationToken);
-            var reader = await connection.CreateCommand().ExecuteReaderAsync(cancellationToken);
-            dataTable.Load(reader);
-            connection.Close();
-
-            return dataTable;
-        }
-
-        public DataTable ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null)
-        {
-            using var connection = new SqlConnection(_builder.ConnectionString);
-            using var command = new SqlCommand(storedProcedureName, connection)
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandTimeout = TimeoutInSeconds
-            };
-
-            if (databaseParameters != null)
-            {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
-            }
-
-            var dataTable = new DataTable();
-
             connection.Open();
-            new SqlDataAdapter(command).Fill(dataTable);
-            connection.Close();
-
-            return dataTable;
-        }
-
-        public async Task<DataTable> ExecuteStoredProcedureAsync(string storedProcedureName, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
-        {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
-            await using var command = new SqlCommand(storedProcedureName, connection)
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandTimeout = TimeoutInSeconds
-            };
-
-            if (databaseParameters != null)
-            {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
-            }
-
-            var dataTable = new DataTable();
-
-            await connection.OpenAsync(cancellationToken);
-            var reader = await connection.CreateCommand().ExecuteReaderAsync(cancellationToken);
+            var reader = await command.ExecuteReaderAsync(cancellationToken);
             dataTable.Load(reader);
             connection.Close();
 
             return dataTable;
         }
 
-        public DataTable ExecuteStoredProcedure(string storedProcedureName, ref List<DatabaseCommandParameter> databaseParameters)
+        public StoredProcedureResult ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlCommand(storedProcedureName, connection)
@@ -295,7 +248,41 @@ namespace FluentCommander.Database.SqlServer
                 }
             }
 
-            return dataTable;
+            return new StoredProcedureResult(databaseParameters, dataTable);
+        }
+
+        public async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(string storedProcedureName, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
+        {
+            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var command = new SqlCommand(storedProcedureName, connection)
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandTimeout = TimeoutInSeconds
+            };
+
+            SqlParameter[] sqlParameters = ToSqlParameters(databaseParameters);
+
+            if (databaseParameters != null)
+            {
+                command.Parameters.AddRange(sqlParameters);
+            }
+
+            var dataTable = new DataTable();
+
+            connection.Open();
+            var reader = await command.ExecuteReaderAsync(cancellationToken);
+            dataTable.Load(reader);
+            connection.Close();
+
+            if (databaseParameters != null)
+            {
+                foreach (DatabaseCommandParameter databaseCommandParameter in databaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                {
+                    databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
+                }
+            }
+
+            return new StoredProcedureResult(databaseParameters, dataTable);
         }
 
         public string GetServerName()

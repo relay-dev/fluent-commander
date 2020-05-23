@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -27,9 +29,10 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Any SQL query can be executed with the result being returned as a DataTable
         /// </notes>
-        private void ExecuteSql()
+        private async Task ExecuteSql()
         {
-            DataTable dataTable = _databaseCommander.ExecuteSql("SELECT * FROM [dbo].[SampleTable]");
+            DataTable dataTable = await _databaseCommander
+                .ExecuteSqlAsync("SELECT * FROM [dbo].[SampleTable]", new CancellationToken());
 
             Console.WriteLine(dataTable.ToPrintFriendly());
         }
@@ -37,15 +40,19 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Any SQL query that returns exactly 1 row and 1 column can be executed as a scalar and cast to the return type
         /// </notes>
-        private void ExecuteScalar()
+        private async Task ExecuteScalar()
         {
-            string sampleVarChar = _databaseCommander.ExecuteScalar<string>("SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1");
+            string sampleVarChar = await _databaseCommander
+                .ExecuteScalarAsync<string>("SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            int sampleInt = _databaseCommander.ExecuteScalar<int>("SELECT [SampleInt] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1");
+            int sampleInt = await _databaseCommander
+                .ExecuteScalarAsync<int>("SELECT [SampleInt] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            DateTime sampleDateTime = _databaseCommander.ExecuteScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1");
+            DateTime sampleDateTime = await _databaseCommander
+                .ExecuteScalarAsync<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            Guid sampleUniqueIdentifier = _databaseCommander.ExecuteScalar<Guid>("SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1");
+            Guid sampleUniqueIdentifier = await _databaseCommander
+                .ExecuteScalarAsync<Guid>("SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
             Console.WriteLine($"SampleVarChar = '{sampleVarChar}'");
             Console.WriteLine($"SampleInt = '{sampleInt}'", sampleInt);
@@ -56,9 +63,10 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// UPDATE and DELETE statements can be issued
         /// </notes>
-        private void ExecuteNonQuery()
+        private async Task ExecuteNonQuery()
         {
-            int rowCountAffected = _databaseCommander.ExecuteNonQuery($"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{Guid.NewGuid()}' WHERE [SampleTableID] = 1");
+            int rowCountAffected = await _databaseCommander
+                .ExecuteNonQueryAsync($"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{Guid.NewGuid()}' WHERE [SampleTableID] = 1", new CancellationToken());
 
             Console.WriteLine("Row count affected: {0}", rowCountAffected);
         }
@@ -66,36 +74,38 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Simple stored procedures can be called
         /// </notes>
-        private void ExecuteStoredProcedure()
+        private async Task ExecuteStoredProcedure()
         {
             // Stored procedure with no input or output
-            _databaseCommander.ExecuteStoredProcedure("[dbo].[usp_NoInput_NoOutput_NoResult]");
+            await _databaseCommander
+                .ExecuteStoredProcedureAsync("[dbo].[usp_NoInput_NoOutput_NoResult]", new CancellationToken());
 
             // Stored procedure with no input with a DataTable as output
-            DataTable dataTable = _databaseCommander.ExecuteStoredProcedure("[dbo].[usp_NoInput_NoOutput_TableResult]");
+            StoredProcedureResult result = await _databaseCommander
+                .ExecuteStoredProcedureAsync("[dbo].[usp_NoInput_NoOutput_TableResult]", new CancellationToken());
 
-            Console.WriteLine(dataTable.ToPrintFriendly());
+            Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
 
         /// <notes>
         /// The server name can be easily obtained
         /// </notes>
-        private void GetServerName()
+        private async Task GetServerName()
         {
-            string serverName = _databaseCommander.GetServerName();
+            string serverName = await _databaseCommander.GetServerNameAsync(new CancellationToken());
 
             Console.WriteLine(serverName);
         }
 
         protected override void Init()
         {
-            SampleMethods = new List<SampleMethod>
+            SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethod("1", "ExecuteSql()", ExecuteSql),
-                new SampleMethod("2", "ExecuteScalar()", ExecuteScalar),
-                new SampleMethod("3", "ExecuteNonQuery()", ExecuteNonQuery),
-                new SampleMethod("4", "ExecuteStoredProcedure()", ExecuteStoredProcedure),
-                new SampleMethod("5", "GetServerName()", GetServerName)
+                new SampleMethodAsync("1", "ExecuteSql()", async () => await ExecuteSql()),
+                new SampleMethodAsync("2", "ExecuteScalar()", async () => await ExecuteScalar()),
+                new SampleMethodAsync("3", "ExecuteNonQuery()", async () => await ExecuteNonQuery()),
+                new SampleMethodAsync("4", "ExecuteStoredProcedure()", async () => await ExecuteStoredProcedure()),
+                new SampleMethodAsync("5", "GetServerName()", async () => await GetServerName())
             };
         }
     }

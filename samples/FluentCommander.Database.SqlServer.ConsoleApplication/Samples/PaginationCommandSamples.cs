@@ -4,6 +4,8 @@ using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -25,12 +27,12 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Several defaults are specified so the only input required is the target
         /// </notes>
-        private void ExecutePaginationUsingMinimalInput()
+        private async Task ExecutePaginationUsingMinimalInput()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
@@ -38,13 +40,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Specific columns can be specified for selecting
         /// </notes>
-        private void ExecutePaginationSelectingColumns()
+        private async Task ExecutePaginationSelectingColumns()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
@@ -52,13 +54,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Filters can be applied
         /// </notes>
-        private void ExecutePaginationFilteringRows()
+        private async Task ExecutePaginationFilteringRows()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
@@ -66,13 +68,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Ordering can be applied to rows
         /// </notes>
-        private void ExecutePaginationOrderingRows()
+        private async Task ExecutePaginationOrderingRows()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
@@ -80,13 +82,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Ordering can be applied to rows
         /// </notes>
-        private void ExecutePaginationSettingPageSize()
+        private async Task ExecutePaginationSettingPageSize()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(10)
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
@@ -94,9 +96,9 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// In this sample, all options are used
         /// </notes>
-        private void ExecutePaginationAllSettingsAreUsed()
+        private async Task ExecutePaginationAllSettingsAreUsed()
         {
-            PaginationCommandResult result = _databaseCommander.BuildCommand()
+            PaginationCommandResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .Select("[SampleTableID]")
                 .From("[dbo].[SampleTable]")
@@ -104,21 +106,21 @@ namespace ConsoleApplication.SqlServer.Samples
                 .OrderBy("1")
                 .PageSize(25)
                 .PageNumber(2)
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }
 
         protected override void Init()
         {
-            SampleMethods = new List<SampleMethod>
+            SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethod("1", "ExecutePaginationUsingMinimalInput()", ExecutePaginationUsingMinimalInput),
-                new SampleMethod("2", "ExecutePaginationSelectingColumns()", ExecutePaginationSelectingColumns),
-                new SampleMethod("3", "ExecutePaginationFilteringRows()", ExecutePaginationFilteringRows),
-                new SampleMethod("4", "ExecutePaginationOrderingRows()", ExecutePaginationOrderingRows),
-                new SampleMethod("5", "ExecutePaginationSettingPageSize()", ExecutePaginationSettingPageSize),
-                new SampleMethod("6", "ExecutePaginationAllSettingsAreUsed()", ExecutePaginationAllSettingsAreUsed)
+                new SampleMethodAsync("1", "ExecutePaginationUsingMinimalInput()", async () => await ExecutePaginationUsingMinimalInput()),
+                new SampleMethodAsync("2", "ExecutePaginationSelectingColumns()", async () => await ExecutePaginationSelectingColumns()),
+                new SampleMethodAsync("3", "ExecutePaginationFilteringRows()", async () => await ExecutePaginationFilteringRows()),
+                new SampleMethodAsync("4", "ExecutePaginationOrderingRows()", async () => await ExecutePaginationOrderingRows()),
+                new SampleMethodAsync("5", "ExecutePaginationSettingPageSize()", async () => await ExecutePaginationSettingPageSize()),
+                new SampleMethodAsync("6", "ExecutePaginationAllSettingsAreUsed()", async () => await ExecutePaginationAllSettingsAreUsed())
             };
         }
     }

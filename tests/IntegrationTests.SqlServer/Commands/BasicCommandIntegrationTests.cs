@@ -71,14 +71,14 @@ namespace IntegrationTests.SqlServer.Commands
             string storedProcedureName = "[dbo].[usp_NoInput_NoOutput_TableResult]";
 
             // Act
-            DataTable dataTable = SUT.ExecuteStoredProcedure(storedProcedureName);
+            StoredProcedureResult result = SUT.ExecuteStoredProcedure(storedProcedureName);
 
             // Assert
-            dataTable.ShouldNotBeNull();
-            dataTable.Rows.Count.ShouldBeGreaterThan(0);
+            result.DataTable.ShouldNotBeNull();
+            result.DataTable.Rows.Count.ShouldBeGreaterThan(0);
 
             // Print
-            WriteLine(dataTable);
+            WriteLine(result.DataTable);
         }
 
         [Fact]

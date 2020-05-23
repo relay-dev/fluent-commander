@@ -3,6 +3,8 @@ using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -24,19 +26,19 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// SQL update statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
         /// </notes>
-        private void ExecuteParameterizedUpdateSql()
+        private async Task ExecuteParameterizedUpdateSql()
         {
             Guid newGuid = Guid.NewGuid();
             string modifiedBy = "FluentCommander";
             DateTime modifiedDate = DateTime.UtcNow;
 
-            SqlNonQueryCommandResult result = _databaseCommander.BuildCommand()
+            SqlNonQueryCommandResult result = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = @NewGuid, [ModifiedBy] = @ModifiedBy, [ModifiedDate] = @ModifiedDate WHERE [SampleTableID] = @SampleTableID")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("NewGuid", newGuid)
                 .AddInputParameter("ModifiedBy", modifiedBy)
                 .AddInputParameter("ModifiedDate", modifiedDate)
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine("Row count affected: {0}", result.RowCountAffected);
         }
@@ -44,7 +46,7 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// SQL insert and delete statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
         /// </notes>
-        private void ExecuteParameterizedInsertDeleteSql()
+        private async Task ExecuteParameterizedInsertDeleteSql()
         {
             string sampleVarChar = "Temporary Row";
             string createdBy = "FluentCommander";
@@ -72,18 +74,18 @@ namespace ConsoleApplication.SqlServer.Samples
            ,@CreatedBy
            ,@CreatedDate)";
 
-            SqlNonQueryCommandResult insertResult = _databaseCommander.BuildCommand()
+            SqlNonQueryCommandResult insertResult = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery(insertSql)
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", sampleVarChar)
                 .AddInputParameter("CreatedBy", createdBy)
                 .AddInputParameter("CreatedDate", createdDate)
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
-            SqlNonQueryCommandResult deleteResult = _databaseCommander.BuildCommand()
+            SqlNonQueryCommandResult deleteResult = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleVarChar", sampleVarChar)
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine("Row count affected: {0}", insertResult.RowCountAffected);
             Console.WriteLine("Row count affected: {0}", deleteResult.RowCountAffected);
@@ -91,10 +93,10 @@ namespace ConsoleApplication.SqlServer.Samples
 
         protected override void Init()
         {
-            SampleMethods = new List<SampleMethod>
+            SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethod("1", "ExecuteParameterizedUpdateSql()", ExecuteParameterizedUpdateSql),
-                new SampleMethod("2", "ExecuteParameterizedInsertDeleteSql()", ExecuteParameterizedInsertDeleteSql)
+                new SampleMethodAsync("1", "ExecuteParameterizedUpdateSql()", async () => await ExecuteParameterizedUpdateSql()),
+                new SampleMethodAsync("2", "ExecuteParameterizedInsertDeleteSql()", async () => await ExecuteParameterizedInsertDeleteSql())
             };
         }
     }

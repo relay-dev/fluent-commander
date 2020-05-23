@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Framework
 {
@@ -14,7 +15,7 @@ namespace ConsoleApplication.SqlServer.Framework
             _serviceProvider = serviceProvider;
         }
 
-        public void Run(List<SampleFixture> sampleFixtures)
+        public async Task Run(List<SampleFixture> sampleFixtures)
         {
             bool isExit = false;
 
@@ -47,11 +48,15 @@ namespace ConsoleApplication.SqlServer.Framework
 
                             var sampleToRun = _serviceProvider.GetRequiredService(sample.SampleType);
 
-                            if (!sampleToRun.GetType().GetInterfaces().Contains(typeof(ISample)))
+                            if (!sampleToRun.GetType().GetInterfaces().Contains(typeof(ISample)) && !sampleToRun.GetType().GetInterfaces().Contains(typeof(ISampleAsync)))
                             {
                                 Console.WriteLine("Error! That selection is not a Sample (press any key to continue)");
                                 Console.ReadKey();
                                 Console.Clear();
+                            }
+                            else if (sampleToRun.GetType().GetInterfaces().Contains(typeof(ISampleAsync)))
+                            {
+                                await ((ISampleAsync)sampleToRun).Run();
                             }
                             else
                             {

@@ -13,12 +13,12 @@ namespace FluentCommander.Database.SqlServer
     {
         public static IServiceCollection AddDatabaseCommander(this IServiceCollection services, IConfiguration config)
         {
-            string defaultConnection = config.GetConnectionString("DefaultConnection");
+            var connectionStringProvider = new ConnectionStringFromConfigurationProvider(config);
 
-            if (!string.IsNullOrEmpty(defaultConnection))
+            if (connectionStringProvider.ConnectionStringNames.Contains("DefaultConnection"))
             {
+                services.AddSingleton(new SqlConnectionStringBuilder(connectionStringProvider.Get("DefaultConnection")));
                 services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
-                services.AddSingleton(new SqlConnectionStringBuilder(defaultConnection));
             }
 
             services.AddTransient<DatabaseCommandBuilder>();

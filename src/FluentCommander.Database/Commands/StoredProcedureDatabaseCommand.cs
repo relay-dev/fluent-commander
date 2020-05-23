@@ -24,24 +24,16 @@ namespace FluentCommander.Database.Commands
 
         public override StoredProcedureCommandResult Execute()
         {
-            List<DatabaseCommandParameter> p = Parameters;
+            StoredProcedureResult result = _databaseCommander.ExecuteStoredProcedure(_storedProcedureName, Parameters);
 
-            DataTable dataTable = _databaseCommander.ExecuteStoredProcedure(_storedProcedureName, ref p);
-
-            return new StoredProcedureCommandResult(Parameters, dataTable);
+            return new StoredProcedureCommandResult(result.Parameters, result.DataTable);
         }
 
-        /// <summary>
-        /// This method does not return the Output or Return parameters because the parameters (p) cannot be passed by reference to an async method
-        /// There are ways around this for a future implementation
-        /// </summary>
         public override async Task<StoredProcedureCommandResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            List<DatabaseCommandParameter> p = Parameters;
+            StoredProcedureResult result = await _databaseCommander.ExecuteStoredProcedureAsync(_storedProcedureName, cancellationToken, Parameters);
 
-            DataTable dataTable = await _databaseCommander.ExecuteStoredProcedureAsync(_storedProcedureName, cancellationToken, p);
-
-            return new StoredProcedureCommandResult(Parameters, dataTable);
+            return new StoredProcedureCommandResult(result.Parameters, result.DataTable);
         }
     }
 }

@@ -4,6 +4,8 @@ using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -26,13 +28,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
         /// This method demonstrates how to query the database with inline SQL using input parameters
         /// </notes>
-        private void ExecuteSqlWithInput()
+        private async Task ExecuteSqlWithInput()
         {
-            SqlQueryCommandResult result = _databaseCommander.BuildCommand()
+            SqlQueryCommandResult result = await _databaseCommander.BuildCommand()
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine("Row count: {0}", result.DataTable.Rows);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
@@ -40,9 +42,9 @@ namespace ConsoleApplication.SqlServer.Samples
 
         protected override void Init()
         {
-            SampleMethods = new List<SampleMethod>
+            SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethod("1", "ExecuteSqlWithInput()", ExecuteSqlWithInput)
+                new SampleMethodAsync("1", "ExecuteSqlWithInput()", async () => await ExecuteSqlWithInput())
             };
         }
     }

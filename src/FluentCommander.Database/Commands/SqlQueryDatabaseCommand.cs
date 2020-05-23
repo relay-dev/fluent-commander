@@ -25,14 +25,14 @@ namespace FluentCommander.Database.Commands
         {
             DataTable dataTable = _databaseCommander.ExecuteSql(_sql, Parameters);
 
-            return new SqlQueryCommandResult(Parameters, dataTable);
+            return new SqlQueryCommandResult(dataTable);
         }
 
         public override async Task<SqlQueryCommandResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             DataTable dataTable = await _databaseCommander.ExecuteSqlAsync(_sql, cancellationToken, Parameters);
 
-            return new SqlQueryCommandResult(Parameters, dataTable);
+            return new SqlQueryCommandResult(dataTable);
         }
     }
 }

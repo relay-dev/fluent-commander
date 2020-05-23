@@ -92,7 +92,7 @@ namespace FluentCommander.Database
         /// <param name="storedProcedureName">The name of the stored procedure to be executed</param>
         /// <param name="databaseParameters">Optional; if there are parameter placeholders in the SQL string, the parameter values should be specified here</param>
         /// <returns>The result of the stored procedure</returns>
-        DataTable ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null);
+        StoredProcedureResult ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null);
 
         /// <summary>
         /// Executes a stored procedure against the database this <see cref="IDatabaseCommander"/> is connected to
@@ -101,15 +101,7 @@ namespace FluentCommander.Database
         /// <param name="cancellationToken">The CancellationToken from the caller</param>
         /// <param name="databaseParameters">Optional; if there are parameter placeholders in the SQL string, the parameter values should be specified here</param>
         /// <returns>The result of the stored procedure</returns>
-        Task<DataTable> ExecuteStoredProcedureAsync(string storedProcedureName, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null);
-
-        /// <summary>
-        /// Executes a stored procedure against the database this <see cref="IDatabaseCommander"/> is connected to
-        /// </summary>
-        /// <param name="storedProcedureName">The name of the stored procedure to be executed</param>
-        /// <param name="databaseParameters">Optional; if there are parameter placeholders in the SQL string, the parameter values should be specified here</param>
-        /// <returns>The result of the stored procedure</returns>
-        DataTable ExecuteStoredProcedure(string storedProcedureName, ref List<DatabaseCommandParameter> databaseParameters);
+        Task<StoredProcedureResult> ExecuteStoredProcedureAsync(string storedProcedureName, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null);
 
         /// <summary>
         /// Gets the server name this <see cref="IDatabaseCommander"/> instance is connected to

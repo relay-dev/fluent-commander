@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -27,17 +29,17 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Database.Utility.AutoMapper class
         /// This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table
         /// </notes>
-        private void BulkCopyUsingAutoMapping()
+        private async Task BulkCopyUsingAutoMapping()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
-            BulkCopyCommandResult result = _databaseCommander.BuildCommand()
+            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .To("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseAutoMap())
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
             Console.WriteLine("Count before: {0}", countBefore);
@@ -49,7 +51,7 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match
         /// This works well when you want to use the auto-mapping feature, but you need to specify some additional details
         /// </notes>
-        private void BulkCopyUsingPartialMap()
+        private async Task BulkCopyUsingPartialMap()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -67,12 +69,12 @@ namespace ConsoleApplication.SqlServer.Samples
             };
 
             // Bulk Copy
-            BulkCopyCommandResult result = _databaseCommander.BuildCommand()
+            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .To("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UsePartialMap(columnMapping))
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
             Console.WriteLine("Count before: {0}", countBefore);
@@ -84,7 +86,7 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation relies on you to specify mappings where you know the column names do not match
         /// This works well when you have a significant mismatch between the column names of the source and the destination
         /// </notes>
-        private void BulkCopyUsingMap()
+        private async Task BulkCopyUsingMap()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -114,12 +116,12 @@ namespace ConsoleApplication.SqlServer.Samples
             };
 
             // Bulk Copy
-            BulkCopyCommandResult result = _databaseCommander.BuildCommand()
+            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .To("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseMap(columnMapping))
-                .Execute();
+                .ExecuteAsync(new CancellationToken());
 
             int countAfter = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
             Console.WriteLine("Count before: {0}", countBefore);
@@ -131,7 +133,7 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             DataTable dataTable = ExecuteSql("SELECT * FROM [dbo].[SampleTable] WHERE 1 = 0");
 
-            for (int i = 0; i < rowCount - 1; i++)
+            for (int i = 0; i < rowCount; i++)
             {
                 DataRow dataRow = dataTable.NewRow();
 
@@ -155,11 +157,11 @@ namespace ConsoleApplication.SqlServer.Samples
 
         protected override void Init()
         {
-            SampleMethods = new List<SampleMethod>
+            SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethod("1", "BulkCopyUsingAutoMapping()", BulkCopyUsingAutoMapping),
-                new SampleMethod("2", "BulkCopyUsingPartialMap()", BulkCopyUsingPartialMap),
-                new SampleMethod("3", "BulkCopyUsingMap()", BulkCopyUsingMap)
+                new SampleMethodAsync("1", "BulkCopyUsingAutoMapping()", async () => await BulkCopyUsingAutoMapping()),
+                new SampleMethodAsync("2", "BulkCopyUsingPartialMap()", async () => await BulkCopyUsingPartialMap()),
+                new SampleMethodAsync("3", "BulkCopyUsingMap()", async () => await BulkCopyUsingMap())
             };
         }
     }

@@ -3,9 +3,12 @@ using System.Data;
 
 namespace FluentCommander.Database
 {
-    public class StoredProcedureCommandResult : SqlQueryCommandResult
+    public class StoredProcedureCommandResult : StoredProcedureResult
     {
-        public StoredProcedureCommandResult(List<DatabaseCommandParameter> parameters, DataTable dataTable)
+        public StoredProcedureCommandResult(StoredProcedureResult storedProcedureResult)
+            : base(storedProcedureResult.Parameters, storedProcedureResult.DataTable) { }
+
+        public StoredProcedureCommandResult(List<DatabaseCommandParameter> parameters, DataTable dataTable) 
             : base(parameters, dataTable) { }
     }
 }

@@ -4,12 +4,13 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.SqlServer
 {
     class Program
     {
-        static void Main()
+        static async Task Main()
         {
             // Build configuration
             var config = new ConfigurationBuilder()
@@ -29,7 +30,7 @@ namespace ConsoleApplication.SqlServer
                 List<SampleFixture> sampleFixtures = GetSampleFixtures();
 
                 // Run the program
-                new SampleProgram(serviceProvider).Run(sampleFixtures);
+                await new SampleProgram(serviceProvider).Run(sampleFixtures);
             }
             finally
             {

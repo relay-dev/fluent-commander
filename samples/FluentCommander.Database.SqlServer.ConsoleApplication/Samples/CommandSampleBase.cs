@@ -6,7 +6,7 @@ using System.Data;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
-    public abstract class CommandSampleBase : Sample
+    public abstract class CommandSampleBase : SampleAsync
     {
         private readonly IConfiguration _config;
 

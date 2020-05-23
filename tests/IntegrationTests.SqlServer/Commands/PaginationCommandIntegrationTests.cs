@@ -24,8 +24,10 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
 
@@ -42,9 +44,11 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
             result.DataTable.Columns.Count.ShouldBe(1);
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
 
@@ -61,9 +65,11 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
             result.DataTable.Rows.Count.ShouldBe(1);
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
 
@@ -80,10 +86,12 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
             result.DataTable.Rows[0]["SampleTableID"].ShouldNotBeNull();
             Convert.ToInt64(result.DataTable.Rows[0]["SampleTableID"].ToString()).ShouldBe(ExecuteScalar<long>("SELECT MAX([SampleTableID]) FROM [dbo].[SampleTable]"));
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
 
@@ -103,9 +111,11 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
             result.DataTable.Rows.Count.ShouldBe(pageSize);
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
 
@@ -130,6 +140,7 @@ namespace IntegrationTests.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.TotalCount.ShouldBeGreaterThan(0);
             result.DataTable.Columns.Count.ShouldBe(1);
             result.DataTable.Rows.Count.ShouldBe(pageSize);
             result.DataTable.Rows[0][0].ShouldNotBeNull();
@@ -137,6 +148,7 @@ namespace IntegrationTests.SqlServer.Commands
             Convert.ToInt32(result.DataTable.Rows[pageSize - 1][0]).ShouldBe(pageSize * pageNumber);
 
             // Print
+            WriteLine("Total Count: {0}", result.TotalCount);
             WriteLine(result.DataTable);
         }
     }

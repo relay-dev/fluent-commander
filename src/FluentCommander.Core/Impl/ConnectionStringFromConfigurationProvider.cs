@@ -41,6 +41,14 @@ namespace FluentCommander.Core.Impl
             return connectionString;
         }
 
+        public List<string> ConnectionStringNames
+        {
+            get
+            {
+                return _configuration.GetSection("ConnectionStrings").GetChildren().Select(s => s.Key).ToList();
+            }
+        }
+
         private Dictionary<string, string> ParsePlaceholders(string connectionString)
         {
             var regex = new Regex(@"{{(.*?)}}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
