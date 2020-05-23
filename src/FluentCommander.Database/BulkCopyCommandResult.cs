@@ -2,11 +2,14 @@
 {
     public class BulkCopyCommandResult
     {
-        public int RowCountCopied { get; }
-
         public BulkCopyCommandResult(int rowCountCopied)
         {
             RowCountCopied = rowCountCopied;
         }
+
+        /// <summary>
+        /// The count of the rows that were copied
+        /// </summary>
+        public int RowCountCopied { get; }
     }
 }

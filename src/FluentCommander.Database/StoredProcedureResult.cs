@@ -29,10 +29,13 @@ namespace FluentCommander.Database
         public bool HasData => DataTable != null && DataTable.Rows.Count > 0;
 
         /// <summary>
-        /// The records returned for this iteration of the pager
+        /// The parameters used when calling the stored procedure
         /// </summary>
         public List<DatabaseCommandParameter> Parameters { get; }
 
+        /// <summary>
+        /// The output parameters from the stored procedure
+        /// </summary>
         public Dictionary<string, DatabaseCommandParameter> OutputParameters
         {
             get
@@ -45,7 +48,10 @@ namespace FluentCommander.Database
                 return Parameters.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.InputOutput).ToDictionary(kvp => kvp.Name, kvp => kvp);
             }
         }
-
+        
+        /// <summary>
+        /// If the stored procedure has a return parameter, it can be retrieved here
+        /// </summary>
         public DatabaseCommandParameter ReturnParameter
         {
             get
@@ -62,6 +68,12 @@ namespace FluentCommander.Database
             }
         }
 
+        /// <summary>
+        /// Casts an output parameter by name to the specified type
+        /// </summary>
+        /// <typeparam name="TResult">The value of the output parameter</typeparam>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <returns>The value of the output parameter</returns>
         public TResult GetOutputParameter<TResult>(string parameterName)
         {
             if (!OutputParameters.ContainsKey(parameterName))
@@ -72,6 +84,11 @@ namespace FluentCommander.Database
             return (TResult)OutputParameters[parameterName].Value;
         }
 
+        /// <summary>
+        /// Casts an return parameter by name to the specified type
+        /// </summary>
+        /// <typeparam name="TResult">The value of the return parameter</typeparam>
+        /// <returns>The value of the return parameter</returns>
         public TResult GetReturnParameter<TResult>()
         {
             return (TResult)ReturnParameter.Value;
