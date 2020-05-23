@@ -16,10 +16,7 @@ namespace FluentCommander.Database.SqlServer
 
         public IDatabaseCommander Create(string connectionName = null)
         {
-            if (connectionName == null)
-            {
-                connectionName = "DefaultConnection";
-            }
+            connectionName ??= "DefaultConnection";
 
             var builder = new SqlConnectionStringBuilder(_connectionStringProvider.Get(connectionName));
 

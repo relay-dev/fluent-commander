@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,111 +48,18 @@ namespace FluentCommander.Database.Commands
             return this;
         }
 
-        public ParameterizedDatabaseCommand<TResult> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
+        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
-                Direction = ParameterDirection.InputOutput
-            };
-
-            databaseParameter.Value ??= DBNull.Value;
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType, int size)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Value = parameterValue,
-                Direction = ParameterDirection.InputOutput,
+                Direction = ParameterDirection.Input,
                 DbType = dbType,
                 Size = size
             };
 
             databaseParameter.Value ??= DBNull.Value;
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Value = parameterValue,
-                Direction = ParameterDirection.InputOutput,
-                DbType = dbType
-            };
-
-            databaseParameter.Value ??= DBNull.Value;
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> AddOutputParameter(string parameterName)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Direction = ParameterDirection.Output
-            };
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> AddOutputParameter(string parameterName, DbType dbType)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Direction = ParameterDirection.Output,
-                DbType = dbType
-            };
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> AddOutputParameter(string parameterName, DbType dbType, int size)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Direction = ParameterDirection.Output,
-                DbType = dbType,
-                Size = size
-            };
-
-            Parameters.Add(databaseParameter);
-
-            return this;
-        }
-
-        public ParameterizedDatabaseCommand<TResult> WithReturnParameter()
-        {
-            if (Parameters.Any(p => p.Direction == ParameterDirection.ReturnValue))
-            {
-                throw new InvalidOperationException("WithReturnParameter() can only be called once");
-            }
-
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = "ReturnParameter",
-                Direction = ParameterDirection.ReturnValue
-            };
 
             Parameters.Add(databaseParameter);
 

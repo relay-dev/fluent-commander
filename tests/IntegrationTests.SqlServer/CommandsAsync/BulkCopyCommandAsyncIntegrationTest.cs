@@ -29,7 +29,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             BulkCopyCommandResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseAutoMap())
                 .ExecuteAsync(new CancellationToken());
 
@@ -64,7 +64,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             BulkCopyCommandResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UsePartialMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 
@@ -111,7 +111,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             BulkCopyCommandResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 

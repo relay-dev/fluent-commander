@@ -40,7 +40,7 @@ namespace ConsoleApplication.SqlServer.Framework
                     {
                         Console.Clear();
 
-                        await sampleMethod.Action.Invoke();
+                        await sampleMethod.Method.Invoke();
 
                         Console.WriteLine("{0}Press any key to continue...", Environment.NewLine);
                     }

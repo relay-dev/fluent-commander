@@ -7,13 +7,13 @@ namespace ConsoleApplication.SqlServer.Framework
     {
         public string Key { get; }
         public string Name { get; }
-        public Func<Task> Action { get; }
+        public Func<Task> Method { get; }
 
-        public SampleMethodAsync(string key, string name, Func<Task> action)
+        public SampleMethodAsync(string key, string name, Func<Task> method)
         {
             Key = key;
             Name = name;
-            Action = action;
+            Method = method;
         }
     }
 }

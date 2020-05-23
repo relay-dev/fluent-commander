@@ -115,6 +115,29 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
+        public async Task ExecuteStoredProcedureAsync_WithInputOutputParameterSpecifyingType_ShouldReturnTheOutputAsExpected()
+        {
+            // Arrange
+            string outputParameterName = "SampleInputOutputVarChar";
+
+            // Act
+            StoredProcedureCommandResult result = await SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+            result.GetOutputParameter<string>(outputParameterName).ShouldNotBeNullOrEmpty();
+
+            // Print result
+            WriteLine("Output Parameter: {0}", result.GetOutputParameter<string>(outputParameterName));
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
         public async Task ExecuteStoredProcedureAsync_WithReturnParameter_ShouldReturnAsExpected()
         {
             // Arrange & Act
@@ -165,6 +188,24 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             StoredProcedureCommandResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
+                .WithReturnParameter()
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.GetReturnParameter<int>().ShouldBeGreaterThan(0);
+
+            // Print result
+            WriteLine("Return Parameter: {0}", result.GetReturnParameter<int>());
+        }
+
+        [Fact]
+        public async Task ExecuteStoredProcedureAsync_WithOptionalInputParameterSpecifyingType_ShouldReturnAsExpected()
+        {
+            // Arrange & Act
+            StoredProcedureCommandResult result = await SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
+                .AddInputParameter("SampleTableID", 1, DbType.Int64)
                 .WithReturnParameter()
                 .ExecuteAsync(new CancellationToken());
 

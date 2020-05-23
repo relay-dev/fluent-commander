@@ -37,7 +37,7 @@ namespace ConsoleApplication.SqlServer.Samples
             BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseAutoMap())
                 .ExecuteAsync(new CancellationToken());
 
@@ -72,7 +72,7 @@ namespace ConsoleApplication.SqlServer.Samples
             BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UsePartialMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 
@@ -119,7 +119,7 @@ namespace ConsoleApplication.SqlServer.Samples
             BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
-                .To("[dbo].[SampleTable]")
+                .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 

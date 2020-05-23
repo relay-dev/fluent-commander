@@ -56,7 +56,7 @@ namespace FluentCommander.Database
         /// <returns>A stored procedure command builder</returns>
         public StoredProcedureDatabaseCommand ForStoredProcedure(string storedProcedureName)
         {
-            return _commandFactory.Create<StoredProcedureDatabaseCommand>().Named(storedProcedureName);
+            return _commandFactory.Create<StoredProcedureDatabaseCommand>().Name(storedProcedureName);
         }
     }
 }

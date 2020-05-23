@@ -6,13 +6,13 @@ namespace ConsoleApplication.SqlServer.Framework
     {
         public string Key { get; }
         public string Name { get; }
-        public Action Action { get; }
+        public Action Method { get; }
 
-        public SampleMethod(string key, string name, Action action)
+        public SampleMethod(string key, string name, Action method)
         {
             Key = key;
             Name = name;
-            Action = action;
+            Method = method;
         }
     }
 }

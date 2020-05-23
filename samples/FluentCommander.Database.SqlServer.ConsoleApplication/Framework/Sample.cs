@@ -39,7 +39,7 @@ namespace ConsoleApplication.SqlServer.Framework
                     {
                         Console.Clear();
 
-                        sampleMethod.Action.Invoke();
+                        sampleMethod.Method.Invoke();
 
                         Console.WriteLine("{0}Press any key to continue...", Environment.NewLine);
                     }

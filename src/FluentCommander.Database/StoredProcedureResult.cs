@@ -5,28 +5,13 @@ using System.Linq;
 
 namespace FluentCommander.Database
 {
-    public class StoredProcedureResult
+    public class StoredProcedureResult : DataTableResult
     {
         public StoredProcedureResult(List<DatabaseCommandParameter> parameters, DataTable dataTable)
+            : base(dataTable)
         {
             Parameters = parameters;
-            DataTable = dataTable;
         }
-
-        /// <summary>
-        /// The count of all records returned
-        /// </summary>
-        public int Count => DataTable.Rows.Count;
-
-        /// <summary>
-        /// The records returned from the stored procedure
-        /// </summary>
-        public DataTable DataTable { get; }
-
-        /// <summary>
-        /// Indicates whether or not the DataTable has data in it
-        /// </summary>
-        public bool HasData => DataTable != null && DataTable.Rows.Count > 0;
 
         /// <summary>
         /// The parameters used when calling the stored procedure

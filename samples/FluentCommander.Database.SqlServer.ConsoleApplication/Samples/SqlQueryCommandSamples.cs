@@ -4,6 +4,7 @@ using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,23 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.DataTable.Rows);
+            Console.WriteLine("Row count: {0}", result.Count);
+            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+        }
+
+        /// <notes>
+        /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
+        /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
+        /// </notes>
+        private async Task ExecuteSqlWithInputSpecifyingType()
+        {
+            SqlQueryCommandResult result = await _databaseCommander.BuildCommand()
+                .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
+                .AddInputParameter("SampleTableID", 1, DbType.Int32)
+                .AddInputParameter("SampleVarChar", "Row 1", DbType.String)
+                .ExecuteAsync(new CancellationToken());
+
+            Console.WriteLine("Row count: {0}", result.Count);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
         }
 
@@ -44,7 +61,8 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             SampleMethods = new List<SampleMethodAsync>
             {
-                new SampleMethodAsync("1", "ExecuteSqlWithInput()", async () => await ExecuteSqlWithInput())
+                new SampleMethodAsync("1", "ExecuteSqlWithInput()", async () => await ExecuteSqlWithInput()),
+                new SampleMethodAsync("2", "ExecuteSqlWithInputSpecifyingType()", async () => await ExecuteSqlWithInputSpecifyingType())
             };
         }
     }

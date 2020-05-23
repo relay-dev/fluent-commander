@@ -287,21 +287,26 @@ namespace FluentCommander.Database.SqlServer
 
         public string GetServerName()
         {
-            return ExecuteScalar<string>("SELECT @@SERVERNAME");
+            string sql = GetServerNameSql();
+
+            return ExecuteScalar<string>(sql);
         }
 
         public async Task<string> GetServerNameAsync(CancellationToken cancellationToken)
         {
-            return await ExecuteScalarAsync<string>("SELECT @@SERVERNAME", cancellationToken);
+            string sql = GetServerNameSql();
+
+            return await ExecuteScalarAsync<string>(sql, cancellationToken);
         }
 
         public PaginationResult Paginate(PaginationRequest paginationRequest)
         {
             string sql = GetPaginationSql(paginationRequest);
+            string sqlCount = GetPaginationCountSql(paginationRequest);
 
             DataTable dataTable = ExecuteSql(sql);
 
-            int totalCount = ExecuteScalar<int>($"SELECT COUNT(1) FROM {paginationRequest.TableName} (NOLOCK)");
+            int totalCount = ExecuteScalar<int>(sqlCount);
 
             return new PaginationResult(dataTable, totalCount);
         }
@@ -309,10 +314,11 @@ namespace FluentCommander.Database.SqlServer
         public async Task<PaginationResult> PaginateAsync(PaginationRequest paginationRequest, CancellationToken cancellationToken)
         {
             string sql = GetPaginationSql(paginationRequest);
+            string sqlCount = GetPaginationCountSql(paginationRequest);
 
             Task<DataTable> getDataTask = ExecuteSqlAsync(sql, cancellationToken);
 
-            Task<int> getCountTask = ExecuteScalarAsync<int>($"SELECT COUNT(1) FROM {paginationRequest.TableName} (NOLOCK)", cancellationToken);
+            Task<int> getCountTask = ExecuteScalarAsync<int>(sqlCount, cancellationToken);
 
             await Task.WhenAll(getDataTask, getCountTask);
 
@@ -381,11 +387,16 @@ namespace FluentCommander.Database.SqlServer
             }
         }
 
+        private string GetServerNameSql()
+        {
+            return "SELECT @@SERVERNAME";
+        }
+
         private string GetPaginationSql(PaginationRequest paginationRequest)
         {
             string sql =
 @"SELECT {0}
-FROM {1}
+FROM {1} (NOLOCK)
 WHERE 1 = 1 {2}
 ORDER BY {3}
 OFFSET {4} ROWS
@@ -396,6 +407,18 @@ FETCH NEXT {5} ROWS ONLY";
             string offset = (paginationRequest.PageSize * (paginationRequest.PageNumber - 1)).ToString();
 
             return string.Format(sql, paginationRequest.Columns, paginationRequest.TableName, paginationRequest.GetWhereClause(), paginationRequest.OrderBy, offset, paginationRequest.PageSize.ToString());
+        }
+
+        private string GetPaginationCountSql(PaginationRequest paginationRequest)
+        {
+            string sql =
+@"SELECT COUNT(1)
+FROM {0} (NOLOCK)
+WHERE 1 = 1 {1}";
+
+            paginationRequest.SetDefaults();
+
+            return string.Format(sql, paginationRequest.TableName, paginationRequest.GetWhereClause());
         }
     }
 }

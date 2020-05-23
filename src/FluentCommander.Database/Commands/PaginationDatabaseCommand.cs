@@ -63,7 +63,7 @@ namespace FluentCommander.Database.Commands
 
             PaginationResult paginationResult = _databaseCommander.Paginate(_paginationRequest);
 
-            return new PaginationCommandResult(paginationResult);
+            return new PaginationCommandResult(paginationResult.DataTable, paginationResult.TotalCount);
         }
 
         public async Task<PaginationCommandResult> ExecuteAsync(CancellationToken cancellationToken)

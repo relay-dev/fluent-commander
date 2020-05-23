@@ -106,6 +106,22 @@ BEGIN
 END
 GO
 
+DROP PROCEDURE IF EXISTS [dbo].[usp_BigIntInput_VarCharOutput_TableResult]
+GO
+
+CREATE PROCEDURE [dbo].[usp_BigIntInput_VarCharOutput_TableResult]
+      @SampleTableID [bigint]
+    , @SampleInputOutputVarChar [varchar](50) OUTPUT
+AS
+BEGIN
+    SET @SampleInputOutputVarChar = 'Hello world'
+
+    SELECT *
+    FROM [DatabaseCommander].[dbo].[SampleTable]
+    WHERE SampleTableID = @SampleTableID
+END
+GO
+
 DROP PROCEDURE IF EXISTS [dbo].[usp_NoInput_NoOutput_ReturnInt]
 GO
 

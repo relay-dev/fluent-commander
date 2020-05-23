@@ -45,7 +45,7 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.DataTable.Rows);
+            Console.WriteLine("Row count: {0}", result.Count);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
         }
 
@@ -82,7 +82,7 @@ namespace ConsoleApplication.SqlServer.Samples
 
             Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName1));
             Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<string>(outputParameterName2));
-            Console.WriteLine("Row count: {0}", result.DataTable.Rows);
+            Console.WriteLine("Row count: {0}", result.Count);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
         }
 
@@ -100,7 +100,25 @@ namespace ConsoleApplication.SqlServer.Samples
                 .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
-            Console.WriteLine("Row count: {0}", result.DataTable.Rows);
+            Console.WriteLine("Row count: {0}", result.Count);
+            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+        }
+
+        /// <notes>
+        /// Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters
+        /// </notes>
+        private async Task ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()
+        {
+            string outputParameterName = "SampleInputOutputVarChar";
+
+            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
+                .ExecuteAsync(new CancellationToken());
+
+            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<string>(outputParameterName));
+            Console.WriteLine("Row count: {0}", result.Count);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
         }
 
@@ -150,6 +168,21 @@ namespace ConsoleApplication.SqlServer.Samples
             Console.WriteLine("Return parameter: {0}", result.GetReturnParameter<int>());
         }
 
+        /// <notes>
+        /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
+        /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
+        /// </notes>
+        private async Task ExecuteStoredProcedureWithInputSpecifyingType()
+        {
+            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
+                .AddInputParameter("SampleTableID", 1, DbType.Int64)
+                .ExecuteAsync(new CancellationToken());
+
+            Console.WriteLine("Row count: {0}", result.Count);
+            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+        }
+
         protected override void Init()
         {
             SampleMethods = new List<SampleMethodAsync>
@@ -158,9 +191,11 @@ namespace ConsoleApplication.SqlServer.Samples
                 new SampleMethodAsync("2", "ExecuteStoredProcedureWithOutput()", async () => await ExecuteStoredProcedureWithOutput()),
                 new SampleMethodAsync("3", "ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()", async () => await ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()),
                 new SampleMethodAsync("4", "ExecuteStoredProcedureWithInputOutputParameter()", async () => await ExecuteStoredProcedureWithInputOutputParameter()),
-                new SampleMethodAsync("5", "ExecuteStoredProcedureWithReturnParameter()", async () => await ExecuteStoredProcedureWithReturnParameter()),
-                new SampleMethodAsync("6", "ExecuteStoredProcedureWithInputOutputAndReturn()", async () => await ExecuteStoredProcedureWithInputOutputAndReturn()),
-                new SampleMethodAsync("7", "ExecuteStoredProcedureWithOptionalInputParameter()", async () => await ExecuteStoredProcedureWithOptionalInputParameter())
+                new SampleMethodAsync("5", "ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()", async () => await ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()),
+                new SampleMethodAsync("6", "ExecuteStoredProcedureWithReturnParameter()", async () => await ExecuteStoredProcedureWithReturnParameter()),
+                new SampleMethodAsync("7", "ExecuteStoredProcedureWithInputOutputAndReturn()", async () => await ExecuteStoredProcedureWithInputOutputAndReturn()),
+                new SampleMethodAsync("8", "ExecuteStoredProcedureWithOptionalInputParameter()", async () => await ExecuteStoredProcedureWithOptionalInputParameter()),
+                new SampleMethodAsync("9", "ExecuteStoredProcedureWithInputSpecifyingType()", async () => await ExecuteStoredProcedureWithInputSpecifyingType())
             };
         }
     }

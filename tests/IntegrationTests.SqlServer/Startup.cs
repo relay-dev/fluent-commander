@@ -13,7 +13,7 @@ namespace IntegrationTests.SqlServer
             // Build configuration
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile("appsettings.json", false)
                 .Build();
 
             // Initialize a ServiceCollection

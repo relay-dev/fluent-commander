@@ -30,7 +30,7 @@ namespace FluentCommander.Database.Commands
             return this;
         }
 
-        public BulkCopyDatabaseCommand To(string tableName)
+        public BulkCopyDatabaseCommand Into(string tableName)
         {
             _tableName = tableName;
 
@@ -81,7 +81,7 @@ namespace FluentCommander.Database.Commands
 
             if (string.IsNullOrEmpty(_tableName))
             {
-                throw new InvalidOperationException("To(tableName) must be called before calling the Execute() method");
+                throw new InvalidOperationException("Into(tableName) must be called before calling the Execute() method");
             }
         }
 
