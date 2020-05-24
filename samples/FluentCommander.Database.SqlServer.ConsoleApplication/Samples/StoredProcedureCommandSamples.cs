@@ -46,8 +46,13 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            int count = result.Count;
+            bool hasData = result.HasData;
+            DataTable dataTable = result.DataTable;
+
+            Console.WriteLine("Row count: {0}", count);
+            Console.WriteLine("Has Data: {0}", hasData);
+            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
         }
 
         /// <notes>
@@ -64,7 +69,9 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddOutputParameter(outputParameterName, DbType.Int32)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
+            int outputParameter = result.GetOutputParameter<int>(outputParameterName);
+
+            Console.WriteLine("Output parameter: {0}", outputParameter);
         }
 
         /// <notes>
@@ -83,10 +90,17 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddOutputParameter(outputParameterName2, DbType.String, 1000)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName1));
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<string>(outputParameterName2));
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            int outputParameter1 = result.GetOutputParameter<int>(outputParameterName1);
+            string outputParameter2 = result.GetOutputParameter<string>(outputParameterName2);
+            int count = result.Count;
+            bool hasData = result.HasData;
+            DataTable dataTable = result.DataTable;
+
+            Console.WriteLine("Output parameter: {0}", outputParameter1);
+            Console.WriteLine("Output parameter: {0}", outputParameter2);
+            Console.WriteLine("Row count: {0}", count);
+            Console.WriteLine("Has Data: {0}", hasData);
+            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
         }
 
         /// <notes>
@@ -95,17 +109,17 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "4")]
         public async Task ExecuteStoredProcedureWithInputOutputParameter()
         {
-            string outputParameterName = "SampleInputOutputInt";
+            string inputOutputParameterName = "SampleInputOutputInt";
 
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(outputParameterName, 1)
+                .AddInputOutputParameter(inputOutputParameterName, 1)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            int inputOutputParameter = result.GetOutputParameter<int>(inputOutputParameterName);
+
+            Console.WriteLine("Output parameter: {0}", inputOutputParameter);
         }
 
         /// <notes>
@@ -114,17 +128,17 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "5")]
         public async Task ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()
         {
-            string outputParameterName = "SampleInputOutputVarChar";
+            string inputOutputParameterName = "SampleInputOutputVarChar";
 
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
+                .AddInputOutputParameter(inputOutputParameterName, 1, DbType.String, 50)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<string>(outputParameterName));
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            string inputOutputParameter = result.GetOutputParameter<string>(inputOutputParameterName);
+
+            Console.WriteLine("Output parameter: {0}", inputOutputParameter);
         }
 
         /// <notes>
@@ -139,7 +153,9 @@ namespace ConsoleApplication.SqlServer.Samples
                 .WithReturnParameter()
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Return parameter: {0}", result.GetReturnParameter<int>());
+            int returnParameter = result.GetReturnParameter<int>();
+
+            Console.WriteLine("Return parameter: {0}", returnParameter);
         }
 
         /// <notes>
@@ -157,8 +173,11 @@ namespace ConsoleApplication.SqlServer.Samples
                 .WithReturnParameter()
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Output parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
-            Console.WriteLine("Return parameter: {0}", result.GetReturnParameter<int>());
+            int outputParameter = result.GetOutputParameter<int>(outputParameterName);
+            int returnParameter = result.GetReturnParameter<int>();
+
+            Console.WriteLine("Output parameter: {0}", outputParameter);
+            Console.WriteLine("Return parameter: {0}", returnParameter);
         }
 
         /// <notes>
@@ -173,7 +192,9 @@ namespace ConsoleApplication.SqlServer.Samples
                 .WithReturnParameter()
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Return parameter: {0}", result.GetReturnParameter<int>());
+            int returnParameter = result.GetReturnParameter<int>();
+
+            Console.WriteLine("Return parameter: {0}", returnParameter);
         }
 
         /// <notes>
@@ -188,8 +209,13 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("SampleTableID", 1, DbType.Int64)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            int count = result.Count;
+            bool hasData = result.HasData;
+            DataTable dataTable = result.DataTable;
+
+            Console.WriteLine("Row count: {0}", count);
+            Console.WriteLine("Has Data: {0}", hasData);
+            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
         }
     }
 }

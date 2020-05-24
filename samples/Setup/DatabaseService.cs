@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace ConsoleApplication.SqlServer
+namespace Setup
 {
     public class DatabaseService
     {
@@ -47,7 +47,7 @@ namespace ConsoleApplication.SqlServer
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new Exception("The default connection string has not been set. Please find the ConnectionStrings section of the appsettings.json file in the ClientApplication project");
+                throw new Exception("The default connection string has not been set. Please find the ConnectionStrings section of the appsettings.json file in the project of the entry point");
             }
         }
 
@@ -72,7 +72,7 @@ namespace ConsoleApplication.SqlServer
 
         private string GetResourceFile(string filename)
         {
-            string resourceFilename = $"ConsoleApplication.SqlServer.Resources.{filename}";
+            string resourceFilename = $"Setup.Resources.{filename}";
 
             using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceFilename);
 

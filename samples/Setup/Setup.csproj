@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\setup-sample-database-batch-1.sql" />
+    <None Remove="Resources\setup-sample-database-batch-2.sql" />
+    <None Remove="Resources\setup-sample-database-batch-3.sql" />
+    <None Remove="Resources\teardown-sample-database.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-1.sql" />
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-2.sql" />
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-3.sql" />
+    <EmbeddedResource Include="Resources\teardown-sample-database.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="160.2004021.0" />
+  </ItemGroup>
+
+</Project>
