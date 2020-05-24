@@ -26,7 +26,7 @@ namespace FluentCommander.Database.SqlServer
             return _databaseCommandBuilder;
         }
 
-        public void BulkCopy(string tableName, DataTable dataTable, ColumnMapping columnMapping)
+        public BulkCopyResult BulkCopy(string tableName, DataTable dataTable, ColumnMapping columnMapping)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlBulkCopy(connection)
@@ -55,9 +55,11 @@ namespace FluentCommander.Database.SqlServer
 
                 throw;
             }
+
+            return new BulkCopyResult(dataTable.Rows.Count);
         }
 
-        public async Task BulkCopyAsync(string tableName, DataTable dataTable, ColumnMapping columnMapping, CancellationToken cancellationToken)
+        public async Task<BulkCopyResult> BulkCopyAsync(string tableName, DataTable dataTable, ColumnMapping columnMapping, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
 
@@ -87,6 +89,8 @@ namespace FluentCommander.Database.SqlServer
 
                 throw;
             }
+
+            return new BulkCopyResult(dataTable.Rows.Count);
         }
 
         public int ExecuteNonQuery(string sql, List<DatabaseCommandParameter> databaseParameters = null)

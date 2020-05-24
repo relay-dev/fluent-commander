@@ -1,8 +1,6 @@
 ﻿using ConsoleApplication.SqlServer.Framework;
-using ConsoleApplication.SqlServer.Samples;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,7 +13,7 @@ namespace ConsoleApplication.SqlServer
             // Build configuration
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile("appsettings.json", false)
                 .Build();
 
             // Generate the IServiceProvider
@@ -26,11 +24,14 @@ namespace ConsoleApplication.SqlServer
 
             try
             {
-                // Get the configured sample fixtures
-                List<SampleFixture> sampleFixtures = GetSampleFixtures();
-
                 // Run the program
-                await new SampleProgram(serviceProvider).Run(sampleFixtures);
+                await new SampleProgram(serviceProvider).Run();
+            }
+            catch (Exception e)
+            {
+                Console.Clear();
+                Console.WriteLine("Encountered unhandled exception");
+                Console.WriteLine(e.Message);
             }
             finally
             {
@@ -46,19 +47,6 @@ namespace ConsoleApplication.SqlServer
         private static void Teardown(IConfiguration config)
         {
             new DatabaseService(config).TeardownDatabase();
-        }
-
-        private static List<SampleFixture> GetSampleFixtures()
-        {
-            return new List<SampleFixture>
-            {
-                new SampleFixture("1", "Basic Commands", typeof(BasicCommandSamples)),
-                new SampleFixture("2", "Bulk Copy Commands", typeof(BulkCopyCommandSamples)),
-                new SampleFixture("3", "Pagination Commands", typeof(PaginationCommandSamples)),
-                new SampleFixture("4", "SQL Query Commands", typeof(SqlQueryCommandSamples)),
-                new SampleFixture("5", "SQL Non-Query Commands", typeof(SqlNonQueryCommandSamples)),
-                new SampleFixture("6", "Stored Procedure Commands", typeof(StoredProcedureCommandSamples)),
-            };
         }
     }
 }

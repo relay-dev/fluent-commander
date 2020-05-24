@@ -1,11 +1,11 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using FluentCommander.Database;
+﻿using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using ConsoleApplication.SqlServer.Framework;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -13,6 +13,7 @@ namespace ConsoleApplication.SqlServer.Samples
     /// The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable
     /// When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server)
     /// </notes>
+    [SampleFixture]
     public class BulkCopyCommandSamples : CommandSampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
@@ -29,12 +30,13 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Database.Utility.AutoMapper class
         /// This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table
         /// </notes>
-        private async Task BulkCopyUsingAutoMapping()
+        [Sample(Key = "1")]
+        public async Task BulkCopyUsingAutoMapping()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
-            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
+            BulkCopyResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
@@ -51,7 +53,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match
         /// This works well when you want to use the auto-mapping feature, but you need to specify some additional details
         /// </notes>
-        private async Task BulkCopyUsingPartialMap()
+        [Sample(Key = "2")]
+        public async Task BulkCopyUsingPartialMap()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -69,7 +72,7 @@ namespace ConsoleApplication.SqlServer.Samples
             };
 
             // Bulk Copy
-            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
+            BulkCopyResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
@@ -86,7 +89,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This variation relies on you to specify mappings where you know the column names do not match
         /// This works well when you have a significant mismatch between the column names of the source and the destination
         /// </notes>
-        private async Task BulkCopyUsingMap()
+        [Sample(Key = "3")]
+        public async Task BulkCopyUsingMap()
         {
             DataTable dataTable = GetDataTableToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
@@ -116,7 +120,7 @@ namespace ConsoleApplication.SqlServer.Samples
             };
 
             // Bulk Copy
-            BulkCopyCommandResult result = await _databaseCommander.BuildCommand()
+            BulkCopyResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
@@ -153,16 +157,6 @@ namespace ConsoleApplication.SqlServer.Samples
             }
 
             return dataTable;
-        }
-
-        protected override void Init()
-        {
-            SampleMethods = new List<SampleMethodAsync>
-            {
-                new SampleMethodAsync("1", "BulkCopyUsingAutoMapping()", async () => await BulkCopyUsingAutoMapping()),
-                new SampleMethodAsync("2", "BulkCopyUsingPartialMap()", async () => await BulkCopyUsingPartialMap()),
-                new SampleMethodAsync("3", "BulkCopyUsingMap()", async () => await BulkCopyUsingMap())
-            };
         }
     }
 }

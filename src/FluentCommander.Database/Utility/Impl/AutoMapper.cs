@@ -63,7 +63,7 @@ namespace FluentCommander.Database.Utility.Impl
                 }
             }
 
-            // Auto-map any columns that are not already mapped from the source to the destination
+            // AutoMap any columns that are not already mapped from the source to the destination
             foreach (string fileColumnName in fileColumnNames)
             {
                 string databaseColumnName = databaseColumnNames.FirstOrDefault(s => s.Equals(fileColumnName, StringComparison.InvariantCultureIgnoreCase));

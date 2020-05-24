@@ -1,16 +1,16 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using FluentCommander.Database;
+﻿using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ConsoleApplication.SqlServer.Framework;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE
     /// </notes>
+    [SampleFixture]
     public class SqlNonQueryCommandSamples : CommandSampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
@@ -26,7 +26,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// SQL update statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
         /// </notes>
-        private async Task ExecuteParameterizedUpdateSql()
+        [Sample(Key = "1")]
+        public async Task ExecuteParameterizedUpdateSql()
         {
             Guid newGuid = Guid.NewGuid();
             string modifiedBy = "FluentCommander";
@@ -46,7 +47,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// SQL insert and delete statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
         /// </notes>
-        private async Task ExecuteParameterizedInsertDeleteSql()
+        [Sample(Key = "2")]
+        public async Task ExecuteParameterizedInsertDeleteSql()
         {
             string sampleVarChar = "Temporary Row";
             string createdBy = "FluentCommander";
@@ -89,15 +91,6 @@ namespace ConsoleApplication.SqlServer.Samples
 
             Console.WriteLine("Row count affected: {0}", insertResult.RowCountAffected);
             Console.WriteLine("Row count affected: {0}", deleteResult.RowCountAffected);
-        }
-
-        protected override void Init()
-        {
-            SampleMethods = new List<SampleMethodAsync>
-            {
-                new SampleMethodAsync("1", "ExecuteParameterizedUpdateSql()", async () => await ExecuteParameterizedUpdateSql()),
-                new SampleMethodAsync("2", "ExecuteParameterizedInsertDeleteSql()", async () => await ExecuteParameterizedInsertDeleteSql())
-            };
         }
     }
 }

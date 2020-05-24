@@ -1,12 +1,11 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using Core.Plugins.Extensions;
+﻿using Core.Plugins.Extensions;
 using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using ConsoleApplication.SqlServer.Framework;
 
 namespace ConsoleApplication.SqlServer.Samples
 {
@@ -14,6 +13,7 @@ namespace ConsoleApplication.SqlServer.Samples
     /// This Sample class demonstrates how to build a stored procedure command using various combinations of input, output and return parameters
     /// To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files
     /// </notes>
+    [SampleFixture]
     public class StoredProcedureCommandSamples : CommandSampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
@@ -29,7 +29,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object
         /// </notes>
-        private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
+        [Sample(Key = "1")]
+        public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
         {
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
@@ -52,7 +53,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        private async Task ExecuteStoredProcedureWithOutput()
+        [Sample(Key = "2")]
+        public async Task ExecuteStoredProcedureWithOutput()
         {
             string outputParameterName = "SampleOutputInt";
 
@@ -68,7 +70,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with more complex signatures can be called. This stored procedure has input, output and it returns a DataTable with the result
         /// </notes>
-        private async Task ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()
+        [Sample(Key = "3")]
+        public async Task ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()
         {
             string outputParameterName1 = "SampleOutputInt";
             string outputParameterName2 = "SampleOutputVarChar";
@@ -89,7 +92,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        private async Task ExecuteStoredProcedureWithInputOutputParameter()
+        [Sample(Key = "4")]
+        public async Task ExecuteStoredProcedureWithInputOutputParameter()
         {
             string outputParameterName = "SampleInputOutputInt";
 
@@ -107,7 +111,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        private async Task ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()
+        [Sample(Key = "5")]
+        public async Task ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()
         {
             string outputParameterName = "SampleInputOutputVarChar";
 
@@ -125,7 +130,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with Return parameters can retrieve them from result.ReturnParameters
         /// </notes>
-        private async Task ExecuteStoredProcedureWithReturnParameter()
+        [Sample(Key = "6")]
+        public async Task ExecuteStoredProcedureWithReturnParameter()
         {
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
@@ -139,7 +145,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with both Output parameters and a Return can be called from the command builder
         /// </notes>
-        private async Task ExecuteStoredProcedureWithInputOutputAndReturn()
+        [Sample(Key = "7")]
+        public async Task ExecuteStoredProcedureWithInputOutputAndReturn()
         {
             string outputParameterName = "SampleOutputBigInt";
 
@@ -157,7 +164,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// <notes>
         /// Stored Procedures with optional parameters can be called
         /// </notes>
-        private async Task ExecuteStoredProcedureWithOptionalInputParameter()
+        [Sample(Key = "8")]
+        public async Task ExecuteStoredProcedureWithOptionalInputParameter()
         {
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
@@ -172,7 +180,8 @@ namespace ConsoleApplication.SqlServer.Samples
         /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
         /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
-        private async Task ExecuteStoredProcedureWithInputSpecifyingType()
+        [Sample(Key = "9")]
+        public async Task ExecuteStoredProcedureWithInputSpecifyingType()
         {
             StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
@@ -181,22 +190,6 @@ namespace ConsoleApplication.SqlServer.Samples
 
             Console.WriteLine("Row count: {0}", result.Count);
             Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
-        }
-
-        protected override void Init()
-        {
-            SampleMethods = new List<SampleMethodAsync>
-            {
-                new SampleMethodAsync("1", "ExecuteStoredProcedureWithAllInputTypesAndTableResult()", async () => await ExecuteStoredProcedureWithAllInputTypesAndTableResult()),
-                new SampleMethodAsync("2", "ExecuteStoredProcedureWithOutput()", async () => await ExecuteStoredProcedureWithOutput()),
-                new SampleMethodAsync("3", "ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()", async () => await ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()),
-                new SampleMethodAsync("4", "ExecuteStoredProcedureWithInputOutputParameter()", async () => await ExecuteStoredProcedureWithInputOutputParameter()),
-                new SampleMethodAsync("5", "ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()", async () => await ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()),
-                new SampleMethodAsync("6", "ExecuteStoredProcedureWithReturnParameter()", async () => await ExecuteStoredProcedureWithReturnParameter()),
-                new SampleMethodAsync("7", "ExecuteStoredProcedureWithInputOutputAndReturn()", async () => await ExecuteStoredProcedureWithInputOutputAndReturn()),
-                new SampleMethodAsync("8", "ExecuteStoredProcedureWithOptionalInputParameter()", async () => await ExecuteStoredProcedureWithOptionalInputParameter()),
-                new SampleMethodAsync("9", "ExecuteStoredProcedureWithInputSpecifyingType()", async () => await ExecuteStoredProcedureWithInputSpecifyingType())
-            };
         }
     }
 }

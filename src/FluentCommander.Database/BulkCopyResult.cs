@@ -1,8 +1,8 @@
 ﻿namespace FluentCommander.Database
 {
-    public class BulkCopyCommandResult
+    public class BulkCopyResult
     {
-        public BulkCopyCommandResult(int rowCountCopied)
+        public BulkCopyResult(int rowCountCopied)
         {
             RowCountCopied = rowCountCopied;
         }

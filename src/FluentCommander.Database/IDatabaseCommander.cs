@@ -22,7 +22,7 @@ namespace FluentCommander.Database
         /// <param name="tableName">The name of the table to insert into</param>
         /// <param name="dataTable">The dataTable that contains the data to be inserted</param>
         /// <param name="columnMapping">Optional; maps the dataTable column names to the database table column names</param>
-        void BulkCopy(string tableName, DataTable dataTable, ColumnMapping columnMapping);
+        BulkCopyResult BulkCopy(string tableName, DataTable dataTable, ColumnMapping columnMapping);
 
         /// <summary>
         /// Inserts a set of records from a <see cref="DataTable"/> into a database table in a single transaction
@@ -31,7 +31,7 @@ namespace FluentCommander.Database
         /// <param name="dataTable">The dataTable that contains the data to be inserted</param>
         /// <param name="columnMapping">Optional; maps the dataTable column names to the database table column names</param>
         /// <param name="cancellationToken">The CancellationToken from the caller</param>
-        Task BulkCopyAsync(string tableName, DataTable dataTable, ColumnMapping columnMapping, CancellationToken cancellationToken);
+        Task<BulkCopyResult> BulkCopyAsync(string tableName, DataTable dataTable, ColumnMapping columnMapping, CancellationToken cancellationToken);
 
         /// <summary>
         /// Executes a SQL statement which is either an Insert, Update or Delete

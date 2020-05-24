@@ -26,7 +26,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             DataTable dataTable = GetDataTableToInsert();
 
             // Act
-            BulkCopyCommandResult result = await SUT.BuildCommand()
+            BulkCopyResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
@@ -61,7 +61,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             };
 
             // Act
-            BulkCopyCommandResult result = await SUT.BuildCommand()
+            BulkCopyResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
@@ -108,7 +108,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             };
 
             // Act
-            BulkCopyCommandResult result = await SUT.BuildCommand()
+            BulkCopyResult result = await SUT.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")

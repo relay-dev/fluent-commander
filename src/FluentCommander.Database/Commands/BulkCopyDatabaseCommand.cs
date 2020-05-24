@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Database.Commands
 {
-    public class BulkCopyDatabaseCommand : IDatabaseCommand<BulkCopyCommandResult>
+    public class BulkCopyDatabaseCommand : IDatabaseCommand<BulkCopyResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly IAutoMapper _autoMapper;
@@ -14,7 +14,7 @@ namespace FluentCommander.Database.Commands
         private string _tableName;
         private DataTable _dataTable;
         private ColumnMapping _columnMapping;
-        private bool _isSuppressAutoMapping;
+        private bool _isAutoMap;
 
         public BulkCopyDatabaseCommand(IDatabaseCommander databaseCommander, IAutoMapper autoMapper)
         {
@@ -44,32 +44,28 @@ namespace FluentCommander.Database.Commands
             return this;
         }
         
-        public BulkCopyCommandResult Execute()
+        public BulkCopyResult Execute()
         {
             Validate();
             
-            if (!_isSuppressAutoMapping)
+            if (_isAutoMap)
             {
                 _autoMapper.MapDataTableToTable(_tableName, _dataTable, _columnMapping);
             }
 
-            _databaseCommander.BulkCopy(_tableName, _dataTable, _columnMapping);
-
-            return new BulkCopyCommandResult(_dataTable.Rows.Count);
+            return _databaseCommander.BulkCopy(_tableName, _dataTable, _columnMapping);
         }
 
-        public async Task<BulkCopyCommandResult> ExecuteAsync(CancellationToken cancellationToken)
+        public async Task<BulkCopyResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             Validate();
 
-            if (!_isSuppressAutoMapping)
+            if (_isAutoMap)
             {
                 _autoMapper.MapDataTableToTable(_tableName, _dataTable, _columnMapping);
             }
 
-            await _databaseCommander.BulkCopyAsync(_tableName, _dataTable, _columnMapping, cancellationToken);
-
-            return new BulkCopyCommandResult(_dataTable.Rows.Count);
+            return await _databaseCommander.BulkCopyAsync(_tableName, _dataTable, _columnMapping, cancellationToken);
         }
 
         private void Validate()
@@ -96,7 +92,7 @@ namespace FluentCommander.Database.Commands
 
             public BulkCopyMappingOptions UseAutoMap()
             {
-                _command._isSuppressAutoMapping = false;
+                _command._isAutoMap = true;
 
                 return this;
             }
@@ -104,6 +100,7 @@ namespace FluentCommander.Database.Commands
             public BulkCopyMappingOptions UsePartialMap(ColumnMapping columnMapping)
             {
                 _command._columnMapping = columnMapping;
+                _command._isAutoMap = true;
 
                 return this;
             }
@@ -111,7 +108,7 @@ namespace FluentCommander.Database.Commands
             public BulkCopyMappingOptions UseMap(ColumnMapping columnMapping)
             {
                 _command._columnMapping = columnMapping;
-                _command._isSuppressAutoMapping = true;
+                _command._isAutoMap = false;
 
                 return this;
             }
