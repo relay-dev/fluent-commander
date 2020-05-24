@@ -1,5 +1,5 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Sampler.ConsoleApplication;
 using System;
 using System.IO;
 using System.Threading.Tasks;

@@ -1,11 +1,11 @@
 ﻿using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
+using Sampler.ConsoleApplication;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using ConsoleApplication.SqlServer.Framework;
 
 namespace ConsoleApplication.SqlServer.Samples
 {

@@ -1,7 +1,7 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using Core.Plugins.Extensions;
+﻿using Core.Plugins.Extensions;
 using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
+using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;

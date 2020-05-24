@@ -1,7 +1,7 @@
-﻿using ConsoleApplication.SqlServer.Framework;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
+using Sampler.ConsoleApplication;
 using System.Data;
 
 namespace ConsoleApplication.SqlServer.Samples
