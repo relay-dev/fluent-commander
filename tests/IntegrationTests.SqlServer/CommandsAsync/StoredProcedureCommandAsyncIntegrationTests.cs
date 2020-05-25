@@ -19,7 +19,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_WithAllInputTypesAndTableResult_ShouldReturnDataTable()
         {
             // Arrange & Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleInt", 0)
@@ -48,7 +48,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             string outputParameterName = "SampleOutputInt";
 
             // Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName, DbType.Int32)
@@ -70,7 +70,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             string outputParameterName2 = "SampleOutputVarChar";
 
             // Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName1, DbType.Int32)
@@ -97,7 +97,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             int inputValue = 1;
 
             // Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(outputParameterName, inputValue)
@@ -121,7 +121,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             string outputParameterName = "SampleInputOutputVarChar";
 
             // Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
@@ -141,7 +141,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_WithReturnParameter_ShouldReturnAsExpected()
         {
             // Arrange & Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
@@ -163,7 +163,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             int inputValue = 2;
 
             // Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_Input_Output_ReturnBigInt]")
                 .AddInputParameter("SampleTableID", 0)
                 .AddInputOutputParameter(outputParameterName, inputValue)
@@ -185,7 +185,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_WithOptionalInputParameter_ShouldReturnAsExpected()
         {
             // Arrange & Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
@@ -203,7 +203,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_WithOptionalInputParameterSpecifyingType_ShouldReturnAsExpected()
         {
             // Arrange & Act
-            StoredProcedureCommandResult result = await SUT.BuildCommand()
+            StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1, DbType.Int64)
                 .WithReturnParameter()

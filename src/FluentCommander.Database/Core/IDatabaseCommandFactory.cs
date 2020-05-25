@@ -1,4 +1,4 @@
-﻿namespace FluentCommander.Database
+﻿namespace FluentCommander.Database.Core
 {
     public interface IDatabaseCommandFactory
     {

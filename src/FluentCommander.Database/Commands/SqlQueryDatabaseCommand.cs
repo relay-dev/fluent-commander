@@ -1,38 +1,45 @@
-﻿using System.Data;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentCommander.Database.Commands
 {
-    public class SqlQueryDatabaseCommand : ParameterizedDatabaseCommand<SqlQueryCommandResult>
+    public class SqlQueryDatabaseCommand : ParameterizedDatabaseCommand<SqlQueryResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
-        private string _sql;
+        private readonly SqlRequest _sqlRequest;
 
         public SqlQueryDatabaseCommand(IDatabaseCommander databaseCommander)
         {
             _databaseCommander = databaseCommander;
+            _sqlRequest = new SqlRequest();
         }
 
         public SqlQueryDatabaseCommand Sql(string sql)
         {
-            _sql = sql;
+            _sqlRequest.Sql = sql;
 
             return this;
         }
 
-        public override SqlQueryCommandResult Execute()
+        public SqlQueryDatabaseCommand Timeout(int timeoutInSeconds)
         {
-            DataTable dataTable = _databaseCommander.ExecuteSql(_sql, Parameters);
+            _sqlRequest.TimeoutInSeconds = timeoutInSeconds;
 
-            return new SqlQueryCommandResult(dataTable);
+            return this;
         }
 
-        public override async Task<SqlQueryCommandResult> ExecuteAsync(CancellationToken cancellationToken)
+        public override SqlQueryResult Execute()
         {
-            DataTable dataTable = await _databaseCommander.ExecuteSqlAsync(_sql, cancellationToken, Parameters);
+            _sqlRequest.DatabaseParameters = DatabaseParameters;
 
-            return new SqlQueryCommandResult(dataTable);
+            return _databaseCommander.ExecuteSql(_sqlRequest);
+        }
+
+        public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            _sqlRequest.DatabaseParameters = DatabaseParameters;
+
+            return await _databaseCommander.ExecuteSqlAsync(_sqlRequest, cancellationToken);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteSqlQueryCommandAsync_WithInputParameters_ShouldReturnDataTable()
         {
             // Arrange & Act
-            SqlQueryCommandResult result = await SUT.BuildCommand()
+            SqlQueryResult result = await SUT.BuildCommand()
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")

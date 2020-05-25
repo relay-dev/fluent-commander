@@ -26,18 +26,22 @@ namespace FluentCommander.Database.SqlServer
             return _databaseCommandBuilder;
         }
 
-        public BulkCopyResult BulkCopy(string tableName, DataTable dataTable, ColumnMapping columnMapping)
+        public BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlBulkCopy(connection)
             {
-                DestinationTableName = tableName,
-                BulkCopyTimeout = TimeoutInSeconds
+                DestinationTableName = request.TableName
             };
 
-            if (columnMapping != null)
+            if (request.TimeoutInSeconds.HasValue)
             {
-                foreach (ColumnMap columnMap in columnMapping.ColumnMaps)
+                command.BulkCopyTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.ColumnMapping != null)
+            {
+                foreach (ColumnMap columnMap in request.ColumnMapping.ColumnMaps)
                 {
                     command.ColumnMappings.Add(columnMap.Source, columnMap.Destination);
                 }
@@ -46,7 +50,7 @@ namespace FluentCommander.Database.SqlServer
             try
             {
                 connection.Open();
-                command.WriteToServer(dataTable);
+                command.WriteToServer(request.DataTable);
                 connection.Close();
             }
             catch (Exception e)
@@ -56,22 +60,25 @@ namespace FluentCommander.Database.SqlServer
                 throw;
             }
 
-            return new BulkCopyResult(dataTable.Rows.Count);
+            return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public async Task<BulkCopyResult> BulkCopyAsync(string tableName, DataTable dataTable, ColumnMapping columnMapping, CancellationToken cancellationToken)
+        public async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
-
             using var command = new SqlBulkCopy(connection)
             {
-                DestinationTableName = tableName,
-                BulkCopyTimeout = TimeoutInSeconds
+                DestinationTableName = request.TableName
             };
 
-            if (columnMapping != null)
+            if (request.TimeoutInSeconds.HasValue)
             {
-                foreach (ColumnMap columnMap in columnMapping.ColumnMaps)
+                command.BulkCopyTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.ColumnMapping != null)
+            {
+                foreach (ColumnMap columnMap in request.ColumnMapping.ColumnMaps)
                 {
                     command.ColumnMappings.Add(columnMap.Source, columnMap.Destination);
                 }
@@ -80,7 +87,7 @@ namespace FluentCommander.Database.SqlServer
             try
             {
                 connection.Open();
-                await command.WriteToServerAsync(dataTable, cancellationToken);
+                await command.WriteToServerAsync(request.DataTable, cancellationToken);
                 connection.Close();
             }
             catch (Exception e)
@@ -90,21 +97,57 @@ namespace FluentCommander.Database.SqlServer
                 throw;
             }
 
-            return new BulkCopyResult(dataTable.Rows.Count);
+            return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public int ExecuteNonQuery(string sql, List<DatabaseCommandParameter> databaseParameters = null)
+        public SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
-            using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
+            using var command = new SqlCommand(request.Sql, connection);
 
-            if (databaseParameters != null)
+            if (request.TimeoutInSeconds.HasValue)
             {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
             }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+            }
+
+            connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            connection.Close();
+
+            return new SqlNonQueryResult(numberOfRowsAffected);
+        }
+
+        public async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        {
+            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var command = new SqlCommand(request.Sql, connection);
+
+            if (request.TimeoutInSeconds.HasValue)
+            {
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+            }
+
+            connection.Open();
+            var numberOfRowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+            connection.Close();
+
+            return new SqlNonQueryResult(numberOfRowsAffected);
+        }
+
+        public int ExecuteNonQuery(string sql)
+        {
+            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var command = new SqlCommand(sql, connection);
 
             connection.Open();
             var numberOfRowsAffected = command.ExecuteNonQuery();
@@ -113,18 +156,10 @@ namespace FluentCommander.Database.SqlServer
             return numberOfRowsAffected;
         }
 
-        public async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
+        public async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
-            await using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
-
-            if (databaseParameters != null)
-            {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
-            }
+            await using var command = new SqlCommand(sql, connection);
 
             connection.Open();
             var numberOfRowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
@@ -133,17 +168,19 @@ namespace FluentCommander.Database.SqlServer
             return numberOfRowsAffected;
         }
 
-        public TResult ExecuteScalar<TResult>(string sql, List<DatabaseCommandParameter> databaseParameters = null)
+        public TResult ExecuteScalar<TResult>(SqlRequest request)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
-            using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
+            using var command = new SqlCommand(request.Sql, connection);
 
-            if (databaseParameters != null)
+            if (request.TimeoutInSeconds.HasValue)
             {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
             }
 
             connection.Open();
@@ -155,17 +192,19 @@ namespace FluentCommander.Database.SqlServer
                 : (TResult)result;
         }
 
-        public async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
+        public async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
-            await using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
+            await using var command = new SqlCommand(request.Sql, connection);
 
-            if (databaseParameters != null)
+            if (request.TimeoutInSeconds.HasValue)
             {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
             }
 
             connection.Open();
@@ -177,18 +216,87 @@ namespace FluentCommander.Database.SqlServer
                 : (TResult)result;
         }
 
-        public DataTable ExecuteSql(string sql, List<DatabaseCommandParameter> databaseParameters = null)
+        public TResult ExecuteScalar<TResult>(string sql)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
-            using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
+            using var command = new SqlCommand(sql, connection);
 
-            if (databaseParameters != null)
+            connection.Open();
+            var result = command.ExecuteScalar();
+            connection.Close();
+
+            return result == null || result == DBNull.Value
+                ? default(TResult)
+                : (TResult)result;
+        }
+
+        public async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
+        {
+            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var command = new SqlCommand(sql, connection);
+
+            connection.Open();
+            var result = await command.ExecuteScalarAsync(cancellationToken);
+            connection.Close();
+
+            return result == null || result == DBNull.Value
+                ? default(TResult)
+                : (TResult)result;
+        }
+
+        public SqlQueryResult ExecuteSql(SqlRequest request)
+        {
+            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var command = new SqlCommand(request.Sql, connection);
+
+            if (request.TimeoutInSeconds.HasValue)
             {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
             }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+            }
+
+            var dataTable = new DataTable();
+
+            connection.Open();
+            new SqlDataAdapter(command).Fill(dataTable);
+            connection.Close();
+
+            return new SqlQueryResult(dataTable);
+        }
+
+        public async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
+        {
+            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var command = new SqlCommand(request.Sql, connection);
+
+            if (request.TimeoutInSeconds.HasValue)
+            {
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
+
+            if (request.DatabaseParameters != null)
+            {
+                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+            }
+
+            var dataTable = new DataTable();
+
+            connection.Open();
+            var reader = await command.ExecuteReaderAsync(cancellationToken);
+            dataTable.Load(reader);
+            connection.Close();
+
+            return new SqlQueryResult(dataTable);
+        }
+
+        public DataTable ExecuteSql(string sql)
+        {
+            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var command = new SqlCommand(sql, connection);
 
             var dataTable = new DataTable();
 
@@ -199,18 +307,10 @@ namespace FluentCommander.Database.SqlServer
             return dataTable;
         }
 
-        public async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
+        public async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
-            await using var command = new SqlCommand(sql, connection)
-            {
-                CommandTimeout = TimeoutInSeconds
-            };
-
-            if (databaseParameters != null)
-            {
-                command.Parameters.AddRange(ToSqlParameters(databaseParameters));
-            }
+            await using var command = new SqlCommand(sql, connection);
 
             var dataTable = new DataTable();
 
@@ -222,18 +322,22 @@ namespace FluentCommander.Database.SqlServer
             return dataTable;
         }
 
-        public StoredProcedureResult ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null)
+        public StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
             using var connection = new SqlConnection(_builder.ConnectionString);
-            using var command = new SqlCommand(storedProcedureName, connection)
+            using var command = new SqlCommand(request.StoredProcedureName, connection)
             {
-                CommandType = CommandType.StoredProcedure,
-                CommandTimeout = TimeoutInSeconds
+                CommandType = CommandType.StoredProcedure
             };
 
-            SqlParameter[] sqlParameters = ToSqlParameters(databaseParameters);
+            if (request.TimeoutInSeconds.HasValue)
+            {
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
 
-            if (databaseParameters != null)
+            SqlParameter[] sqlParameters = ToSqlParameters(request.DatabaseParameters);
+
+            if (request.DatabaseParameters != null)
             {
                 command.Parameters.AddRange(sqlParameters);
             }
@@ -244,29 +348,33 @@ namespace FluentCommander.Database.SqlServer
             new SqlDataAdapter(command).Fill(dataTable);
             connection.Close();
 
-            if (databaseParameters != null)
+            if (request.DatabaseParameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in databaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(databaseParameters, dataTable);
+            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
-        public async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(string storedProcedureName, CancellationToken cancellationToken, List<DatabaseCommandParameter> databaseParameters = null)
+        public async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new SqlConnection(_builder.ConnectionString);
-            await using var command = new SqlCommand(storedProcedureName, connection)
+            await using var command = new SqlCommand(request.StoredProcedureName, connection)
             {
-                CommandType = CommandType.StoredProcedure,
-                CommandTimeout = TimeoutInSeconds
+                CommandType = CommandType.StoredProcedure
             };
 
-            SqlParameter[] sqlParameters = ToSqlParameters(databaseParameters);
+            if (request.TimeoutInSeconds.HasValue)
+            {
+                command.CommandTimeout = request.TimeoutInSeconds.Value;
+            }
 
-            if (databaseParameters != null)
+            SqlParameter[] sqlParameters = ToSqlParameters(request.DatabaseParameters);
+
+            if (request.DatabaseParameters != null)
             {
                 command.Parameters.AddRange(sqlParameters);
             }
@@ -278,15 +386,15 @@ namespace FluentCommander.Database.SqlServer
             dataTable.Load(reader);
             connection.Close();
 
-            if (databaseParameters != null)
+            if (request.DatabaseParameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in databaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(databaseParameters, dataTable);
+            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
         public string GetServerName()
@@ -303,10 +411,10 @@ namespace FluentCommander.Database.SqlServer
             return await ExecuteScalarAsync<string>(sql, cancellationToken);
         }
 
-        public PaginationResult Paginate(PaginationRequest paginationRequest)
+        public PaginationResult Paginate(PaginationRequest request)
         {
-            string sql = GetPaginationSql(paginationRequest);
-            string sqlCount = GetPaginationCountSql(paginationRequest);
+            string sql = GetPaginationSql(request);
+            string sqlCount = GetPaginationCountSql(request);
 
             DataTable dataTable = ExecuteSql(sql);
 
@@ -315,10 +423,10 @@ namespace FluentCommander.Database.SqlServer
             return new PaginationResult(dataTable, totalCount);
         }
 
-        public async Task<PaginationResult> PaginateAsync(PaginationRequest paginationRequest, CancellationToken cancellationToken)
+        public async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
-            string sql = GetPaginationSql(paginationRequest);
-            string sqlCount = GetPaginationCountSql(paginationRequest);
+            string sql = GetPaginationSql(request);
+            string sqlCount = GetPaginationCountSql(request);
 
             Task<DataTable> getDataTask = ExecuteSqlAsync(sql, cancellationToken);
 
@@ -332,8 +440,6 @@ namespace FluentCommander.Database.SqlServer
 
             return new PaginationResult(dataTable, totalCount);
         }
-
-        public int TimeoutInSeconds { get; set; }
 
         private SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
         {
@@ -396,7 +502,7 @@ namespace FluentCommander.Database.SqlServer
             return "SELECT @@SERVERNAME";
         }
 
-        private string GetPaginationSql(PaginationRequest paginationRequest)
+        private string GetPaginationSql(PaginationRequest request)
         {
             string sql =
 @"SELECT {0}
@@ -406,23 +512,23 @@ ORDER BY {3}
 OFFSET {4} ROWS
 FETCH NEXT {5} ROWS ONLY";
 
-            paginationRequest.SetDefaults();
+            request.SetDefaults();
 
-            string offset = (paginationRequest.PageSize * (paginationRequest.PageNumber - 1)).ToString();
+            string offset = (request.PageSize * (request.PageNumber - 1)).ToString();
 
-            return string.Format(sql, paginationRequest.Columns, paginationRequest.TableName, paginationRequest.GetWhereClause(), paginationRequest.OrderBy, offset, paginationRequest.PageSize.ToString());
+            return string.Format(sql, request.Columns, request.TableName, request.GetWhereClause(), request.OrderBy, offset, request.PageSize.ToString());
         }
 
-        private string GetPaginationCountSql(PaginationRequest paginationRequest)
+        private string GetPaginationCountSql(PaginationRequest request)
         {
             string sql =
 @"SELECT COUNT(1)
 FROM {0} (NOLOCK)
 WHERE 1 = 1 {1}";
 
-            paginationRequest.SetDefaults();
+            request.SetDefaults();
 
-            return string.Format(sql, paginationRequest.TableName, paginationRequest.GetWhereClause());
+            return string.Format(sql, request.TableName, request.GetWhereClause());
         }
     }
 }

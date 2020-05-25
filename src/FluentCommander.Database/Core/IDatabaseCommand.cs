@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentCommander.Database
+namespace FluentCommander.Database.Core
 {
     public interface IDatabaseCommand { }
 
-    public interface IDatabaseCommand<TResult> : IDatabaseCommand
+    internal interface IDatabaseCommand<TResult> : IDatabaseCommand
     {
         /// <summary>
         /// Executes the command

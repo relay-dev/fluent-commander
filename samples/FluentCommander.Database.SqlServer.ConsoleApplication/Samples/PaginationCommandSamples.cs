@@ -30,7 +30,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "1")]
         public async Task ExecutePaginationUsingMinimalInput()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .ExecuteAsync(new CancellationToken());
@@ -44,7 +44,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "2")]
         public async Task ExecutePaginationSelectingColumns()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
@@ -59,7 +59,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "3")]
         public async Task ExecutePaginationFilteringRows()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
@@ -74,7 +74,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "4")]
         public async Task ExecutePaginationOrderingRows()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
@@ -89,7 +89,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "5")]
         public async Task ExecutePaginationSettingPageSize()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(10)
@@ -104,7 +104,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "6")]
         public async Task ExecutePaginationAllSettingsAreUsed()
         {
-            PaginationCommandResult result = await _databaseCommander.BuildCommand()
+            PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .Select("[SampleTableID]")
                 .From("[dbo].[SampleTable]")

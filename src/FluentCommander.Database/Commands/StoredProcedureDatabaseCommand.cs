@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FluentCommander.Database.Core;
+using System;
 using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentCommander.Database.Commands
 {
-    public class StoredProcedureDatabaseCommand : IDatabaseCommand<StoredProcedureCommandResult>
+    public class StoredProcedureDatabaseCommand : IDatabaseCommand<StoredProcedureResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
-        private readonly List<DatabaseCommandParameter> _parameters;
-        private string _storedProcedureName;
+        private readonly StoredProcedureRequest _storedProcedureRequest;
 
         public StoredProcedureDatabaseCommand(IDatabaseCommander databaseCommander)
         {
             _databaseCommander = databaseCommander;
-            _parameters = new List<DatabaseCommandParameter>();
+            _storedProcedureRequest = new StoredProcedureRequest();
         }
 
         public StoredProcedureDatabaseCommand Name(string storedProcedureName)
         {
-            _storedProcedureName = storedProcedureName;
+            _storedProcedureRequest.StoredProcedureName = storedProcedureName;
 
             return this;
         }
@@ -37,7 +35,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -54,7 +52,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -72,7 +70,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -88,7 +86,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -105,7 +103,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -123,7 +121,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -136,7 +134,7 @@ namespace FluentCommander.Database.Commands
                 Direction = ParameterDirection.Output
             };
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -150,7 +148,7 @@ namespace FluentCommander.Database.Commands
                 DbType = dbType
             };
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -165,41 +163,39 @@ namespace FluentCommander.Database.Commands
                 Size = size
             };
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
 
         public StoredProcedureDatabaseCommand WithReturnParameter()
         {
-            if (_parameters.Any(p => p.Direction == ParameterDirection.ReturnValue))
-            {
-                throw new InvalidOperationException("WithReturnParameter() can only be called once");
-            }
-
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = "ReturnParameter",
                 Direction = ParameterDirection.ReturnValue
             };
 
-            _parameters.Add(databaseParameter);
+            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
 
-        public StoredProcedureCommandResult Execute()
+        public StoredProcedureDatabaseCommand Timeout(int timeoutInSeconds)
         {
-            StoredProcedureResult result = _databaseCommander.ExecuteStoredProcedure(_storedProcedureName, _parameters);
+            _storedProcedureRequest.TimeoutInSeconds = timeoutInSeconds;
 
-            return new StoredProcedureCommandResult(result.Parameters, result.DataTable);
+            return this;
         }
 
-        public async Task<StoredProcedureCommandResult> ExecuteAsync(CancellationToken cancellationToken)
+        public StoredProcedureResult Execute()
         {
-            StoredProcedureResult result = await _databaseCommander.ExecuteStoredProcedureAsync(_storedProcedureName, cancellationToken, _parameters);
+            return _databaseCommander.ExecuteStoredProcedure(_storedProcedureRequest);
+        }
 
-            return new StoredProcedureCommandResult(result);
+        public async Task<StoredProcedureResult> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return await _databaseCommander.ExecuteStoredProcedureAsync(_storedProcedureRequest, cancellationToken);
         }
     }
 }

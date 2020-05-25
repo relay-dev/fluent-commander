@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FluentCommander.Database.Utility.Impl
 {
-    public class AutoMapper : IAutoMapper
+    internal class AutoMapper : IAutoMapper
     {
         private readonly IDatabaseCommander _databaseCommander;
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace FluentCommander.Database
+namespace FluentCommander.Database.Core.Impl
 {
-    public class DatabaseCommandFactory : IDatabaseCommandFactory
+    internal class DatabaseCommandFactory : IDatabaseCommandFactory
     {
         private readonly IServiceProvider _serviceProvider;
 

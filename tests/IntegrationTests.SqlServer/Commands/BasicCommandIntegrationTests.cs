@@ -68,10 +68,10 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecuteStoredProcedure_ShouldReturnDataTable_WithNoParameters()
         {
             // Arrange
-            string storedProcedureName = "[dbo].[usp_NoInput_NoOutput_TableResult]";
+            var storedProcedureRequest = new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]");
 
             // Act
-            StoredProcedureResult result = SUT.ExecuteStoredProcedure(storedProcedureName);
+            StoredProcedureResult result = SUT.ExecuteStoredProcedure(storedProcedureRequest);
 
             // Assert
             result.DataTable.ShouldNotBeNull();

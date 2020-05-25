@@ -23,7 +23,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             Guid oldGuid = ExecuteScalar<Guid>($"SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = {sampleTableId}");
 
             // Act
-            SqlNonQueryCommandResult result = await SUT.BuildCommand()
+            SqlNonQueryResult result = await SUT.BuildCommand()
                 .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = @NewGuid, [ModifiedBy] = @ModifiedBy, [ModifiedDate] = @ModifiedDate WHERE [SampleTableID] = @SampleTableID")
                 .AddInputParameter("SampleTableID", sampleTableId)
                 .AddInputParameter("NewGuid", newGuid)
@@ -71,7 +71,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
            ,@CreatedBy
            ,@CreatedDate)";
 
-            SqlNonQueryCommandResult insertResult = await SUT.BuildCommand()
+            SqlNonQueryResult insertResult = await SUT.BuildCommand()
                 .ForSqlNonQuery(insertSql)
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", sampleVarChar)
@@ -81,7 +81,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
 
             ExecuteScalar<int>($"SELECT COUNT(1) FROM [dbo].[SampleTable] WHERE [SampleVarChar] = '{sampleVarChar}'").ShouldBe(1);
 
-            SqlNonQueryCommandResult deleteResult = await SUT.BuildCommand()
+            SqlNonQueryResult deleteResult = await SUT.BuildCommand()
                 .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleVarChar", sampleVarChar)
                 .ExecuteAsync(new CancellationToken());

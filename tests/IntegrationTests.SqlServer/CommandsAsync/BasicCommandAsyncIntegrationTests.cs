@@ -70,10 +70,10 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_ShouldReturnDataTable_WithNoParameters()
         {
             // Arrange
-            string storedProcedureName = "[dbo].[usp_NoInput_NoOutput_TableResult]";
+            var storedProcedureRequest = new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]");
 
             // Act
-            StoredProcedureResult result = await SUT.ExecuteStoredProcedureAsync(storedProcedureName, new CancellationToken());
+            StoredProcedureResult result = await SUT.ExecuteStoredProcedureAsync(storedProcedureRequest, new CancellationToken());
 
             // Assert
             result.DataTable.ShouldNotBeNull();

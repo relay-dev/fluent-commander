@@ -1,4 +1,5 @@
 ﻿using FluentCommander.Database.Commands;
+using FluentCommander.Database.Core;
 
 namespace FluentCommander.Database
 {
@@ -27,6 +28,16 @@ namespace FluentCommander.Database
         public PaginationDatabaseCommand ForPagination()
         {
             return _commandFactory.Create<PaginationDatabaseCommand>();
+        }
+
+        /// <summary>
+        /// Builds a command to execute a scalar
+        /// </summary>
+        /// <param name="sql">The SQL to execute</param>
+        /// <returns>A scalar command builder</returns>
+        public ScalarDatabaseCommand<TResult> ForScalar<TResult>(string sql)
+        {
+            return _commandFactory.Create<ScalarDatabaseCommand<TResult>>().Sql(sql);
         }
 
         /// <summary>

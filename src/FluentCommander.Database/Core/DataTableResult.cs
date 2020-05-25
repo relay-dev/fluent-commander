@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace FluentCommander.Database
+namespace FluentCommander.Database.Core
 {
     /// <summary>
     /// A command result that contains a DataTable

@@ -34,6 +34,7 @@ namespace ConsoleApplication.SqlServer
             serviceCollection.AddTransient<BasicCommandSamples>();
             serviceCollection.AddTransient<BulkCopyCommandSamples>();
             serviceCollection.AddTransient<PaginationCommandSamples>();
+            serviceCollection.AddTransient<ScalarCommandSamples>();
             serviceCollection.AddTransient<SqlNonQueryCommandSamples>();
             serviceCollection.AddTransient<SqlQueryCommandSamples>();
             serviceCollection.AddTransient<StoredProcedureCommandSamples>();

@@ -16,7 +16,7 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecutePagination_ShouldReturnRowsAsExpected_WhenUsingMinimalInput()
         {
             // Arrange && Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Execute();
@@ -35,7 +35,7 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecutePagination_ShouldReturnRowsAsExpected_WhenSelectingColumns()
         {
             // Arrange && Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
@@ -56,7 +56,7 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecutePagination_ShouldReturnRowsAsExpected_WhenFilteringRows()
         {
             // Arrange && Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
@@ -77,7 +77,7 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecutePagination_ShouldReturnRowsAsExpected_WhenOrderingRows()
         {
             // Arrange && Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
@@ -102,7 +102,7 @@ namespace IntegrationTests.SqlServer.Commands
             const int pageSize = 10;
 
             // Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(pageSize)
@@ -127,7 +127,7 @@ namespace IntegrationTests.SqlServer.Commands
             const int pageNumber = 2;
 
             // Act
-            PaginationCommandResult result = SUT.BuildCommand()
+            PaginationResult result = SUT.BuildCommand()
                 .ForPagination()
                 .Select("[SampleTableID]")
                 .From("[dbo].[SampleTable]")

@@ -3,43 +3,43 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Database.Commands
 {
-    public class SqlNonQueryDatabaseCommand : ParameterizedDatabaseCommand<SqlNonQueryResult>
+    public class ScalarDatabaseCommand<TResult> : ParameterizedDatabaseCommand<TResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly SqlRequest _sqlRequest;
 
-        public SqlNonQueryDatabaseCommand(IDatabaseCommander databaseCommander)
+        public ScalarDatabaseCommand(IDatabaseCommander databaseCommander)
         {
             _databaseCommander = databaseCommander;
             _sqlRequest = new SqlRequest();
         }
 
-        public SqlNonQueryDatabaseCommand Sql(string sql)
+        public ScalarDatabaseCommand<TResult> Sql(string sql)
         {
             _sqlRequest.Sql = sql;
 
             return this;
         }
 
-        public SqlNonQueryDatabaseCommand Timeout(int timeoutInSeconds)
+        public ScalarDatabaseCommand<TResult> Timeout(int timeoutInSeconds)
         {
             _sqlRequest.TimeoutInSeconds = timeoutInSeconds;
 
             return this;
         }
 
-        public override SqlNonQueryResult Execute()
+        public override TResult Execute()
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
 
-            return _databaseCommander.ExecuteNonQuery(_sqlRequest);
+            return _databaseCommander.ExecuteScalar<TResult>(_sqlRequest);
         }
 
-        public override async Task<SqlNonQueryResult> ExecuteAsync(CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
 
-            return await _databaseCommander.ExecuteNonQueryAsync(_sqlRequest, cancellationToken);
+            return await _databaseCommander.ExecuteScalarAsync<TResult>(_sqlRequest, cancellationToken);
         }
     }
 }

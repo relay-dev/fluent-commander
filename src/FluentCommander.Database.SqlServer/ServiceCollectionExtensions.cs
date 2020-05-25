@@ -1,11 +1,8 @@
-﻿using FluentCommander.Core;
-using FluentCommander.Core.Impl;
-using FluentCommander.Database.Commands;
-using FluentCommander.Database.Utility;
-using FluentCommander.Database.Utility.Impl;
+﻿using FluentCommander.Core.Impl;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
+using FluentCommander.Database.Core.Impl;
 
 namespace FluentCommander.Database.SqlServer
 {
@@ -13,6 +10,10 @@ namespace FluentCommander.Database.SqlServer
     {
         public static IServiceCollection AddDatabaseCommander(this IServiceCollection services, IConfiguration config)
         {
+            new Bootstrapper().Bootstrap(services);
+
+            services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
+
             var connectionStringProvider = new ConnectionStringFromConfigurationProvider(config);
 
             if (connectionStringProvider.ConnectionStringNames.Contains("DefaultConnection"))
@@ -20,17 +21,6 @@ namespace FluentCommander.Database.SqlServer
                 services.AddSingleton(new SqlConnectionStringBuilder(connectionStringProvider.Get("DefaultConnection")));
                 services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
             }
-
-            services.AddTransient<DatabaseCommandBuilder>();
-            services.AddTransient<BulkCopyDatabaseCommand>();
-            services.AddTransient<PaginationDatabaseCommand>();
-            services.AddTransient<SqlNonQueryDatabaseCommand>();
-            services.AddTransient<SqlQueryDatabaseCommand>();
-            services.AddTransient<StoredProcedureDatabaseCommand>();
-            services.AddScoped<IAutoMapper, AutoMapper>();
-            services.AddScoped<IDatabaseCommandFactory, DatabaseCommandFactory>();
-            services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
-            services.AddSingleton<IConnectionStringProvider, ConnectionStringFromConfigurationProvider>();
 
             return services;
         }

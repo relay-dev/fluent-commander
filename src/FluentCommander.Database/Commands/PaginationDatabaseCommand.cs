@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FluentCommander.Database.Core;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentCommander.Database.Commands
 {
-    public class PaginationDatabaseCommand : IDatabaseCommand<PaginationCommandResult>
+    public class PaginationDatabaseCommand : IDatabaseCommand<PaginationResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly PaginationRequest _paginationRequest;
@@ -57,22 +58,25 @@ namespace FluentCommander.Database.Commands
             return this;
         }
 
-        public PaginationCommandResult Execute()
+        public PaginationDatabaseCommand Timeout(int timeoutInSeconds)
         {
-            Validate();
+            _paginationRequest.TimeoutInSeconds = timeoutInSeconds;
 
-            PaginationResult paginationResult = _databaseCommander.Paginate(_paginationRequest);
-
-            return new PaginationCommandResult(paginationResult.DataTable, paginationResult.TotalCount);
+            return this;
         }
 
-        public async Task<PaginationCommandResult> ExecuteAsync(CancellationToken cancellationToken)
+        public PaginationResult Execute()
         {
             Validate();
 
-            PaginationResult paginationResult = await _databaseCommander.PaginateAsync(_paginationRequest, cancellationToken);
+            return _databaseCommander.Paginate(_paginationRequest);
+        }
 
-            return new PaginationCommandResult(paginationResult);
+        public async Task<PaginationResult> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            Validate();
+
+            return await _databaseCommander.PaginateAsync(_paginationRequest, cancellationToken);
         }
 
         private void Validate()

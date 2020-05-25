@@ -18,7 +18,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecutePaginationAsync_ShouldReturnRowsAsExpected_WhenUsingMinimalInput()
         {
             // Arrange && Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .ExecuteAsync(new CancellationToken());
@@ -37,7 +37,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecutePaginationAsync_ShouldReturnRowsAsExpected_WhenSelectingColumns()
         {
             // Arrange && Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
@@ -58,7 +58,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecutePaginationAsync_ShouldReturnRowsAsExpected_WhenFilteringRows()
         {
             // Arrange && Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
@@ -79,7 +79,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecutePaginationAsync_ShouldReturnRowsAsExpected_WhenOrderingRows()
         {
             // Arrange && Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
@@ -104,7 +104,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             const int pageSize = 10;
 
             // Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(pageSize)
@@ -129,7 +129,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             const int pageNumber = 2;
 
             // Act
-            PaginationCommandResult result = await SUT.BuildCommand()
+            PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .Select("[SampleTableID]")
                 .From("[dbo].[SampleTable]")

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentCommander.Database.Core;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
@@ -8,11 +9,11 @@ namespace FluentCommander.Database.Commands
 {
     public abstract class ParameterizedDatabaseCommand<TResult> : IDatabaseCommand<TResult>
     {
-        protected readonly List<DatabaseCommandParameter> Parameters;
+        protected readonly List<DatabaseCommandParameter> DatabaseParameters;
 
         protected ParameterizedDatabaseCommand()
         {
-            Parameters = new List<DatabaseCommandParameter>();
+            DatabaseParameters = new List<DatabaseCommandParameter>();
         }
 
         public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
@@ -26,7 +27,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            Parameters.Add(databaseParameter);
+            DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -43,7 +44,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            Parameters.Add(databaseParameter);
+            DatabaseParameters.Add(databaseParameter);
 
             return this;
         }
@@ -61,7 +62,7 @@ namespace FluentCommander.Database.Commands
 
             databaseParameter.Value ??= DBNull.Value;
 
-            Parameters.Add(databaseParameter);
+            DatabaseParameters.Add(databaseParameter);
 
             return this;
         }

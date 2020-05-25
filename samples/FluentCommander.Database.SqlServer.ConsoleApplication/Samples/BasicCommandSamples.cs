@@ -82,11 +82,11 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             // Stored procedure with no input or output
             await _databaseCommander
-                .ExecuteStoredProcedureAsync("[dbo].[usp_NoInput_NoOutput_NoResult]", new CancellationToken());
+                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_NoResult]"), new CancellationToken());
 
             // Stored procedure with no input with a DataTable as output
             StoredProcedureResult result = await _databaseCommander
-                .ExecuteStoredProcedureAsync("[dbo].[usp_NoInput_NoOutput_TableResult]", new CancellationToken());
+                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]"), new CancellationToken());
 
             Console.WriteLine(result.DataTable.ToPrintFriendly());
         }

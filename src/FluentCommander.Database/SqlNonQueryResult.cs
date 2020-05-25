@@ -1,8 +1,8 @@
 ﻿namespace FluentCommander.Database
 {
-    public class SqlNonQueryCommandResult
+    public class SqlNonQueryResult
     {
-        public SqlNonQueryCommandResult(int rowCountAffected)
+        public SqlNonQueryResult(int rowCountAffected)
         {
             RowCountAffected = rowCountAffected;
         }

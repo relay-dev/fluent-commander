@@ -15,7 +15,7 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecuteSqlQueryCommand_WithInputParameters_ShouldReturnDataTable()
         {
             // Arrange & Act
-            SqlQueryCommandResult result = SUT.BuildCommand()
+            SqlQueryResult result = SUT.BuildCommand()
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")

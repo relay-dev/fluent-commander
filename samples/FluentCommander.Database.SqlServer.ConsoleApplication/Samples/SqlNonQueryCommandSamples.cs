@@ -33,7 +33,7 @@ namespace ConsoleApplication.SqlServer.Samples
             string modifiedBy = "FluentCommander";
             DateTime modifiedDate = DateTime.UtcNow;
 
-            SqlNonQueryCommandResult result = await _databaseCommander.BuildCommand()
+            SqlNonQueryResult result = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = @NewGuid, [ModifiedBy] = @ModifiedBy, [ModifiedDate] = @ModifiedDate WHERE [SampleTableID] = @SampleTableID")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("NewGuid", newGuid)
@@ -76,7 +76,7 @@ namespace ConsoleApplication.SqlServer.Samples
            ,@CreatedBy
            ,@CreatedDate)";
 
-            SqlNonQueryCommandResult insertResult = await _databaseCommander.BuildCommand()
+            SqlNonQueryResult insertResult = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery(insertSql)
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", sampleVarChar)
@@ -84,7 +84,7 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("CreatedDate", createdDate)
                 .ExecuteAsync(new CancellationToken());
 
-            SqlNonQueryCommandResult deleteResult = await _databaseCommander.BuildCommand()
+            SqlNonQueryResult deleteResult = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleVarChar", sampleVarChar)
                 .ExecuteAsync(new CancellationToken());

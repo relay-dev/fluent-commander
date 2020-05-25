@@ -1,5 +1,4 @@
-﻿using Core.Plugins.Extensions;
-using FluentCommander.Database;
+﻿using FluentCommander.Database;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
@@ -10,14 +9,14 @@ using System.Threading.Tasks;
 namespace ConsoleApplication.SqlServer.Samples
 {
     /// <notes>
-    /// This sample class demonstrates how to build command for a SQL statement
+    /// This sample class demonstrates how to build command for a scalar SQL statement
     /// </notes>
     [SampleFixture]
-    public class SqlQueryCommandSamples : CommandSampleBase
+    public class ScalarCommandSamples : CommandSampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlQueryCommandSamples(
+        public ScalarCommandSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)
@@ -30,16 +29,15 @@ namespace ConsoleApplication.SqlServer.Samples
         /// This method demonstrates how to query the database with inline SQL using input parameters
         /// </notes>
         [Sample(Key = "1")]
-        public async Task ExecuteSqlWithInput()
+        public async Task ExecuteScalarWithInput()
         {
-            SqlQueryResult result = await _databaseCommander.BuildCommand()
-                .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
+            bool result = await _databaseCommander.BuildCommand()
+                .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            Console.WriteLine("Result: {0}", result);
         }
 
         /// <notes>
@@ -47,16 +45,15 @@ namespace ConsoleApplication.SqlServer.Samples
         /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
         [Sample(Key = "2")]
-        public async Task ExecuteSqlWithInputSpecifyingType()
+        public async Task ExecuteScalarWithInputSpecifyingType()
         {
-            SqlQueryResult result = await _databaseCommander.BuildCommand()
-                .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
+            DateTime result = await _databaseCommander.BuildCommand()
+                .ForScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1, DbType.Int32)
                 .AddInputParameter("SampleVarChar", "Row 1", DbType.String)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Row count: {0}", result.Count);
-            Console.WriteLine("DataTable: {0}", result.DataTable.ToPrintFriendly());
+            Console.WriteLine("Result: {0}", result);
         }
     }
 }

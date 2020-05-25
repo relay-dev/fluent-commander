@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using FluentCommander.Database.Core;
 
 namespace FluentCommander.Database
 {

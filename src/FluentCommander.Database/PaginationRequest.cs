@@ -1,9 +1,11 @@
-﻿namespace FluentCommander.Database
+﻿using FluentCommander.Database.Core;
+
+namespace FluentCommander.Database
 {
     /// <summary>
     /// Allows you to set all input parameters needed to paginate a view
     /// </summary>
-    public class PaginationRequest
+    public class PaginationRequest : DatabaseCommandRequest
     {
         /// <summary>
         /// The name of the table or view to paginate

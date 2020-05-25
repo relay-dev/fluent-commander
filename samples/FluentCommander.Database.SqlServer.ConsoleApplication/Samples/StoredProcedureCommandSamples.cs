@@ -32,7 +32,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "1")]
         public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
         {
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleInt", 0)
@@ -63,7 +63,7 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             string outputParameterName = "SampleOutputInt";
 
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName, DbType.Int32)
@@ -83,7 +83,7 @@ namespace ConsoleApplication.SqlServer.Samples
             string outputParameterName1 = "SampleOutputInt";
             string outputParameterName2 = "SampleOutputVarChar";
 
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName1, DbType.Int32)
@@ -111,7 +111,7 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             string inputOutputParameterName = "SampleInputOutputInt";
 
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(inputOutputParameterName, 1)
@@ -130,7 +130,7 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             string inputOutputParameterName = "SampleInputOutputVarChar";
 
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(inputOutputParameterName, 1, DbType.String, 50)
@@ -147,7 +147,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "6")]
         public async Task ExecuteStoredProcedureWithReturnParameter()
         {
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
@@ -166,7 +166,7 @@ namespace ConsoleApplication.SqlServer.Samples
         {
             string outputParameterName = "SampleOutputBigInt";
 
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_Input_Output_ReturnBigInt]")
                 .AddInputParameter("SampleTableID", 0)
                 .AddInputOutputParameter(outputParameterName, 2)
@@ -186,7 +186,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "8")]
         public async Task ExecuteStoredProcedureWithOptionalInputParameter()
         {
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
@@ -204,7 +204,7 @@ namespace ConsoleApplication.SqlServer.Samples
         [Sample(Key = "9")]
         public async Task ExecuteStoredProcedureWithInputSpecifyingType()
         {
-            StoredProcedureCommandResult result = await _databaseCommander.BuildCommand()
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1, DbType.Int64)
                 .ExecuteAsync(new CancellationToken());
