@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Database;
+using FluentCommander;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;

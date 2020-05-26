@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FluentCommander;
+using Shouldly;
+using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Database;
-using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using FluentCommander.Database;
+using FluentCommander;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;

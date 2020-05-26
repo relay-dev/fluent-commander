@@ -1,4 +1,4 @@
-﻿using FluentCommander.Database.SqlServer;
+﻿using FluentCommander.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;

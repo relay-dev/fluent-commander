@@ -1,4 +1,4 @@
-﻿using FluentCommander.Database;
+﻿using FluentCommander;
 using Shouldly;
 using System;
 using System.Collections.Generic;
