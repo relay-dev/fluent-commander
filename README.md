@@ -1,4 +1,4 @@
-<img src="https://imgur.com/KLdrWTh.png" alt="Relay" style="max-width:100%; float: left; margin: 20px 0;" height="150" width="150">
+<img src="https://imgur.com/KLdrWTh.png" alt="Relay" style="max-width:100%; float: left; margin: 10px 0;" height="150" width="150">
 
 # FluentCommander
 
@@ -8,9 +8,9 @@
 
 A lightweight database command abstraction featuring a fluent API
 
-> <small>FluentCommander is intended to subsidize transactional/ORM data access frameworks. These frameworks typically do not have clean, structured API's when it comes to tasks such as calling a Stored Procedure and retrieving results, or executing a Bulk Copy operation.</small>
+> <span style="font-size: 0.8em">FluentCommander is intended to subsidize transactional/ORM data access frameworks. These frameworks typically do not have clean, structured API's when it comes to tasks such as calling a Stored Procedure and retrieving results, or executing a Bulk Copy operation.</span>
 
-> <small>FluentCommander is built using .NET STandard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.</small>
+> <span style="font-size: 0.8em">FluentCommander is built using .NET STandard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.</span>
 
 <br />
 
