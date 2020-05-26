@@ -21,7 +21,7 @@ namespace IntegrationTests.SqlServer.Commands
         {
             // Arrange
             int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
 
             // Act
             BulkCopyResult result = SUT.BuildCommand()
@@ -44,7 +44,7 @@ namespace IntegrationTests.SqlServer.Commands
         {
             // Arrange
             int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
 
             // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
             dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
@@ -79,7 +79,7 @@ namespace IntegrationTests.SqlServer.Commands
         {
             // Arrange
             int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
 
             // Alter the DataTable to simulate a source where all column names are different than the destination
             dataTable.Columns["SampleInt"].ColumnName = "Column1";
@@ -121,7 +121,7 @@ namespace IntegrationTests.SqlServer.Commands
             WriteLine(expectedCount);
         }
 
-        private DataTable GetDataTableToInsert()
+        private DataTable GetDataToInsert()
         {
             DataTable dataTable = ExecuteSql("SELECT * FROM [dbo].[SampleTable] WHERE 1 = 0");
 

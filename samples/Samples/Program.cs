@@ -17,21 +17,21 @@ namespace Samples
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            // Generate the IServiceProvider
+            // Generate the Service Provider
             IServiceProvider serviceProvider = new Startup(config).ConfigureServices();
-
-            // Initialize the database
-            Setup(config);
 
             try
             {
+                // Initialize the database
+                Setup(config);
+
                 // Run the program
                 await new SampleProgram(serviceProvider).Run();
             }
             catch (Exception e)
             {
                 Console.Clear();
-                Console.WriteLine("Encountered unhandled exception");
+                Console.WriteLine("Encountered unhandled exception:");
                 Console.WriteLine(e.Message);
             }
             finally

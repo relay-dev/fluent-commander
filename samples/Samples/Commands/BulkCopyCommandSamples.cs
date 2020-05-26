@@ -33,7 +33,7 @@ namespace Samples.Commands
         [Sample(Key = "1")]
         public async Task BulkCopyUsingAutoMapping()
         {
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
             BulkCopyResult result = await _databaseCommander.BuildCommand()
@@ -57,7 +57,7 @@ namespace Samples.Commands
         [Sample(Key = "2")]
         public async Task BulkCopyUsingPartialMap()
         {
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
             // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
@@ -94,7 +94,7 @@ namespace Samples.Commands
         [Sample(Key = "3")]
         public async Task BulkCopyUsingMap()
         {
-            DataTable dataTable = GetDataTableToInsert();
+            DataTable dataTable = GetDataToInsert();
             int countBefore = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]");
 
             // Alter the DataTable to simulate a source where all column names are different than the destination
@@ -137,7 +137,7 @@ namespace Samples.Commands
             Console.WriteLine("Count after: {0}", ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]"));
         }
 
-        private DataTable GetDataTableToInsert(int rowCount = 100)
+        private DataTable GetDataToInsert(int rowCount = 100)
         {
             DataTable dataTable = ExecuteSql("SELECT * FROM [dbo].[SampleTable] WHERE 1 = 0");
 

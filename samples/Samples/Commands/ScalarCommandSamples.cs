@@ -25,7 +25,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
+        /// SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection
         /// This method demonstrates how to query the database with inline SQL using input parameters
         /// </notes>
         [Sample(Key = "1")]
