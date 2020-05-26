@@ -131,7 +131,7 @@ namespace IntegrationTests.SqlServer.Commands
                 .ForPagination()
                 .Select("[SampleTableID]")
                 .From("[dbo].[SampleTable]")
-                .Where("[SampleTableID] < 100")
+                .Where("[SampleTableID] <= 100")
                 .OrderBy("1")
                 .PageSize(pageSize)
                 .PageNumber(pageNumber)

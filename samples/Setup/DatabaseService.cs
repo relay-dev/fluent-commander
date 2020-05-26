@@ -3,6 +3,7 @@ using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Reflection;
 
@@ -29,6 +30,7 @@ namespace Setup
             };
 
             RunScripts(scriptsToRun);
+            InsertTestData();
         }
 
         public void TeardownDatabase()
@@ -39,6 +41,41 @@ namespace Setup
             };
 
             RunScripts(scriptsToRun);
+        }
+
+        public bool IsInitialized()
+        {
+            string sql = "SELECT COUNT(1) FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = 'DatabaseCommander' OR name = 'DatabaseCommander')";
+
+            return ExecuteScalar<int>(sql, "DatabaseServerConnection") == 1;
+        }
+
+        // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
+        public DataTable ExecuteSql(string sql, string connectionStringName = "DefaultConnection")
+        {
+            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_config.GetConnectionString(connectionStringName));
+
+            Server server = new Server(new ServerConnection(connection));
+
+            return server.ConnectionContext.ExecuteWithResults(sql).Tables[0];
+        }
+
+        public TResult ExecuteScalar<TResult>(string sql, string connectionStringName = "DefaultConnection")
+        {
+            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_config.GetConnectionString(connectionStringName));
+
+            Server server = new Server(new ServerConnection(connection));
+
+            return (TResult)server.ConnectionContext.ExecuteScalar(sql);
+        }
+
+        public void ExecuteNonQuery(string sql, string connectionStringName = "DefaultConnection")
+        {
+            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_config.GetConnectionString(connectionStringName));
+
+            Server server = new Server(new ServerConnection(connection));
+
+            server.ConnectionContext.ExecuteNonQuery(sql);
         }
 
         private void Validate()
@@ -57,17 +94,18 @@ namespace Setup
             {
                 string sql = GetResourceFile(scriptToRun);
 
-                ExecuteNonQuery(sql);
+                ExecuteNonQuery(sql, "DatabaseServerConnection");
             }
         }
 
-        private void ExecuteNonQuery(string sql)
+        private void InsertTestData(int rowCount = 100)
         {
-            // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
-            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_config.GetConnectionString("DatabaseServerConnection"));
+            for (int i = 0; i < rowCount; i++)
+            {
+                string sql = string.Format(InsertSql, DateTime.UtcNow, Guid.NewGuid(), $"Row {i + 4}");
 
-            Server server = new Server(new ServerConnection(connection));
-            server.ConnectionContext.ExecuteNonQuery(sql);
+                ExecuteNonQuery(sql);
+            }
         }
 
         private string GetResourceFile(string filename)
@@ -87,5 +125,31 @@ namespace Setup
 
             return resourceFileContent;
         }
+
+        private string InsertSql =>
+@"INSERT INTO [dbo].[SampleTable]
+           ([SampleInt]
+           ,[SampleSmallInt]
+           ,[SampleTinyInt]
+           ,[SampleBit]
+           ,[SampleDecimal]
+           ,[SampleFloat]
+           ,[SampleDateTime]
+           ,[SampleUniqueIdentifier]
+           ,[SampleVarChar]
+           ,[CreatedBy]
+           ,[CreatedDate])
+     VALUES
+           (1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,'{0}'
+           ,'{1}'
+           ,'{2}'
+           ,'DatabaseService'
+           ,GETUTCDATE())";
     }
 }

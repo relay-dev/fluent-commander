@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using Setup;
 
 namespace IntegrationTests.SqlServer
 {
@@ -25,8 +26,21 @@ namespace IntegrationTests.SqlServer
             // Add other services needed to run the application
             serviceCollection.AddSingleton<IConfiguration>(config);
 
+            // Setup the database if it's not initialized
+            Init(config);
+
             // Build the IServiceProvider
             return serviceCollection.BuildServiceProvider();
+        }
+
+        private void Init(IConfiguration config)
+        {
+             var databaseService = new DatabaseService(config);
+
+             if (!databaseService.IsInitialized())
+             {
+                 databaseService.SetupDatabase();
+             }
         }
     }
 }

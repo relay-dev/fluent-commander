@@ -1,8 +1,7 @@
 ﻿using Core.Plugins.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
+using Setup;
 using System;
 using System.Data;
 using Xunit.Abstractions;
@@ -12,7 +11,7 @@ namespace IntegrationTests.SqlServer
     public abstract class IntegrationTest<TSUT>
     {
         private readonly ServiceProviderFixture _serviceProviderFixture;
-        private readonly IConfiguration _configuration;
+        private readonly DatabaseService _databaseService;
         private readonly ITestOutputHelper _output;
 
         protected IntegrationTest(
@@ -20,7 +19,7 @@ namespace IntegrationTests.SqlServer
             ITestOutputHelper output)
         {
             _serviceProviderFixture = serviceProviderFixture;
-            _configuration = ResolveService<IConfiguration>();
+            _databaseService = new DatabaseService(ResolveService<IConfiguration>());
             _output = output;
         }
 
@@ -54,35 +53,14 @@ namespace IntegrationTests.SqlServer
             _output.WriteLine(o.ToString());
         }
 
-        protected void ExecuteNonQuery(string sql)
+        protected DataTable ExecuteSql(string sql)
         {
-            // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
-            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            Server server = new Server(new ServerConnection(connection));
-            server.ConnectionContext.ExecuteNonQuery(sql);
+            return _databaseService.ExecuteSql(sql);
         }
 
         protected TResult ExecuteScalar<TResult>(string sql)
         {
-            // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
-            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            Server server = new Server(new ServerConnection(connection));
-            var dataTable = server.ConnectionContext.ExecuteWithResults(sql).Tables[0];
-
-            return (TResult)dataTable.Rows[0][0];
-        }
-
-        protected DataTable ExecuteSql(string sql)
-        {
-            // Intentionally avoiding the use of DatabaseCommander to execute commands against the database
-            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            Server server = new Server(new ServerConnection(connection));
-            var dataTable = server.ConnectionContext.ExecuteWithResults(sql).Tables[0];
-
-            return dataTable;
+            return _databaseService.ExecuteScalar<TResult>(sql);
         }
     }
 }
