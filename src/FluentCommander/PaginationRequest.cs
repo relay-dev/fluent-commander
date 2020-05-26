@@ -13,16 +13,6 @@ namespace FluentCommander
         public string TableName { get; set; }
 
         /// <summary>
-        /// The index of the page number to return
-        /// </summary>
-        public int PageNumber { get; set; }
-
-        /// <summary>
-        /// The number of records to return in the result
-        /// </summary>
-        public int PageSize { get; set; }
-
-        /// <summary>
         /// Optional: Allows you to limit the columns returned from the view. When not set, the default behavior is to return all columns in the view
         /// </summary>
         public string Columns { get; set; }
@@ -36,6 +26,16 @@ namespace FluentCommander
         /// Optional: Allows you to order the result returned from the view. When not set, the default behavior is to order by the first column in the view
         /// </summary>
         public string OrderBy { get; set; }
+
+        /// <summary>
+        /// The index of the page number to return
+        /// </summary>
+        public int PageNumber { get; set; }
+
+        /// <summary>
+        /// The number of records to return in the result
+        /// </summary>
+        public int PageSize { get; set; }
 
         /// <summary>
         /// Formats the Conditions to a where clause

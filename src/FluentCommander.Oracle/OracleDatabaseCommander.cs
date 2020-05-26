@@ -47,6 +47,8 @@ namespace FluentCommander.Oracle
             {
                 SqlRequest sqlRequest = writer.ToSqlRequest(dataRow);
 
+                cancellationToken.ThrowIfCancellationRequested();
+
                 await ExecuteNonQueryAsync(sqlRequest, cancellationToken);
             }
 
