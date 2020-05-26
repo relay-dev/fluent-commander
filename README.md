@@ -14,45 +14,45 @@ A lightweight database command abstraction featuring a fluent API
 
 <br />
 
-<img src="https://github.com/relay-dev/fluent-commander/raw/master/resources/break.jpg?raw=true">
-
-<br />
-
-### Production Deployment
+## Production Deployment
 
 https://www.nuget.org/packages/FluentCommander
 
-<br />
-
 <div id="installation"></div>
 
-### Installation
+## Installation
 
 Here's how you can install the FluentCommander NuGet Package:
 
 <br />
 
-> #### *.NET Core CLI*
+> ### *.NET Core CLI*
 > 
 > ```
 > dotnet add package FluentCommander.SqlServer
 > ```
 >
-> #### *Package Manager Console*
+> ### *Package Manager Console*
 > 
 > ```
 > Install-Package FluentCommander.SqlServer
 > ```
 
-### Samples
+<br />
 
-#### Bulk Copy
+## Samples
 
-##### AutoMapping
+### Bulk Copy
+
+The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable. When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server).
+
+#### AutoMapping
 
 This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Utility.AutoMapper class. This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table:
 
 ```c#
+public async Task BulkCopyUsingAutoMapping()
+{
     DataTable dataTable = GetDataToInsert();
 
     BulkCopyResult result = await _databaseCommander.BuildCommand()
@@ -63,13 +63,16 @@ This variation automatically maps between the source and destination. The detail
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
+}
 ```
 
-##### Partial Mapping
+#### Partial Mapping
 
 This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match. This works well when you want to use the auto-mapping feature, but you need to specify some additional details:
 
 ```c#
+public async Task BulkCopyUsingPartialMap()
+{
     DataTable dataTable = GetDataToInsert();
 
     // Specify the mapping
@@ -89,13 +92,16 @@ This variation automatically maps between the source and destination, but also a
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
+}
 ```
 
-##### Manual Mapping
+#### Manual Mapping
 
 This variation relies on you to specify mappings where you know the column names do not match. This works well when you have a significant mismatch between the column names of the source and the destination:
 
 ```c#
+public async Task BulkCopyUsingMap()
+{
     DataTable dataTable = GetDataToInsert();
 
     // Specify the mapping
@@ -122,15 +128,20 @@ This variation relies on you to specify mappings where you know the column names
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
+}
 ```
 
-#### Stored Procedures
+### Stored Procedures
 
-##### Input Parameters
+This demonstrates how to build a stored procedure command using various combinations of input, output and return parameters. To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files.
+
+#### Input Parameters
 
 Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object:
 
 ```c#
+public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
+{
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
         .AddInputParameter("SampleTableID", 1)
@@ -148,13 +159,16 @@ Stored Procedures can be called with various input parameter types. This stored 
     int count = result.Count;
     bool hasData = result.HasData;
     DataTable dataTable = result.DataTable;
+}
 ```
 
-##### Output Parameters
+#### Output Parameters
 
 Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
+public async Task ExecuteStoredProcedureWithOutput()
+{
     string outputParameterName = "SampleOutputInt";
     
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -164,13 +178,16 @@ Stored Procedures with output parameters need to call AddOutputParameter(), and 
         .ExecuteAsync(new CancellationToken());
 
     int outputParameter = result.GetOutputParameter<int>(outputParameterName);
+}
 ```
 
-##### InputOutput Parameters
+#### InputOutput Parameters
 
 Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
+public async Task ExecuteStoredProcedureWithInputOutputParameter()
+{
     string inputOutputParameterName = "SampleInputOutputInt";
 
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -180,13 +197,16 @@ Stored Procedures with InputOutput parameters need to call AddInputOutputParamet
         .ExecuteAsync(new CancellationToken());
 
     int inputOutputParameter = result.GetOutputParameter<int>(inputOutputParameterName);
+}
 ```
 
-##### Return Parameter
+#### Return Parameter
 
 Stored Procedures with Return parameters can retrieve them from result.ReturnParameters:
 
 ```c#
+public async Task ExecuteStoredProcedureWithReturnParameter()
+{
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
         .AddInputParameter("SampleTableID", 1)
@@ -194,19 +214,20 @@ Stored Procedures with Return parameters can retrieve them from result.ReturnPar
         .ExecuteAsync(new CancellationToken());
 
     int returnParameter = result.GetReturnParameter<int>();
-
-    Console.WriteLine("Return parameter: {0}", returnParameter);
+}
 ```
 
-#### Pagination
+### Pagination
 
-There are some cases where running pagination queries returned as a DataTable is convenient
+There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
 
-##### All Options
+#### All Options
 
 In this sample, all options are used:
 
 ```c#
+public async Task ExecutePaginationAllSettingsAreUsed()
+{
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
         .Select("[SampleTableID]")
@@ -222,13 +243,16 @@ In this sample, all options are used:
     int totalCount = result.TotalCount;
     bool hasData = result.HasData;
     DataTable dataTable = result.DataTable;
+}
 ```
 
-##### Assume Defualts
+#### Assume Defualts
 
 Several defaults are specified so the only input required is the target:
 
 ```c#
+public async Task ExecutePaginationUsingMinimalInput()
+{
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
         .From("[dbo].[SampleTable]")
@@ -238,34 +262,40 @@ Several defaults are specified so the only input required is the target:
     int totalCount = result.TotalCount;
     bool hasData = result.HasData;
     DataTable dataTable = result.DataTable;
+}
 ```
 
-#### Other
+### Other
 
 There are several other commands available on the API that could often be considered less attractive when compared to an ORM. These miscellaneous commands are available if you should find that you need them
 
-##### Parameterized SQL Query
+#### Parameterized SQL Query
 
 Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value:
 
 ```c#
+public async Task ExecuteSqlWithInput()
+{
     SqlQueryResult result = await _databaseCommander.BuildCommand()
         .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
-        .AddInputParameter("SampleTableID", 1, DbType.Int32)
-        .AddInputParameter("SampleVarChar", "Row 1", DbType.String)
+        .AddInputParameter("SampleTableID", 1)
+        .AddInputParameter("SampleVarChar", "Row 1")
         .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
 
     int count = result.Count;
     bool hasData = result.HasData;
     DataTable dataTable = result.DataTable;
+}
 ```
 
-##### Parameterized SQL Non-Query
+#### Parameterized SQL Non-Query
 
 SQL insert and delete statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection:
 
 ```c#
+public async Task ExecuteParameterizedInsertDeleteSql()
+{
     string sampleVarChar = "Temporary Row";
     string createdBy = "FluentCommander";
     DateTime createdDate = DateTime.UtcNow;
@@ -307,18 +337,22 @@ VALUES
 
     int rowCountAffectedFromInsert = insertResult.RowCountAffected;
     int rowCountAffectedFromDelete = deleteResult.RowCountAffected;
+}
 ```
 
-##### Parameterized SQL Scalar Query
+#### Parameterized SQL Scalar Query
 
 SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection. This method demonstrates how to query the database with inline SQL using input parameters:
 
 ```c#
+public async Task ExecuteScalarWithInput()
+{
     bool result = await _databaseCommander.BuildCommand()
         .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
         .AddInputParameter("SampleTableID", 1)
         .AddInputParameter("SampleVarChar", "Row 1")
         .ExecuteAsync(new CancellationToken());
+}
 ```
 
 There are several other variations of these samples can be found [here](https://github.com/relay-dev/fluent-commander/tree/master/samples/Samples/Commands)
