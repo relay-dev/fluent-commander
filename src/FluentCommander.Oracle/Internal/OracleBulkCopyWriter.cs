@@ -3,7 +3,7 @@ using System.Data;
 
 namespace FluentCommander.Oracle.Internal
 {
-    public class OracleBulkCopyWriter
+    internal class OracleBulkCopyWriter
     {
         private readonly BulkCopyRequest _bulkCopyRequest;
 

@@ -126,19 +126,6 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName)
-        {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Direction = ParameterDirection.Output
-            };
-
-            _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
-
-            return this;
-        }
-
         public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter

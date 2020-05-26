@@ -72,7 +72,7 @@ namespace IntegrationTests.SqlServer.Commands
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName1, DbType.Int32)
-                .AddOutputParameter(outputParameterName2, DbType.AnsiString, 1000)
+                .AddOutputParameter(outputParameterName2, DbType.String, 1000)
                 .Execute();
 
             // Assert
