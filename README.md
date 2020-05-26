@@ -10,7 +10,7 @@ A lightweight database command abstraction featuring a fluent API
 
 > Fluent Commander is intended to subsidize transactional/ORM data access frameworks. These frameworks typically do not have clean, structured API's when it comes to tasks such as calling a Stored Procedure and retrieving results, or executing a Bulk Copy operation.
 
-> Fluent Commander is built using .NET STandard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.
+> Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.
 
 <br />
 
@@ -19,23 +19,41 @@ A lightweight database command abstraction featuring a fluent API
 The NuGet package is available on nuget.org:
 
 https://www.nuget.org/packages/FluentCommander
+https://www.nuget.org/packages/FluentCommander.SqlServer
+https://www.nuget.org/packages/FluentCommander.Oracle
 
 <br />
 
 ## Installation
 
-Here's how you can install the NuGet Package:
+Here's how you can install the SQL Server NuGet Package:
 
-> ### *.NET Core CLI*
+> #### *.NET Core CLI*
 > 
 > ```
 > dotnet add package FluentCommander.SqlServer
 > ```
 >
-> ### *Package Manager Console*
+> #### *Package Manager Console*
 > 
 > ```
 > Install-Package FluentCommander.SqlServer
+> ```
+
+<br />
+
+Here's how you can install the Oracle NuGet Package:
+
+> #### *.NET Core CLI*
+> 
+> ```
+> dotnet add package FluentCommander.Oracle
+> ```
+>
+> #### *Package Manager Console*
+> 
+> ```
+> Install-Package FluentCommander.Oracle
 > ```
 
 <br />
