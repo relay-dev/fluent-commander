@@ -11,7 +11,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.4" />
     <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="160.2004021.0" />
-    <PackageReference Include="Relay.Core.Plugins" Version="1.0.91" />
     <PackageReference Include="Sampler.ConsoleApplication" Version="1.0.1" />
   </ItemGroup>
 

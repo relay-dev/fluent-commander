@@ -1,5 +1,4 @@
-﻿using Core.Plugins.Extensions;
-using FluentCommander;
+﻿using FluentCommander;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
@@ -44,7 +43,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
 
         /// <notes>
@@ -67,7 +66,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
 
         /// <notes>
@@ -90,7 +89,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
 
         /// <notes>
@@ -113,7 +112,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
 
         /// <notes>
@@ -136,7 +135,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
 
         /// <notes>
@@ -164,7 +163,7 @@ namespace Samples.Commands
             Console.WriteLine("Row count: {0}", count);
             Console.WriteLine("Total Row count: {0}", totalCount);
             Console.WriteLine("Has Data: {0}", hasData);
-            Console.WriteLine("DataTable: {0}", dataTable.ToPrintFriendly());
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
         }
     }
 }

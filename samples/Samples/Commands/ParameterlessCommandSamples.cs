@@ -1,5 +1,4 @@
-﻿using Core.Plugins.Extensions;
-using FluentCommander;
+﻿using FluentCommander;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
@@ -35,7 +34,7 @@ namespace Samples.Commands
             DataTable dataTable = await _databaseCommander
                 .ExecuteSqlAsync("SELECT * FROM [dbo].[SampleTable]", new CancellationToken());
 
-            Console.WriteLine(dataTable.ToPrintFriendly());
+            Console.WriteLine(Print(dataTable));
         }
 
         /// <notes>
@@ -88,7 +87,7 @@ namespace Samples.Commands
             StoredProcedureResult result = await _databaseCommander
                 .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]"), new CancellationToken());
 
-            Console.WriteLine(result.DataTable.ToPrintFriendly());
+            Console.WriteLine(Print(result.DataTable));
         }
 
         /// <notes>

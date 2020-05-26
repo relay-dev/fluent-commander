@@ -1,5 +1,4 @@
-﻿using Core.Plugins.Extensions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Setup;
 using System;
@@ -45,7 +44,7 @@ namespace IntegrationTests.SqlServer
 
         protected virtual void WriteLine(DataTable d)
         {
-            _output.WriteLine(d.ToPrintFriendly());
+            _output.WriteLine(_databaseService.Print(d));
         }
 
         protected virtual void WriteLine(object o)

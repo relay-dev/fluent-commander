@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace Setup
 {
@@ -78,6 +79,11 @@ namespace Setup
             server.ConnectionContext.ExecuteNonQuery(sql);
         }
 
+        public string Print(DataTable dataTable)
+        {
+            return DataTableToString(dataTable);
+        }
+
         private void Validate()
         {
             string connectionString = _config.GetConnectionString("DefaultConnection");
@@ -124,6 +130,75 @@ namespace Setup
             var resourceFileContent = streamReader.ReadToEnd();
 
             return resourceFileContent;
+        }
+
+        private string DataTableToString(DataTable dataTable)
+        {
+            var printFriendly = new StringBuilder();
+            var underline = new StringBuilder();
+
+            if (dataTable == null || dataTable.Rows.Count == 0)
+                return "<No rows found>\n";
+
+            Dictionary<int, int> maxStringLengthPerColumn = GetMaxStringLengths(dataTable);
+
+            for (int i = 0; i < dataTable.Columns.Count; i++)
+            {
+                printFriendly.Append(GetPrintFriendlyString(dataTable.Columns[i].ColumnName, maxStringLengthPerColumn[i]));
+                underline.Append(GetPrintFriendlyString(String.Empty, maxStringLengthPerColumn[i] - 1).Replace(" ", "-") + " ");
+            }
+
+            printFriendly.Append("\n" + underline + "\n");
+
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                printFriendly.Append(GetPrintFriendlyRow(dataTable.Rows[i], maxStringLengthPerColumn));
+            }
+
+            return printFriendly.ToString();
+        }
+
+        private Dictionary<int, int> GetMaxStringLengths(DataTable dataTable)
+        {
+            var maxStringLengthPerColumn = new Dictionary<int, int>();
+
+            for (int i = 0; i < dataTable.Columns.Count; i++)
+            {
+                int maxLength = dataTable.Columns[i].ColumnName.Length;
+
+                for (int j = 0; j < dataTable.Rows.Count; j++)
+                {
+                    if (dataTable.Rows[j][i] != DBNull.Value && dataTable.Rows[j][i].ToString().Length > maxLength)
+                        maxLength = dataTable.Rows[j][i].ToString().Length;
+                }
+
+                maxStringLengthPerColumn.Add(i, maxLength);
+            }
+
+            return maxStringLengthPerColumn;
+        }
+
+        private string GetPrintFriendlyRow(DataRow row, Dictionary<int, int> maxStringLengthPerColumn)
+        {
+            var printFriendly = new StringBuilder();
+
+            for (int i = 0; i < row.Table.Columns.Count; i++)
+            {
+                string value = row[i] == DBNull.Value
+                    ? "{null}"
+                    : row[i].ToString();
+
+                printFriendly.Append(GetPrintFriendlyString(value, maxStringLengthPerColumn[i]));
+            }
+
+            return printFriendly + "\n";
+        }
+
+        private string GetPrintFriendlyString(string value, int lengthNeeded)
+        {
+            int spacesNeeded = lengthNeeded - value.Length;
+
+            return value + String.Empty.PadRight(spacesNeeded + 2, ' ');
         }
 
         private string InsertSql =>

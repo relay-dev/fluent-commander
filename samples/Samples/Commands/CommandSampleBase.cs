@@ -23,5 +23,10 @@ namespace Samples.Commands
         {
             return _databaseService.ExecuteScalar<TResult>(sql);
         }
+
+        protected string Print(DataTable dataTable)
+        {
+            return _databaseService.Print(dataTable);
+        }
     }
 }
