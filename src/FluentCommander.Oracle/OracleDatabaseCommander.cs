@@ -1,11 +1,11 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using FluentCommander.Oracle.Internal;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Oracle.Internal;
 
 namespace FluentCommander.Oracle
 {
@@ -436,7 +436,8 @@ namespace FluentCommander.Oracle
 FROM {1}
 WHERE 1 = 1 {2}
 ORDER BY {3}
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;";
+OFFSET {4} ROWS
+FETCH NEXT {5} ROWS ONLY;";
 
             request.SetDefaults();
 

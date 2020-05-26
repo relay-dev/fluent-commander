@@ -266,7 +266,7 @@ public async Task ExecutePaginationAllSettingsAreUsed()
 }
 ```
 
-#### Assume Defualts
+#### Assume Defaults
 
 Several defaults are specified so the only input required is the target:
 
