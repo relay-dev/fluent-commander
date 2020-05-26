@@ -14,11 +14,11 @@ namespace Samples.Commands
     /// More complex commands that require parameters and return values should not use this strategy
     /// </notes>
     [SampleFixture]
-    public class BasicCommandSamples : CommandSampleBase
+    public class ParameterlessCommandSamples : CommandSampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public BasicCommandSamples(
+        public ParameterlessCommandSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

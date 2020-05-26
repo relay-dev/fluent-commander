@@ -2,27 +2,25 @@
 using Shouldly;
 using System;
 using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.CommandsAsync
+namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class BasicCommandAsyncIntegrationTests : IntegrationTest<IDatabaseCommander>
+    public class ParameterlessCommandIntegrationTests : IntegrationTest<IDatabaseCommander>
     {
-        public BasicCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public ParameterlessCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]
-        public async Task ExecuteSqlAsync_ShouldReturnDataTable_WithNoParameters()
+        public void ExecuteSql_ShouldReturnDataTable_WithNoParameters()
         {
             // Arrange
             string sql = "SELECT * FROM [dbo].[SampleTable]";
 
             // Act
-            DataTable dataTable = await SUT.ExecuteSqlAsync(sql, new CancellationToken());
+            DataTable dataTable = SUT.ExecuteSql(sql);
 
             // Assert
             dataTable.ShouldNotBeNull();
@@ -33,13 +31,13 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
-        public async Task ExecuteScalarAsync_ShouldReturnResult_WithNoParameters()
+        public void ExecuteScalar_ShouldReturnResult_WithNoParameters()
         {
             // Arrange
             string sql = "SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1";
 
             // Act
-            string sampleVarChar = await SUT.ExecuteScalarAsync<string>(sql, new CancellationToken());
+            string sampleVarChar = SUT.ExecuteScalar<string>(sql);
 
             // Assert
             sampleVarChar.ShouldNotBeNullOrEmpty();
@@ -49,14 +47,14 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
-        public async Task ExecuteNonQueryAsync_ShouldUpdateAsExpected_WithNoParameters()
+        public void ExecuteNonQuery_ShouldUpdateAsExpected_WithNoParameters()
         {
             // Arrange
             Guid newGuid = Guid.NewGuid();
             string sql = $"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{newGuid}' WHERE [SampleTableID] = 1";
 
             // Act
-            int rowCountAffected = await SUT.ExecuteNonQueryAsync(sql, new CancellationToken());
+            int rowCountAffected = SUT.ExecuteNonQuery(sql);
 
             // Assert
             rowCountAffected.ShouldBe(1);
@@ -67,13 +65,13 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
-        public async Task ExecuteStoredProcedureAsync_ShouldReturnDataTable_WithNoParameters()
+        public void ExecuteStoredProcedure_ShouldReturnDataTable_WithNoParameters()
         {
             // Arrange
             var storedProcedureRequest = new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]");
 
             // Act
-            StoredProcedureResult result = await SUT.ExecuteStoredProcedureAsync(storedProcedureRequest, new CancellationToken());
+            StoredProcedureResult result = SUT.ExecuteStoredProcedure(storedProcedureRequest);
 
             // Assert
             result.DataTable.ShouldNotBeNull();
@@ -84,10 +82,10 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
-        public async Task GetServerNameAsync_ShouldReturnServerName_WhenConnectedCorrectly()
+        public void GetServerName_ShouldReturnServerName_WhenConnectedCorrectly()
         {
             // Arrange & Act
-            string serverName = await SUT.GetServerNameAsync(new CancellationToken());
+            string serverName = SUT.GetServerName();
 
             // Assert
             serverName.ShouldNotBeNullOrEmpty();

@@ -31,7 +31,7 @@ namespace Samples
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);
-            serviceCollection.AddTransient<BasicCommandSamples>();
+            serviceCollection.AddTransient<ParameterlessCommandSamples>();
             serviceCollection.AddTransient<BulkCopyCommandSamples>();
             serviceCollection.AddTransient<PaginationCommandSamples>();
             serviceCollection.AddTransient<ScalarCommandSamples>();
