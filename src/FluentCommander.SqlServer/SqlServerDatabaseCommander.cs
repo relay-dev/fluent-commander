@@ -335,11 +335,11 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.TimeoutInSeconds.Value;
             }
 
-            SqlParameter[] sqlParameters = ToSqlParameters(request.DatabaseParameters);
+            SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
 
             if (request.DatabaseParameters != null)
             {
-                command.Parameters.AddRange(sqlParameters);
+                command.Parameters.AddRange(parameters);
             }
 
             var dataTable = new DataTable();
@@ -352,7 +352,7 @@ namespace FluentCommander.SqlServer
             {
                 foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
-                    databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
+                    databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
@@ -372,11 +372,11 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.TimeoutInSeconds.Value;
             }
 
-            SqlParameter[] sqlParameters = ToSqlParameters(request.DatabaseParameters);
+            SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
 
             if (request.DatabaseParameters != null)
             {
-                command.Parameters.AddRange(sqlParameters);
+                command.Parameters.AddRange(parameters);
             }
 
             var dataTable = new DataTable();
@@ -390,7 +390,7 @@ namespace FluentCommander.SqlServer
             {
                 foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
-                    databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
+                    databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
@@ -448,7 +448,7 @@ namespace FluentCommander.SqlServer
 
         private SqlParameter ToSqlParameter(DatabaseCommandParameter databaseCommandParameter)
         {
-            var sqlParameter = new SqlParameter
+            var parameter = new SqlParameter
             {
                 ParameterName = databaseCommandParameter.Name,
                 Value = databaseCommandParameter.Value,
@@ -456,12 +456,17 @@ namespace FluentCommander.SqlServer
                 Size = databaseCommandParameter.Size
             };
 
-            if (databaseCommandParameter.DbType.HasValue)
+            if (!string.IsNullOrEmpty(databaseCommandParameter.DatabaseType))
             {
-                sqlParameter.DbType = databaseCommandParameter.DbType.Value;
+                if (!Enum.TryParse(databaseCommandParameter.DatabaseType, true, out DbType dbType))
+                {
+                    throw new InvalidOperationException($"Could not parse databaseType of '{databaseCommandParameter.DatabaseType}' to a System.Data.DbType");
+                }
+
+                parameter.DbType = dbType;
             }
 
-            return sqlParameter;
+            return parameter;
         }
 
         private void HandleBulkCopyException(Exception e, SqlBulkCopy sqlBulkCopy)

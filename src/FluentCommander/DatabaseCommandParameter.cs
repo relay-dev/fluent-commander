@@ -18,14 +18,14 @@ namespace FluentCommander
         public object Value { get; set; }
 
         /// <summary>
-        /// When the DbType is a string, this value represents the length of the string
+        /// When the DatabaseType is a string, this value represents the length of the string
         /// </summary>
         public int Size { get; set; }
 
         /// <summary>
         /// The type of the parameter that should be passed as part of this Command
         /// </summary>
-        public DbType? DbType { get; set; }
+        public string DatabaseType { get; set; }
 
         /// <summary>
         /// The direction of the parameter (Input, Output, InputOutput or Return)

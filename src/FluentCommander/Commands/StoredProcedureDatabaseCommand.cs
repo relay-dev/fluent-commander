@@ -40,14 +40,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType)
+        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.Input,
-                DbType = dbType
+                DatabaseType = databaseType.ToString()
             };
 
             databaseParameter.Value ??= DBNull.Value;
@@ -57,14 +57,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType, int size)
+        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.Input,
-                DbType = dbType,
+                DatabaseType = databaseType.ToString(),
                 Size = size
             };
 
@@ -91,14 +91,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType)
+        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.InputOutput,
-                DbType = dbType
+                DatabaseType = databaseType.ToString()
             };
 
             databaseParameter.Value ??= DBNull.Value;
@@ -108,14 +108,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType, int size)
+        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.InputOutput,
-                DbType = dbType,
+                DatabaseType = databaseType.ToString(),
                 Size = size
             };
 
@@ -139,13 +139,13 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, DbType dbType)
+        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Direction = ParameterDirection.Output,
-                DbType = dbType
+                DatabaseType = databaseType.ToString()
             };
 
             _storedProcedureRequest.DatabaseParameters.Add(databaseParameter);
@@ -153,13 +153,13 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, DbType dbType, int size)
+        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Direction = ParameterDirection.Output,
-                DbType = dbType,
+                DatabaseType = databaseType.ToString(),
                 Size = size
             };
 

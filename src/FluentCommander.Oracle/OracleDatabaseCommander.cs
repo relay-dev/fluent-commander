@@ -409,9 +409,14 @@ namespace FluentCommander.Oracle
                 Size = databaseCommandParameter.Size
             };
 
-            if (databaseCommandParameter.DbType.HasValue)
+            if (!string.IsNullOrEmpty(databaseCommandParameter.DatabaseType))
             {
-                parameter.DbType = databaseCommandParameter.DbType.Value;
+                if (!Enum.TryParse(databaseCommandParameter.DatabaseType, true, out OracleDbType oracleDbType))
+                {
+                    throw new InvalidOperationException($"Could not parse databaseType of '{databaseCommandParameter.DatabaseType}' to a Oracle.ManagedDataAccess.Client.OracleDbType");
+                }
+
+                parameter.OracleDbType = oracleDbType;
             }
 
             return parameter;

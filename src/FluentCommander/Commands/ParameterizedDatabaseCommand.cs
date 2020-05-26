@@ -32,14 +32,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType)
+        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.Input,
-                DbType = dbType
+                DatabaseType = databaseType.ToString()
             };
 
             databaseParameter.Value ??= DBNull.Value;
@@ -49,14 +49,14 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, DbType dbType, int size)
+        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
                 Value = parameterValue,
                 Direction = ParameterDirection.Input,
-                DbType = dbType,
+                DatabaseType = databaseType.ToString(),
                 Size = size
             };
 
