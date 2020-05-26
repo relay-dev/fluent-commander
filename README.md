@@ -1,6 +1,6 @@
-<img src="https://imgur.com/KLdrWTh.png" alt="Relay" style="max-width:100%; float: left; margin: 10px 0;" height="150" width="150">
+<img src="https://imgur.com/KLdrWTh.png" alt="Relay" height="150" width="150">
 
-# FluentCommander
+# Fluent Commander
 
 [![Build status](https://ci.appveyor.com/api/projects/status/rbnas7sa2tnl5adl/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/fluent-commander/branch/master)
 [![NuGet Release](https://img.shields.io/nuget/v/FluentCommander.svg)](https://www.nuget.org/packages/FluentCommander/)
@@ -8,9 +8,9 @@
 
 A lightweight database command abstraction featuring a fluent API
 
-> <span style="font-size: 0.8em">FluentCommander is intended to subsidize transactional/ORM data access frameworks. These frameworks typically do not have clean, structured API's when it comes to tasks such as calling a Stored Procedure and retrieving results, or executing a Bulk Copy operation.</span>
+> Fluent Commander is intended to subsidize transactional/ORM data access frameworks. These frameworks typically do not have clean, structured API's when it comes to tasks such as calling a Stored Procedure and retrieving results, or executing a Bulk Copy operation.
 
-> <span style="font-size: 0.8em">FluentCommander is built using .NET STandard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.</span>
+> Fluent Commander is built using .NET STandard and currently has SQL Server and Oracle implementations, as seperate NuGet packages.
 
 <br />
 
@@ -24,7 +24,7 @@ https://www.nuget.org/packages/FluentCommander
 
 ## Installation
 
-Here's how you can install the FluentCommander NuGet Package:
+Here's how you can install the NuGet Package:
 
 > ### *.NET Core CLI*
 > 
