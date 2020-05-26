@@ -19,7 +19,9 @@ A lightweight database command abstraction featuring a fluent API
 The NuGet package is available on nuget.org:
 
 https://www.nuget.org/packages/FluentCommander
+
 https://www.nuget.org/packages/FluentCommander.SqlServer
+
 https://www.nuget.org/packages/FluentCommander.Oracle
 
 <br />
