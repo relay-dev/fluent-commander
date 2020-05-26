@@ -1,11 +1,11 @@
-﻿using ConsoleApplication.SqlServer.Samples;
+﻿using System;
 using FluentCommander.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
+using Samples.Commands;
 
-namespace ConsoleApplication.SqlServer
+namespace Samples
 {
     public class Startup
     {

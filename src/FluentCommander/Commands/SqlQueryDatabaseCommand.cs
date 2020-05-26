@@ -21,16 +21,10 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public SqlQueryDatabaseCommand Timeout(int timeoutInSeconds)
-        {
-            _sqlRequest.TimeoutInSeconds = timeoutInSeconds;
-
-            return this;
-        }
-
         public override SqlQueryResult Execute()
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
+            _sqlRequest.Timeout = TimeoutTimeSpan;
 
             return _databaseCommander.ExecuteSql(_sqlRequest);
         }
@@ -38,6 +32,7 @@ namespace FluentCommander.Commands
         public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
+            _sqlRequest.Timeout = TimeoutTimeSpan;
 
             return await _databaseCommander.ExecuteSqlAsync(_sqlRequest, cancellationToken);
         }

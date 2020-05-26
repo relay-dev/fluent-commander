@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Sampler.ConsoleApplication;
 using Setup;
 
-namespace ConsoleApplication.SqlServer
+namespace Samples
 {
     class Program
     {

@@ -34,9 +34,9 @@ namespace FluentCommander.SqlServer
                 DestinationTableName = request.TableName
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.BulkCopyTimeout = request.TimeoutInSeconds.Value;
+                command.BulkCopyTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.ColumnMapping != null)
@@ -71,9 +71,9 @@ namespace FluentCommander.SqlServer
                 DestinationTableName = request.TableName
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.BulkCopyTimeout = request.TimeoutInSeconds.Value;
+                command.BulkCopyTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.ColumnMapping != null)
@@ -105,9 +105,9 @@ namespace FluentCommander.SqlServer
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -127,9 +127,9 @@ namespace FluentCommander.SqlServer
             await using var connection = new SqlConnection(_builder.ConnectionString);
             await using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -173,9 +173,9 @@ namespace FluentCommander.SqlServer
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -197,9 +197,9 @@ namespace FluentCommander.SqlServer
             await using var connection = new SqlConnection(_builder.ConnectionString);
             await using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -249,9 +249,9 @@ namespace FluentCommander.SqlServer
             using var connection = new SqlConnection(_builder.ConnectionString);
             using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -273,9 +273,9 @@ namespace FluentCommander.SqlServer
             await using var connection = new SqlConnection(_builder.ConnectionString);
             await using var command = new SqlCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -330,9 +330,9 @@ namespace FluentCommander.SqlServer
                 CommandType = CommandType.StoredProcedure
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
@@ -367,9 +367,9 @@ namespace FluentCommander.SqlServer
                 CommandType = CommandType.StoredProcedure
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);

@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace FluentCommander.Core.Impl
 {
-    public class ConnectionStringFromConfigurationCollection : IConnectionStringCollection
+    public class ConnectionStringCollection : IConnectionStringCollection
     {
         private readonly IConfiguration _configuration;
 
-        public ConnectionStringFromConfigurationCollection(IConfiguration configuration)
+        public ConnectionStringCollection(IConfiguration configuration)
         {
             _configuration = configuration;
         }

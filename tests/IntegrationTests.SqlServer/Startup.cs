@@ -27,13 +27,13 @@ namespace IntegrationTests.SqlServer
             serviceCollection.AddSingleton<IConfiguration>(config);
 
             // Setup the database if it's not initialized
-            Init(config);
+            Initialize(config);
 
             // Build the IServiceProvider
             return serviceCollection.BuildServiceProvider();
         }
 
-        private void Init(IConfiguration config)
+        private void Initialize(IConfiguration config)
         {
              var databaseService = new DatabaseService(config);
 

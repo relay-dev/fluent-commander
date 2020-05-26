@@ -18,7 +18,7 @@ namespace FluentCommander.Core.Impl
             services.AddTransient<StoredProcedureDatabaseCommand>();
             services.AddScoped<IAutoMapper, AutoMapper>();
             services.AddScoped<IDatabaseCommandFactory, DatabaseCommandFactory>();
-            services.AddSingleton<IConnectionStringCollection, ConnectionStringFromConfigurationCollection>();
+            services.AddSingleton<IConnectionStringCollection, ConnectionStringCollection>();
 
             return services;
         }

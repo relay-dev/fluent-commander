@@ -7,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL pagination query
@@ -153,6 +153,7 @@ namespace ConsoleApplication.SqlServer.Samples
                 .OrderBy("1")
                 .PageSize(25)
                 .PageNumber(2)
+                .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 
             int count = result.Count;

@@ -7,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     /// <notes>
     /// The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable
@@ -127,6 +127,7 @@ namespace ConsoleApplication.SqlServer.Samples
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .MappingOptions(opt => opt.UseMap(columnMapping))
+                .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 
             int rowCountCopied = result.RowCountCopied;

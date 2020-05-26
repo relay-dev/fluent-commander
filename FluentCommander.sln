@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander", "src\Flue
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B7A82303-550D-4D00-9886-328014775C72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication.SqlServer", "samples\ConsoleApplication.SqlServer\ConsoleApplication.SqlServer.csproj", "{D93D6C63-ACC3-4313-93D9-57C92C475169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "samples\Samples\Samples.csproj", "{D93D6C63-ACC3-4313-93D9-57C92C475169}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.SqlServer", "src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj", "{38DB2CDE-F7F4-49BC-AE7A-48FAE9E227E3}"
 EndProject

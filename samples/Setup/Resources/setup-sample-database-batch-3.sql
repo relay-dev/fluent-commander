@@ -122,6 +122,19 @@ BEGIN
 END
 GO
 
+DROP PROCEDURE IF EXISTS [dbo].[usp_VarCharInput_NoOutput_TableResult]
+GO
+
+CREATE PROCEDURE [dbo].[usp_VarCharInput_NoOutput_TableResult]
+      @SampleVarChar [varchar](1000)
+AS
+BEGIN
+    SELECT *
+    FROM [DatabaseCommander].[dbo].[SampleTable]
+    WHERE SampleVarChar = @SampleVarChar
+END
+GO
+
 DROP PROCEDURE IF EXISTS [dbo].[usp_NoInput_NoOutput_ReturnInt]
 GO
 

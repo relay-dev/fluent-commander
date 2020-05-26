@@ -7,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     /// <notes>
     /// Basic commands exist directly on the IDatabaseCommander so that you're not required to build a full command if you don't need one

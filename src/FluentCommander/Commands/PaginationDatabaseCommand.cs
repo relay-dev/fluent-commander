@@ -58,9 +58,9 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public PaginationDatabaseCommand Timeout(int timeoutInSeconds)
+        public PaginationDatabaseCommand Timeout(TimeSpan timeout)
         {
-            _paginationRequest.TimeoutInSeconds = timeoutInSeconds;
+            _paginationRequest.Timeout = timeout;
 
             return this;
         }

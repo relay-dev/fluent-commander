@@ -118,6 +118,31 @@ namespace IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteStoredProcedureAsync_WithInputOutputParameterSpecifyingType_ShouldReturnTheOutputAsExpected()
         {
             // Arrange
+            string outputParameterName = "SampleInputOutputInt";
+            int inputValue = 1;
+
+            // Act
+            StoredProcedureResult result = await SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputOutputParameter(outputParameterName, inputValue)
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+            result.GetOutputParameter<int>(outputParameterName).ShouldBeGreaterThan(0);
+            result.GetOutputParameter<int>(outputParameterName).ShouldNotBe(inputValue);
+
+            // Print result
+            WriteLine("Output Parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
+        public async Task ExecuteStoredProcedureAsync_WithInputOutputParameterSpecifyingTypeAndSize_ShouldReturnTheOutputAsExpected()
+        {
+            // Arrange
             string outputParameterName = "SampleInputOutputVarChar";
 
             // Act
@@ -134,6 +159,23 @@ namespace IntegrationTests.SqlServer.CommandsAsync
 
             // Print result
             WriteLine("Output Parameter: {0}", result.GetOutputParameter<string>(outputParameterName));
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
+        public async Task ExecuteStoredProcedureAsync_WithVarCharInput_ShouldPassTheSizeAsExpected()
+        {
+            // Arrange & Act
+            StoredProcedureResult result = await SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+                .AddInputParameter("SampleVarChar", "Row 1", DbType.String, 1000)
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
             WriteLine(result.DataTable);
         }
 

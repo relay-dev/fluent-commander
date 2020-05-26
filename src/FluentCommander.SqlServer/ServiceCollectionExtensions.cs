@@ -13,7 +13,7 @@ namespace FluentCommander.SqlServer
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
 
-            var connectionStringCollection = new ConnectionStringFromConfigurationCollection(config);
+            var connectionStringCollection = new ConnectionStringCollection(config);
 
             if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
             {

@@ -7,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     /// <notes>
     /// This Sample class demonstrates how to build a stored procedure command using various combinations of input, output and return parameters
@@ -88,6 +88,7 @@ namespace ConsoleApplication.SqlServer.Samples
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName1, DbType.Int32)
                 .AddOutputParameter(outputParameterName2, DbType.String, 1000)
+                .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 
             int outputParameter1 = result.GetOutputParameter<int>(outputParameterName1);

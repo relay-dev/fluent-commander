@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE

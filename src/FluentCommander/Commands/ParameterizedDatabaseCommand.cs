@@ -10,6 +10,7 @@ namespace FluentCommander.Commands
     public abstract class ParameterizedDatabaseCommand<TResult> : IDatabaseCommand<TResult>
     {
         protected readonly List<DatabaseCommandParameter> DatabaseParameters;
+        protected TimeSpan TimeoutTimeSpan;
 
         protected ParameterizedDatabaseCommand()
         {
@@ -49,20 +50,9 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public ParameterizedDatabaseCommand<TResult> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
+        public ParameterizedDatabaseCommand<TResult> Timeout(TimeSpan timeout)
         {
-            var databaseParameter = new DatabaseCommandParameter
-            {
-                Name = parameterName,
-                Value = parameterValue,
-                Direction = ParameterDirection.Input,
-                DatabaseType = databaseType.ToString(),
-                Size = size
-            };
-
-            databaseParameter.Value ??= DBNull.Value;
-
-            DatabaseParameters.Add(databaseParameter);
+            TimeoutTimeSpan = timeout;
 
             return this;
         }

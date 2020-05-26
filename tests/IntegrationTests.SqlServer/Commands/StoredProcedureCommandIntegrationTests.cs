@@ -116,6 +116,31 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecuteStoredProcedure_WithInputOutputParameterSpecifyingType_ShouldReturnTheOutputAsExpected()
         {
             // Arrange
+            string outputParameterName = "SampleInputOutputInt";
+            int inputValue = 1;
+
+            // Act
+            StoredProcedureResult result = SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputOutputParameter(outputParameterName, inputValue, DbType.Int32)
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+            result.GetOutputParameter<int>(outputParameterName).ShouldBeGreaterThan(0);
+            result.GetOutputParameter<int>(outputParameterName).ShouldNotBe(inputValue);
+
+            // Print result
+            WriteLine("Output Parameter: {0}", result.GetOutputParameter<int>(outputParameterName));
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
+        public void ExecuteStoredProcedure_WithInputOutputParameterSpecifyingTypeAndSize_ShouldReturnTheOutputAsExpected()
+        {
+            // Arrange
             string outputParameterName = "SampleInputOutputVarChar";
 
             // Act
@@ -132,6 +157,23 @@ namespace IntegrationTests.SqlServer.Commands
 
             // Print result
             WriteLine("Output Parameter: {0}", result.GetOutputParameter<string>(outputParameterName));
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
+        public void ExecuteStoredProcedureAsync_WithInputOutputParameterSpecifyingTypeAndSize_ShouldReturnTheOutputAsExpected()
+        {
+            // Arrange & Act
+            StoredProcedureResult result = SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+                .AddInputParameter("SampleVarChar", "Row 1", DbType.String, 1000)
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
             WriteLine(result.DataTable);
         }
 

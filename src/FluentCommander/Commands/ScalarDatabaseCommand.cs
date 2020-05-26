@@ -21,16 +21,10 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public ScalarDatabaseCommand<TResult> Timeout(int timeoutInSeconds)
-        {
-            _sqlRequest.TimeoutInSeconds = timeoutInSeconds;
-
-            return this;
-        }
-
         public override TResult Execute()
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
+            _sqlRequest.Timeout = TimeoutTimeSpan;
 
             return _databaseCommander.ExecuteScalar<TResult>(_sqlRequest);
         }
@@ -38,6 +32,7 @@ namespace FluentCommander.Commands
         public override async Task<TResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             _sqlRequest.DatabaseParameters = DatabaseParameters;
+            _sqlRequest.Timeout = TimeoutTimeSpan;
 
             return await _databaseCommander.ExecuteScalarAsync<TResult>(_sqlRequest, cancellationToken);
         }

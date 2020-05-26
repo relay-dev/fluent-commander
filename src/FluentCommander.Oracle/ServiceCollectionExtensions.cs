@@ -13,7 +13,7 @@ namespace FluentCommander.Oracle
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
 
-            var connectionStringCollection = new ConnectionStringFromConfigurationCollection(config);
+            var connectionStringCollection = new ConnectionStringCollection(config);
 
             if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
             {

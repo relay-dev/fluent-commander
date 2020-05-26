@@ -58,9 +58,9 @@ namespace FluentCommander.Oracle
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -80,9 +80,9 @@ namespace FluentCommander.Oracle
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -126,9 +126,9 @@ namespace FluentCommander.Oracle
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -150,9 +150,9 @@ namespace FluentCommander.Oracle
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -202,9 +202,9 @@ namespace FluentCommander.Oracle
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -226,9 +226,9 @@ namespace FluentCommander.Oracle
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             if (request.DatabaseParameters != null)
@@ -283,9 +283,9 @@ namespace FluentCommander.Oracle
                 CommandType = CommandType.StoredProcedure
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);
@@ -320,9 +320,9 @@ namespace FluentCommander.Oracle
                 CommandType = CommandType.StoredProcedure
             };
 
-            if (request.TimeoutInSeconds.HasValue)
+            if (request.Timeout.HasValue)
             {
-                command.CommandTimeout = request.TimeoutInSeconds.Value;
+                command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
             OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);

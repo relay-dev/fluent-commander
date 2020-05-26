@@ -168,9 +168,9 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand Timeout(int timeoutInSeconds)
+        public StoredProcedureDatabaseCommand Timeout(TimeSpan timeout)
         {
-            _storedProcedureRequest.TimeoutInSeconds = timeoutInSeconds;
+            _storedProcedureRequest.Timeout = timeout;
 
             return this;
         }

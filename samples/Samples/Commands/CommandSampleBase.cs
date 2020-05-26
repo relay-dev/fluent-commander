@@ -3,7 +3,7 @@ using Sampler.ConsoleApplication;
 using Setup;
 using System.Data;
 
-namespace ConsoleApplication.SqlServer.Samples
+namespace Samples.Commands
 {
     public abstract class CommandSampleBase : SampleAsync
     {

@@ -44,9 +44,9 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public BulkCopyDatabaseCommand Timeout(int timeoutInSeconds)
+        public BulkCopyDatabaseCommand Timeout(TimeSpan timeout)
         {
-            _bulkCopyRequest.TimeoutInSeconds = timeoutInSeconds;
+            _bulkCopyRequest.Timeout = timeout;
 
             return this;
         }
