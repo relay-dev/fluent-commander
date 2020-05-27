@@ -1,4 +1,4 @@
-<img src="https://github.com/relay-dev/fluent-commander/raw/master/resources/icon.png?raw=true" alt="Relay" height="150" width="150">
+<img src="https://i.imgur.com/o7FT6yK.png" alt="Relay" height="150" width="150">
 
 # Fluent Commander
 
