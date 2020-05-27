@@ -1,4 +1,4 @@
-<img src="https://imgur.com/KLdrWTh.png" alt="Relay" height="150" width="150">
+<img src="https://i.imgur.com/aRv8hcJ.png" alt="Relay" height="150" width="150">
 
 # Fluent Commander
 
