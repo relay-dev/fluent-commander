@@ -25,8 +25,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection
-        /// This method demonstrates how to query the database with inline SQL using input parameters
+        /// SQL Scalar queries can be parameterized
         /// </notes>
         [Sample(Key = "1")]
         public async Task ExecuteScalarWithInput()
@@ -41,16 +40,15 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
-        /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
+        /// If the default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
         [Sample(Key = "2")]
         public async Task ExecuteScalarWithInputSpecifyingType()
         {
             DateTime result = await _databaseCommander.BuildCommand()
                 .ForScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
-                .AddInputParameter("SampleTableID", 1, DbType.Int32)
-                .AddInputParameter("SampleVarChar", "Row 1", DbType.String)
+                .AddInputParameter("SampleTableID", 1, SqlDbType.Int)
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar)
                 .ExecuteAsync(new CancellationToken());
 
             Console.WriteLine("Result: {0}", result);

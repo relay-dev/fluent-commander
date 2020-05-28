@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -10,25 +10,19 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer
 {
-    public class SqlServerDatabaseCommander : IDatabaseCommander
+    public class SqlServerDatabaseCommander : DatabaseCommanderBase
     {
         private readonly SqlConnectionStringBuilder _builder;
-        private readonly DatabaseCommandBuilder _databaseCommandBuilder;
 
         public SqlServerDatabaseCommander(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
+            : base(databaseCommandBuilder)
         {
             _builder = builder;
-            _databaseCommandBuilder = databaseCommandBuilder;
         }
 
-        public DatabaseCommandBuilder BuildCommand()
+        public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            return _databaseCommandBuilder;
-        }
-
-        public BulkCopyResult BulkCopy(BulkCopyRequest request)
-        {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlBulkCopy(connection)
             {
                 DestinationTableName = request.TableName
@@ -63,9 +57,9 @@ namespace FluentCommander.SqlServer
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
+        public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             using var command = new SqlBulkCopy(connection)
             {
                 DestinationTableName = request.TableName
@@ -100,9 +94,9 @@ namespace FluentCommander.SqlServer
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
+        public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -122,9 +116,9 @@ namespace FluentCommander.SqlServer
             return new SqlNonQueryResult(numberOfRowsAffected);
         }
 
-        public async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -144,9 +138,9 @@ namespace FluentCommander.SqlServer
             return new SqlNonQueryResult(numberOfRowsAffected);
         }
 
-        public int ExecuteNonQuery(string sql)
+        public override int ExecuteNonQuery(string sql)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(sql, connection);
 
             connection.Open();
@@ -156,9 +150,9 @@ namespace FluentCommander.SqlServer
             return numberOfRowsAffected;
         }
 
-        public async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
+        public override async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(sql, connection);
 
             connection.Open();
@@ -168,9 +162,9 @@ namespace FluentCommander.SqlServer
             return numberOfRowsAffected;
         }
 
-        public TResult ExecuteScalar<TResult>(SqlRequest request)
+        public override TResult ExecuteScalar<TResult>(SqlRequest request)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -192,9 +186,9 @@ namespace FluentCommander.SqlServer
                 : (TResult)result;
         }
 
-        public async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -216,9 +210,9 @@ namespace FluentCommander.SqlServer
                 : (TResult)result;
         }
 
-        public TResult ExecuteScalar<TResult>(string sql)
+        public override TResult ExecuteScalar<TResult>(string sql)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(sql, connection);
 
             connection.Open();
@@ -230,9 +224,9 @@ namespace FluentCommander.SqlServer
                 : (TResult)result;
         }
 
-        public async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(sql, connection);
 
             connection.Open();
@@ -244,9 +238,9 @@ namespace FluentCommander.SqlServer
                 : (TResult)result;
         }
 
-        public SqlQueryResult ExecuteSql(SqlRequest request)
+        public override SqlQueryResult ExecuteSql(SqlRequest request)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -268,9 +262,9 @@ namespace FluentCommander.SqlServer
             return new SqlQueryResult(dataTable);
         }
 
-        public async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(request.Sql, connection);
 
             if (request.Timeout.HasValue)
@@ -293,9 +287,9 @@ namespace FluentCommander.SqlServer
             return new SqlQueryResult(dataTable);
         }
 
-        public DataTable ExecuteSql(string sql)
+        public override DataTable ExecuteSql(string sql)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(sql, connection);
 
             var dataTable = new DataTable();
@@ -307,9 +301,9 @@ namespace FluentCommander.SqlServer
             return dataTable;
         }
 
-        public async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
+        public override async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(sql, connection);
 
             var dataTable = new DataTable();
@@ -322,9 +316,9 @@ namespace FluentCommander.SqlServer
             return dataTable;
         }
 
-        public StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
+        public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
-            using var connection = new SqlConnection(_builder.ConnectionString);
+            using var connection = GetDbConnection();
             using var command = new SqlCommand(request.StoredProcedureName, connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -359,9 +353,9 @@ namespace FluentCommander.SqlServer
             return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
-        public async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
+        public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = new SqlConnection(_builder.ConnectionString);
+            await using var connection = GetDbConnection();
             await using var command = new SqlCommand(request.StoredProcedureName, connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -397,21 +391,21 @@ namespace FluentCommander.SqlServer
             return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
-        public string GetServerName()
+        public override string GetServerName()
         {
             string sql = GetServerNameSql();
 
             return ExecuteScalar<string>(sql);
         }
 
-        public async Task<string> GetServerNameAsync(CancellationToken cancellationToken)
+        public override async Task<string> GetServerNameAsync(CancellationToken cancellationToken)
         {
             string sql = GetServerNameSql();
 
             return await ExecuteScalarAsync<string>(sql, cancellationToken);
         }
 
-        public PaginationResult Paginate(PaginationRequest request)
+        public override PaginationResult Paginate(PaginationRequest request)
         {
             string sql = GetPaginationSql(request);
             string sqlCount = GetPaginationCountSql(request);
@@ -423,7 +417,7 @@ namespace FluentCommander.SqlServer
             return new PaginationResult(dataTable, totalCount);
         }
 
-        public async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
+        public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
             string sql = GetPaginationSql(request);
             string sqlCount = GetPaginationCountSql(request);
@@ -458,12 +452,12 @@ namespace FluentCommander.SqlServer
 
             if (!string.IsNullOrEmpty(databaseCommandParameter.DatabaseType))
             {
-                if (!Enum.TryParse(databaseCommandParameter.DatabaseType, true, out DbType dbType))
+                if (!Enum.TryParse(databaseCommandParameter.DatabaseType, true, out SqlDbType sqlDbType))
                 {
                     throw new InvalidOperationException($"Could not parse databaseType of '{databaseCommandParameter.DatabaseType}' to a System.Data.DbType");
                 }
 
-                parameter.DbType = dbType;
+                parameter.SqlDbType = sqlDbType;
             }
 
             return parameter;
@@ -473,7 +467,9 @@ namespace FluentCommander.SqlServer
         {
             // Credit: http://stackoverflow.com/questions/10442686/received-an-invalid-column-length-from-the-bcp-client-for-colid-6
             if (!e.Message.Contains("Received an invalid column length from the bcp client for colid"))
+            {
                 return;
+            }
 
             try
             {
@@ -500,6 +496,11 @@ namespace FluentCommander.SqlServer
             {
                 throw e;
             }
+        }
+
+        protected virtual SqlConnection GetDbConnection()
+        {
+            return new SqlConnection(_builder.ConnectionString);
         }
 
         private string GetServerNameSql()

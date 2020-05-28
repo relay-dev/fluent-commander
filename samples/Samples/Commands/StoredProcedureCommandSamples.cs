@@ -65,7 +65,7 @@ namespace Samples.Commands
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName, DbType.Int32)
+                .AddOutputParameter(outputParameterName, SqlDbType.Int)
                 .ExecuteAsync(new CancellationToken());
 
             int outputParameter = result.GetOutputParameter<int>(outputParameterName);
@@ -85,8 +85,8 @@ namespace Samples.Commands
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName1, DbType.Int32)
-                .AddOutputParameter(outputParameterName2, DbType.String, 1000)
+                .AddOutputParameter(outputParameterName1, SqlDbType.Int)
+                .AddOutputParameter(outputParameterName2, SqlDbType.VarChar, 1000)
                 .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 
@@ -133,7 +133,7 @@ namespace Samples.Commands
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(inputOutputParameterName, 1, DbType.String, 50)
+                .AddInputOutputParameter(inputOutputParameterName, 1, SqlDbType.VarChar, 50)
                 .ExecuteAsync(new CancellationToken());
 
             string inputOutputParameter = result.GetOutputParameter<string>(inputOutputParameterName);
@@ -142,7 +142,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// Stored Procedures with Return parameters can retrieve them from result.ReturnParameters
+        /// If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter<T>():
         /// </notes>
         [Sample(Key = "6")]
         public async Task ExecuteStoredProcedureWithReturnParameter()
@@ -206,7 +206,7 @@ namespace Samples.Commands
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
-                .AddInputParameter("SampleTableID", 1, DbType.Int64)
+                .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
                 .ExecuteAsync(new CancellationToken());
 
             int count = result.Count;

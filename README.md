@@ -71,7 +71,7 @@ The Bulk Copy function is supported if you want to insert a batch of records at 
 This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Utility.AutoMapper class. This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table:
 
 ```c#
-public async Task BulkCopyUsingAutoMapping()
+private async Task BulkCopyUsingAutoMapping()
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -91,7 +91,7 @@ public async Task BulkCopyUsingAutoMapping()
 This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match. This works well when you want to use the auto-mapping feature, but you need to specify some additional details:
 
 ```c#
-public async Task BulkCopyUsingPartialMap()
+private async Task BulkCopyUsingPartialMap()
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -120,7 +120,7 @@ public async Task BulkCopyUsingPartialMap()
 This variation relies on you to specify mappings where you know the column names do not match. This works well when you have a significant mismatch between the column names of the source and the destination:
 
 ```c#
-public async Task BulkCopyUsingMap()
+private async Task BulkCopyUsingMap()
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -153,14 +153,14 @@ public async Task BulkCopyUsingMap()
 
 ### Stored Procedures
 
-This demonstrates how to build a stored procedure command using various combinations of input, output and return parameters. To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files.
+This demonstrates how to build a stored procedure command using various combinations of Input, Output and Return parameters. To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files.
 
 #### Input Parameters
 
 Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object:
 
 ```c#
-public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
+private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
@@ -187,7 +187,7 @@ public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
 Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-public async Task ExecuteStoredProcedureWithOutput()
+private async Task ExecuteStoredProcedureWithOutput()
 {
     string outputParameterName = "SampleOutputInt";
     
@@ -206,7 +206,7 @@ public async Task ExecuteStoredProcedureWithOutput()
 Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-public async Task ExecuteStoredProcedureWithInputOutputParameter()
+private async Task ExecuteStoredProcedureWithInputOutputParameter()
 {
     string inputOutputParameterName = "SampleInputOutputInt";
 
@@ -222,10 +222,10 @@ public async Task ExecuteStoredProcedureWithInputOutputParameter()
 
 #### Return Parameter
 
-Stored Procedures with Return parameters can retrieve them from result.ReturnParameters:
+If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter<T>():
 
 ```c#
-public async Task ExecuteStoredProcedureWithReturnParameter()
+private async Task ExecuteStoredProcedureWithReturnParameter()
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
@@ -246,7 +246,7 @@ There are some cases where running pagination queries returned as a DataTable is
 In this sample, all options are used:
 
 ```c#
-public async Task ExecutePaginationAllSettingsAreUsed()
+private async Task ExecutePaginationAllSettingsAreUsed()
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
@@ -271,7 +271,7 @@ public async Task ExecutePaginationAllSettingsAreUsed()
 Several defaults are specified so the only input required is the target:
 
 ```c#
-public async Task ExecutePaginationUsingMinimalInput()
+private async Task ExecutePaginationUsingMinimalInput()
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
@@ -287,14 +287,14 @@ public async Task ExecutePaginationUsingMinimalInput()
 
 ### Other
 
-There are several other commands available on the API that could often be considered less attractive when compared to an ORM. These miscellaneous commands are available if you should find that you need them
+There are several other commands available on the API that are often unneeded if you're using an ORM. These miscellaneous commands are available if you should find that you need them
 
-#### Parameterized SQL Query
+#### SQL Query (Parameterized)
 
-Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value:
+Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value. Databases will cache the execution plan and prevent against SQL injection when you paramaterize your queries like this:
 
 ```c#
-public async Task ExecuteSqlWithInput()
+private async Task ExecuteSqlWithInput()
 {
     SqlQueryResult result = await _databaseCommander.BuildCommand()
         .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
@@ -309,12 +309,12 @@ public async Task ExecuteSqlWithInput()
 }
 ```
 
-#### Parameterized SQL Non-Query
+#### SQL Non-Query (Parameterized)
 
-SQL insert and delete statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection:
+SQL Insert and Delete statements can also be parameterized:
 
 ```c#
-public async Task ExecuteParameterizedInsertDeleteSql()
+private async Task ExecuteParameterizedInsertDeleteSql()
 {
     string sampleVarChar = "Temporary Row";
     string createdBy = "FluentCommander";
@@ -360,12 +360,12 @@ VALUES
 }
 ```
 
-#### Parameterized SQL Scalar Query
+#### SQL Scalar Query (Parameterized)
 
-SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection. This method demonstrates how to query the database with inline SQL using input parameters:
+SQL Scalar queries can also be parameterized:
 
 ```c#
-public async Task ExecuteScalarWithInput()
+private async Task ExecuteScalarWithInput()
 {
     bool result = await _databaseCommander.BuildCommand()
         .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")

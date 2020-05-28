@@ -1,24 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Setup;
 using System;
 using System.Data;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer
+namespace IntegrationTests
 {
     public abstract class IntegrationTest<TSUT>
     {
-        private readonly ServiceProviderFixture _serviceProviderFixture;
-        private readonly DatabaseService _databaseService;
         private readonly ITestOutputHelper _output;
+        private DatabaseService _databaseService;
 
-        protected IntegrationTest(
-            ServiceProviderFixture serviceProviderFixture,
-            ITestOutputHelper output)
+        protected IntegrationTest(ITestOutputHelper output)
         {
-            _serviceProviderFixture = serviceProviderFixture;
-            _databaseService = new DatabaseService(ResolveService<IConfiguration>());
+            
             _output = output;
         }
 
@@ -26,10 +21,13 @@ namespace IntegrationTests.SqlServer
         protected TSUT SUT => ResolveService<TSUT>();
         protected const string TestUsername = "IntegrationTest";
         protected readonly DateTime Timestamp = DateTime.UtcNow;
+        protected abstract TService ResolveService<TService>();
 
-        protected TService ResolveService<TService>()
+        public IntegrationTest<TSUT> Init()
         {
-            return (TService)_serviceProviderFixture.ServiceProvider.GetRequiredService(typeof(TService));
+            _databaseService = new DatabaseService(ResolveService<IConfiguration>());
+
+            return this;
         }
 
         protected virtual void WriteLine(string s)

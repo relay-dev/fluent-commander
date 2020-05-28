@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class BulkCopyCommandAsyncIntegrationTest : IntegrationTest<IDatabaseCommander>
+    public class BulkCopyCommandAsyncIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
     {
         private const int RowCount = 100;
 

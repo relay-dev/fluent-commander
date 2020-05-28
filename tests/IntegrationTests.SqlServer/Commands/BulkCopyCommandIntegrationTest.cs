@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class BulkCopyCommandIntegrationTest : IntegrationTest<IDatabaseCommander>
+    public class BulkCopyCommandIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
     {
         private const int RowCount = 100;
 

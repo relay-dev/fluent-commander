@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\samples\Setup\Setup.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
+    <ProjectReference Include="..\IntegrationTests\IntegrationTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

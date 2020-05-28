@@ -25,8 +25,8 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// SQL queries with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
-        /// This method demonstrates how to query the database with inline SQL using input parameters
+        /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
+        /// Databases will cache the execution plan and prevent against SQL injection when you paramaterize your queries like this
         /// </notes>
         [Sample(Key = "1")]
         public async Task ExecuteSqlWithInput()
@@ -55,8 +55,8 @@ namespace Samples.Commands
         {
             SqlQueryResult result = await _databaseCommander.BuildCommand()
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
-                .AddInputParameter("SampleTableID", 1, DbType.Int32)
-                .AddInputParameter("SampleVarChar", "Row 1", DbType.String)
+                .AddInputParameter("SampleTableID", 1, SqlDbType.Int)
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar)
                 .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 

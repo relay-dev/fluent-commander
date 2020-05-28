@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>FluentCommander.EntityFramework</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Scott Ferguson</Authors>
+    <Company>Relay Technologies</Company>
+    <Product>Fluent Commander</Product>
+    <Description>A lightweight database command abstraction featuring a fluent API</Description>
+    <Copyright>Copyright ©2020</Copyright>
+    <PackageProjectUrl>https://github.com/relay-dev/fluent-commander</PackageProjectUrl>
+    <PackageIconUrl>https://i.imgur.com/o7FT6yK.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/relay-dev/fluent-commander.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
+    <ProjectReference Include="..\FluentCommander\FluentCommander.csproj" />
+  </ItemGroup>
+
+</Project>

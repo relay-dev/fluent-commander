@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class StoredProcedureCommandIntegrationTests : IntegrationTest<IDatabaseCommander>
+    public class StoredProcedureCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
         public StoredProcedureCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
@@ -49,7 +49,7 @@ namespace IntegrationTests.SqlServer.Commands
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName, DbType.Int32)
+                .AddOutputParameter(outputParameterName, SqlDbType.Int)
                 .Execute();
 
             // Assert
@@ -71,8 +71,8 @@ namespace IntegrationTests.SqlServer.Commands
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName1, DbType.Int32)
-                .AddOutputParameter(outputParameterName2, DbType.String, 1000)
+                .AddOutputParameter(outputParameterName1, SqlDbType.Int)
+                .AddOutputParameter(outputParameterName2, SqlDbType.VarChar, 1000)
                 .Execute();
 
             // Assert
@@ -123,7 +123,7 @@ namespace IntegrationTests.SqlServer.Commands
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(outputParameterName, inputValue, DbType.Int32)
+                .AddInputOutputParameter(outputParameterName, inputValue, SqlDbType.Int)
                 .Execute();
 
             // Assert
@@ -147,7 +147,7 @@ namespace IntegrationTests.SqlServer.Commands
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
+                .AddInputOutputParameter(outputParameterName, 1, SqlDbType.VarChar, 50)
                 .Execute();
 
             // Assert
@@ -166,7 +166,7 @@ namespace IntegrationTests.SqlServer.Commands
             // Arrange & Act
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
-                .AddInputParameter("SampleVarChar", "Row 1", DbType.String, 1000)
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
                 .Execute();
 
             // Assert
@@ -245,7 +245,7 @@ namespace IntegrationTests.SqlServer.Commands
             // Arrange & Act
             StoredProcedureResult result = SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
-                .AddInputParameter("SampleTableID", 1, DbType.Int64)
+                .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
                 .WithReturnParameter()
                 .Execute();
 

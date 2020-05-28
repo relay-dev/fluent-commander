@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class SqlQueryCommandAsyncIntegrationTests : IntegrationTest<IDatabaseCommander>
+    public class SqlQueryCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
         public SqlQueryCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }

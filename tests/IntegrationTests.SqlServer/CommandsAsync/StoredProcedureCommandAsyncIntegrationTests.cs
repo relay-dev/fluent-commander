@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class StoredProcedureCommandAsyncIntegrationTests : IntegrationTest<IDatabaseCommander>
+    public class StoredProcedureCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
         public StoredProcedureCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
@@ -51,7 +51,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName, DbType.Int32)
+                .AddOutputParameter(outputParameterName, SqlDbType.Int)
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -73,8 +73,8 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_MultipleOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddOutputParameter(outputParameterName1, DbType.Int32)
-                .AddOutputParameter(outputParameterName2, DbType.String, 1000)
+                .AddOutputParameter(outputParameterName1, SqlDbType.Int)
+                .AddOutputParameter(outputParameterName2, SqlDbType.VarChar, 1000)
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -149,7 +149,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
-                .AddInputOutputParameter(outputParameterName, 1, DbType.String, 50)
+                .AddInputOutputParameter(outputParameterName, 1, SqlDbType.VarChar, 50)
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -168,7 +168,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             // Arrange & Act
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
-                .AddInputParameter("SampleVarChar", "Row 1", DbType.String, 1000)
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -247,7 +247,7 @@ namespace IntegrationTests.SqlServer.CommandsAsync
             // Arrange & Act
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
-                .AddInputParameter("SampleTableID", 1, DbType.Int64)
+                .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
                 .WithReturnParameter()
                 .ExecuteAsync(new CancellationToken());
 

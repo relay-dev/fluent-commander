@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentCommander.Core.Impl;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data.SqlClient;
-using FluentCommander.Core.Impl;
 
 namespace FluentCommander.SqlServer
 {

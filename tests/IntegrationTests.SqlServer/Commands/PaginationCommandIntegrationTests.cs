@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class PaginationCommandIntegrationTests : IntegrationTest<IDatabaseCommander>
+    public class PaginationCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
         public PaginationCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }

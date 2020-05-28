@@ -9,23 +9,19 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Oracle
 {
-    public class OracleDatabaseCommander : IDatabaseCommander
+    public class OracleDatabaseCommander : DatabaseCommanderBase
     {
         private readonly OracleConnectionStringBuilder _builder;
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
 
         public OracleDatabaseCommander(OracleConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
+            : base(databaseCommandBuilder)
         {
             _builder = builder;
             _databaseCommandBuilder = databaseCommandBuilder;
         }
 
-        public DatabaseCommandBuilder BuildCommand()
-        {
-            return _databaseCommandBuilder;
-        }
-
-        public BulkCopyResult BulkCopy(BulkCopyRequest request)
+        public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
             var writer = new OracleBulkCopyWriter(request);
 
@@ -39,7 +35,7 @@ namespace FluentCommander.Oracle
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
+        public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
             var writer = new OracleBulkCopyWriter(request);
 
@@ -55,7 +51,7 @@ namespace FluentCommander.Oracle
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
+        public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -77,7 +73,7 @@ namespace FluentCommander.Oracle
             return new SqlNonQueryResult(numberOfRowsAffected);
         }
 
-        public async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
@@ -99,7 +95,7 @@ namespace FluentCommander.Oracle
             return new SqlNonQueryResult(numberOfRowsAffected);
         }
 
-        public int ExecuteNonQuery(string sql)
+        public override int ExecuteNonQuery(string sql)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(sql, connection);
@@ -111,7 +107,7 @@ namespace FluentCommander.Oracle
             return numberOfRowsAffected;
         }
 
-        public async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
+        public override async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(sql, connection);
@@ -123,7 +119,7 @@ namespace FluentCommander.Oracle
             return numberOfRowsAffected;
         }
 
-        public TResult ExecuteScalar<TResult>(SqlRequest request)
+        public override TResult ExecuteScalar<TResult>(SqlRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -147,7 +143,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
@@ -171,7 +167,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public TResult ExecuteScalar<TResult>(string sql)
+        public override TResult ExecuteScalar<TResult>(string sql)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(sql, connection);
@@ -185,7 +181,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(sql, connection);
@@ -199,7 +195,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public SqlQueryResult ExecuteSql(SqlRequest request)
+        public override SqlQueryResult ExecuteSql(SqlRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -223,7 +219,7 @@ namespace FluentCommander.Oracle
             return new SqlQueryResult(dataTable);
         }
 
-        public async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
@@ -248,7 +244,7 @@ namespace FluentCommander.Oracle
             return new SqlQueryResult(dataTable);
         }
 
-        public DataTable ExecuteSql(string sql)
+        public override DataTable ExecuteSql(string sql)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(sql, connection);
@@ -262,7 +258,7 @@ namespace FluentCommander.Oracle
             return dataTable;
         }
 
-        public async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
+        public override async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(sql, connection);
@@ -277,7 +273,7 @@ namespace FluentCommander.Oracle
             return dataTable;
         }
 
-        public StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
+        public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.StoredProcedureName, connection)
@@ -314,7 +310,7 @@ namespace FluentCommander.Oracle
             return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
-        public async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
+        public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.StoredProcedureName, connection)
@@ -352,21 +348,21 @@ namespace FluentCommander.Oracle
             return new StoredProcedureResult(request.DatabaseParameters, dataTable);
         }
 
-        public string GetServerName()
+        public override string GetServerName()
         {
             string sql = GetServerNameSql();
 
             return ExecuteScalar<string>(sql);
         }
 
-        public async Task<string> GetServerNameAsync(CancellationToken cancellationToken)
+        public override async Task<string> GetServerNameAsync(CancellationToken cancellationToken)
         {
             string sql = GetServerNameSql();
 
             return await ExecuteScalarAsync<string>(sql, cancellationToken);
         }
 
-        public PaginationResult Paginate(PaginationRequest request)
+        public override PaginationResult Paginate(PaginationRequest request)
         {
             string sql = GetPaginationSql(request);
             string sqlCount = GetPaginationCountSql(request);
@@ -378,7 +374,7 @@ namespace FluentCommander.Oracle
             return new PaginationResult(dataTable, totalCount);
         }
 
-        public async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
+        public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
             string sql = GetPaginationSql(request);
             string sqlCount = GetPaginationCountSql(request);

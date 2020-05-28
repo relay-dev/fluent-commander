@@ -24,7 +24,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// SQL update statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid injection
+        /// SQL Update statements can also be parameterized for the database to cache the execution plan and prevent against injection
         /// </notes>
         [Sample(Key = "1")]
         public async Task ExecuteParameterizedUpdateSql()
@@ -47,7 +47,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// SQL insert and delete statements with parameters can be parameterized for SQL Server to cache the execution plan and to avoid SQL injection
+        /// SQL Insert and Delete statements can also be parameterized for the database to cache the execution plan and prevent against injection
         /// </notes>
         [Sample(Key = "2")]
         public async Task ExecuteParameterizedInsertDeleteSql()
