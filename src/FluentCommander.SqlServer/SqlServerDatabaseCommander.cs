@@ -435,7 +435,7 @@ namespace FluentCommander.SqlServer
             return new PaginationResult(dataTable, totalCount);
         }
 
-        private SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
+        protected SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
         {
             return databaseCommandParameters?.Select(ToSqlParameter).ToArray();
         }
