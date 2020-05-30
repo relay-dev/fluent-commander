@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework
+namespace IntegrationTests.EntityFramework.SqlServer
 {
-    public class EntityFrameworkIntegrationTest<TSUT> : IntegrationTest<TSUT>
+    public class EntityFrameworkSqlServerIntegrationTest<TSUT> : IntegrationTest<TSUT>
     {
         private readonly ServiceProviderFixture _serviceProviderFixture;
 
-        public EntityFrameworkIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public EntityFrameworkSqlServerIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(output)
         {
             _serviceProviderFixture = serviceProviderFixture;

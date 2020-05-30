@@ -27,7 +27,7 @@ namespace Samples
                 });
 
             // Add the DatabaseCommander framework
-            serviceCollection.AddDatabaseCommander(_configuration);
+            serviceCollection.AddSqlServerDatabaseCommander(_configuration);
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);

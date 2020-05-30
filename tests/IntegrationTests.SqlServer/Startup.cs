@@ -9,7 +9,7 @@ namespace IntegrationTests.SqlServer
         public override void AddDatabaseCommander(ServiceCollection serviceCollection, IConfiguration config)
         {
             // Add the DatabaseCommander framework
-            serviceCollection.AddDatabaseCommander(config);
+            serviceCollection.AddSqlServerDatabaseCommander(config);
         }
     }
 }

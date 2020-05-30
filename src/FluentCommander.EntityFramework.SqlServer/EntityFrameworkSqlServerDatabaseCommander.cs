@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentCommander.EntityFramework
+namespace FluentCommander.EntityFramework.SqlServer
 {
-    public class EntityFrameworkDatabaseCommander : SqlServerDatabaseCommander
+    public class EntityFrameworkSqlServerDatabaseCommander : SqlServerDatabaseCommander
     {
         private readonly DbContext _dbContext;
 
-        public EntityFrameworkDatabaseCommander(DbContext dbContext, SqlConnectionStringBuilder builder,  DatabaseCommandBuilder databaseCommandBuilder)
+        public EntityFrameworkSqlServerDatabaseCommander(DbContext dbContext, SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
             : base(builder, databaseCommandBuilder)
         {
             _dbContext = dbContext;

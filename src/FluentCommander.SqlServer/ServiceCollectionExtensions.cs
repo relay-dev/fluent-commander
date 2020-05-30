@@ -7,7 +7,7 @@ namespace FluentCommander.SqlServer
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDatabaseCommander(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddSqlServerDatabaseCommander(this IServiceCollection services, IConfiguration config)
         {
             new Bootstrapper().Bootstrap(services);
 

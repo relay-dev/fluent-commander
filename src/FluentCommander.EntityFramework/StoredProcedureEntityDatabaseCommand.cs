@@ -1,30 +1,28 @@
-﻿using FluentCommander.Core;
+﻿using FluentCommander.Commands;
+using FluentCommander.EntityFramework.Internal;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.EntityFramework
 {
-    public class StoredProcedureDatabaseCommand : IDatabaseCommand<StoredProcedureResult>
+    public class StoredProcedureEntityDatabaseCommand<TEntity> : StoredProcedureDatabaseCommand
     {
-        protected readonly IDatabaseCommander DatabaseCommander;
-        protected readonly StoredProcedureRequest StoredProcedureRequest;
+        private Action<PropertyMapBuilder<TEntity>> _mappingBuilder;
 
-        public StoredProcedureDatabaseCommand(IDatabaseCommander databaseCommander)
-        {
-            DatabaseCommander = databaseCommander;
-            StoredProcedureRequest = new StoredProcedureRequest();
-        }
+        public StoredProcedureEntityDatabaseCommand(IDatabaseCommander databaseCommander)
+            : base(databaseCommander){ }
 
-        public StoredProcedureDatabaseCommand Name(string storedProcedureName)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> Name(string storedProcedureName)
         {
             StoredProcedureRequest.StoredProcedureName = storedProcedureName;
 
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -40,7 +38,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -57,7 +55,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -75,7 +73,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -91,7 +89,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -108,7 +106,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -126,7 +124,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, object databaseType)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddOutputParameter(string parameterName, object databaseType)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -140,7 +138,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand AddOutputParameter(string parameterName, object databaseType, int size)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> AddOutputParameter(string parameterName, object databaseType, int size)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -155,7 +153,7 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand WithReturnParameter()
+        public new StoredProcedureEntityDatabaseCommand<TEntity> WithReturnParameter()
         {
             var databaseParameter = new DatabaseCommandParameter
             {
@@ -168,21 +166,45 @@ namespace FluentCommander.Commands
             return this;
         }
 
-        public StoredProcedureDatabaseCommand Timeout(TimeSpan timeout)
+        public new StoredProcedureEntityDatabaseCommand<TEntity> Timeout(TimeSpan timeout)
         {
             StoredProcedureRequest.Timeout = timeout;
 
             return this;
         }
 
-        public virtual StoredProcedureResult Execute()
+        public StoredProcedureEntityDatabaseCommand<TEntity> Project(Action<PropertyMapBuilder<TEntity>> mappingBuilder)
         {
-            return DatabaseCommander.ExecuteStoredProcedure(StoredProcedureRequest);
+            _mappingBuilder = mappingBuilder;
+
+            return this;
         }
 
-        public virtual async Task<StoredProcedureResult> ExecuteAsync(CancellationToken cancellationToken)
+        // TODO: 
+        public StoredProcedureEntityResult<TEntity> ExecuteAndProject()
         {
-            return await DatabaseCommander.ExecuteStoredProcedureAsync(StoredProcedureRequest, cancellationToken);
+            StoredProcedureResult storedProcedureResult = base.Execute();
+
+            var options = new PropertyMapBuilder<TEntity>();
+
+            _mappingBuilder(options);
+
+            List<TEntity> result = ReflectionUtility.DataTableToList<TEntity>(storedProcedureResult.DataTable, options);
+
+            return new StoredProcedureEntityResult<TEntity>(storedProcedureResult.Parameters, storedProcedureResult.DataTable, result);
+        }
+
+        public async Task<StoredProcedureEntityResult<TEntity>> ExecuteAndProjectAsync(CancellationToken cancellationToken)
+        {
+            StoredProcedureResult storedProcedureResult = await base.ExecuteAsync(cancellationToken);
+
+            var options = new PropertyMapBuilder<TEntity>();
+
+            _mappingBuilder(options);
+
+            List<TEntity> result = ReflectionUtility.DataTableToList<TEntity>(storedProcedureResult.DataTable, options);
+
+            return new StoredProcedureEntityResult<TEntity>(storedProcedureResult.Parameters, storedProcedureResult.DataTable, result);
         }
     }
 }

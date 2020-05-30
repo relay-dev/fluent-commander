@@ -1,8 +1,8 @@
 ﻿using System;
-using FluentCommander.EntityFramework;
+using FluentCommander.EntityFramework.SqlServer;
 using Xunit;
 
-namespace IntegrationTests.EntityFramework
+namespace IntegrationTests.EntityFramework.SqlServer
 {
     public class ServiceProviderFixture : IDisposable
     {
@@ -10,7 +10,7 @@ namespace IntegrationTests.EntityFramework
 
         public ServiceProviderFixture()
         {
-            ServiceProvider = new Startup().ConfigureServices().UseAddDatabaseCommander();
+            ServiceProvider = new Startup().ConfigureServices().UseEntityFrameworkSqlServerDatabaseCommander();
         }
 
         public void Dispose()

@@ -1,14 +1,14 @@
 using FluentCommander;
 using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.Entities;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.Commands
+namespace IntegrationTests.EntityFramework.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class SqlQueryCommandIntegrationTests : EntityFrameworkIntegrationTest<DatabaseCommanderDomainContext>
+    public class SqlQueryCommandIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
     {
         public SqlQueryCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }

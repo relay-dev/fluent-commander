@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace IntegrationTests.EntityFramework.Entities
+namespace IntegrationTests.EntityFramework.SqlServer.Entities
 {
-    public partial class SampleTable
+    public class Sample
     {
-        public long SampleTableId { get; set; }
+        public long SampleId { get; set; }
         public int SampleInt { get; set; }
         public short SampleSmallInt { get; set; }
         public byte SampleTinyInt { get; set; }

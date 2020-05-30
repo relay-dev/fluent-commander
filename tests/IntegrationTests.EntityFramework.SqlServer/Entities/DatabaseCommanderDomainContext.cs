@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace IntegrationTests.EntityFramework.Entities
+namespace IntegrationTests.EntityFramework.SqlServer.Entities
 {
     public class DatabaseCommanderDomainContext : DatabaseCommanderContext
     {

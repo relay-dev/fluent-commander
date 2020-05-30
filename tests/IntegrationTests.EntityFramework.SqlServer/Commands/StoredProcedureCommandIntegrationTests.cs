@@ -1,41 +1,42 @@
 ﻿using FluentCommander;
 using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.Entities;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
-using System;
 using System.Data;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.Commands
+namespace IntegrationTests.EntityFramework.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class StoredProcedureCommandIntegrationTests : EntityFrameworkIntegrationTest<DatabaseCommanderDomainContext>
+    public class StoredProcedureCommandIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
     {
         public StoredProcedureCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
+        // TODO: 
         [Fact]
         public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnDataTable()
         {
             // Arrange & Act
-            StoredProcedureResult result = SUT.BuildCommand()
-                .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
-                .AddInputParameter("SampleTableID", 1)
-                .AddInputParameter("SampleInt", 0)
-                .AddInputParameter("SampleSmallInt", 0)
-                .AddInputParameter("SampleTinyInt", 0)
-                .AddInputParameter("SampleBit", false)
-                .AddInputParameter("SampleDecimal", 0)
-                .AddInputParameter("SampleFloat", 0)
-                .AddInputParameter("SampleDateTime", DateTime.Now)
-                .AddInputParameter("SampleUniqueIdentifier", Guid.NewGuid())
+            StoredProcedureEntityResult<Sample> result = SUT.BuildCommand()
+                .ForStoredProcedure<Sample>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .Execute();
+                .Project(sample =>
+                {
+                    sample.Property(s => s.SampleId).Name("SampleTableID");
+                    sample.Property(s => s.ModifiedBy).Ignore();
+                    sample.Property(s => s.ModifiedDate).Ignore();
+                })
+                .ExecuteAndProject();
 
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
+            result.Result.ShouldNotBeNull();
+            result.Result.Count.ShouldBeGreaterThan(0);
+            result.Result.First().SampleId.ShouldBeGreaterThan(0);
 
             // Print result
             WriteLine(result.DataTable);

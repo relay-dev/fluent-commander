@@ -1,19 +1,19 @@
 ﻿using FluentCommander;
 using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.Entities;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.CommandsAsync
+namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class BulkCopyCommandAsyncIntegrationTest : EntityFrameworkIntegrationTest<DatabaseCommanderDomainContext>
+    public class BulkCopyCommandAsyncIntegrationTest : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
     {
         private const int RowCount = 100;
 

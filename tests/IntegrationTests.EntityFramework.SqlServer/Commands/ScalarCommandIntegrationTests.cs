@@ -1,29 +1,27 @@
 ﻿using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.Entities;
 using Shouldly;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.CommandsAsync
+namespace IntegrationTests.EntityFramework.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class ScalarCommandAsyncIntegrationTests : EntityFrameworkIntegrationTest<DatabaseCommanderDomainContext>
+    public class ScalarCommandIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
     {
-        public ScalarCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public ScalarCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]
-        public async Task ExecuteScalarCommandAsync_WithInputParameters_ShouldReturnResult()
+        public void ExecuteScalarCommand_WithInputParameters_ShouldReturnResult()
         {
             // Arrange & Act
-            DateTime result = await SUT.BuildCommand()
+            DateTime result = SUT.BuildCommand()
                 .ForScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .Execute();
 
             // Assert
             result.ShouldNotBe(DateTime.MinValue);

@@ -1,18 +1,18 @@
 ﻿using FluentCommander.Core.Impl;
-using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.Entities;
+using FluentCommander.EntityFramework.SqlServer;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IntegrationTests.EntityFramework
+namespace IntegrationTests.EntityFramework.SqlServer
 {
     public class Startup : Bootstrapper
     {
         public override void AddDatabaseCommander(ServiceCollection serviceCollection, IConfiguration config)
         {
-            serviceCollection.AddDatabaseCommander();
+            serviceCollection.AddEntityFrameworkSqlServerDatabaseCommander();
         }
 
         protected override void ConfigureDomainServices(ServiceCollection serviceCollection, IConfiguration config)

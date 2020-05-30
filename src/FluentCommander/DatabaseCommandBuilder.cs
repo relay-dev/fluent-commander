@@ -69,5 +69,14 @@ namespace FluentCommander
         {
             return _commandFactory.Create<StoredProcedureDatabaseCommand>().Name(storedProcedureName);
         }
+
+        /// <summary>
+        /// Builds a command to execute based on the command type
+        /// </summary>
+        /// <returns>A command builder of the requested type</returns>
+        public TCommand ForCommand<TCommand>() where TCommand : IDatabaseCommand
+        {
+            return _commandFactory.Create<TCommand>();
+        }
     }
 }
