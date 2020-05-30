@@ -16,9 +16,9 @@
             return this;
         }
 
-        public PropertyMetadataBuilder<TEntity> MapTo(string value)
+        public PropertyMetadataBuilder<TEntity> MapFrom(string value)
         {
-            PropertyMetadata.MapTo = value;
+            PropertyMetadata.MapFrom = value;
 
             return this;
         }

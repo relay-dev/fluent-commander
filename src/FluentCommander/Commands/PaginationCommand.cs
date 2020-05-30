@@ -5,60 +5,60 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Commands
 {
-    public class PaginationDatabaseCommand : IDatabaseCommand<PaginationResult>
+    public class PaginationCommand : IDatabaseCommand<PaginationResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly PaginationRequest _paginationRequest;
 
-        public PaginationDatabaseCommand(IDatabaseCommander databaseCommander)
+        public PaginationCommand(IDatabaseCommander databaseCommander)
         {
             _databaseCommander = databaseCommander;
             _paginationRequest = new PaginationRequest();
         }
 
-        public PaginationDatabaseCommand Select(string columns)
+        public PaginationCommand Select(string columns)
         {
             _paginationRequest.Columns = columns;
 
             return this;
         }
 
-        public PaginationDatabaseCommand From(string target)
+        public PaginationCommand From(string target)
         {
             _paginationRequest.TableName = target;
 
             return this;
         }
 
-        public PaginationDatabaseCommand Where(string conditions)
+        public PaginationCommand Where(string conditions)
         {
             _paginationRequest.Conditions = conditions;
 
             return this;
         }
 
-        public PaginationDatabaseCommand OrderBy(string columns)
+        public PaginationCommand OrderBy(string columns)
         {
             _paginationRequest.OrderBy = columns;
 
             return this;
         }
 
-        public PaginationDatabaseCommand PageNumber(int pageNumber)
+        public PaginationCommand PageNumber(int pageNumber)
         {
             _paginationRequest.PageNumber = pageNumber;
 
             return this;
         }
 
-        public PaginationDatabaseCommand PageSize(int pageSize)
+        public PaginationCommand PageSize(int pageSize)
         {
             _paginationRequest.PageSize = pageSize;
 
             return this;
         }
 
-        public PaginationDatabaseCommand Timeout(TimeSpan timeout)
+        public PaginationCommand Timeout(TimeSpan timeout)
         {
             _paginationRequest.Timeout = timeout;
 

@@ -25,7 +25,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .Project(sample =>
                 {
-                    sample.Property(s => s.SampleId).Name("SampleTableID");
+                    sample.Property(s => s.SampleId).MapFrom("SampleTableID");
                     sample.Property(s => s.ModifiedBy).Ignore();
                     sample.Property(s => s.ModifiedDate).Ignore();
                 })

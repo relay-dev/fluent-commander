@@ -10,12 +10,12 @@ namespace FluentCommander.Core.Impl
         public IServiceCollection Bootstrap(IServiceCollection services)
         {
             services.AddTransient<DatabaseCommandBuilder>();
-            services.AddTransient<BulkCopyDatabaseCommand>();
-            services.AddTransient<PaginationDatabaseCommand>();
-            services.AddTransient(typeof(ScalarDatabaseCommand<>));
-            services.AddTransient<SqlNonQueryDatabaseCommand>();
-            services.AddTransient<SqlQueryDatabaseCommand>();
-            services.AddTransient<StoredProcedureDatabaseCommand>();
+            services.AddTransient<BulkCopyCommand>();
+            services.AddTransient<PaginationCommand>();
+            services.AddTransient(typeof(ScalarCommand<>));
+            services.AddTransient<SqlNonQueryCommand>();
+            services.AddTransient<SqlQueryCommand>();
+            services.AddTransient<StoredProcedureCommand>();
             services.AddScoped<IAutoMapper, AutoMapper>();
             services.AddScoped<IDatabaseCommandFactory, DatabaseCommandFactory>();
             services.AddSingleton<IConnectionStringCollection, ConnectionStringCollection>();

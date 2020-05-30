@@ -16,18 +16,18 @@ namespace FluentCommander
         /// Builds a command to bulk copy into the database
         /// </summary>
         /// <returns>A bulk copy command builder</returns>
-        public BulkCopyDatabaseCommand ForBulkCopy()
+        public BulkCopyCommand ForBulkCopy()
         {
-            return _commandFactory.Create<BulkCopyDatabaseCommand>();
+            return _commandFactory.Create<BulkCopyCommand>();
         }
 
         /// <summary>
         /// Builds a command to paginate across a database table
         /// </summary>
         /// <returns>A pagination command builder</returns>
-        public PaginationDatabaseCommand ForPagination()
+        public PaginationCommand ForPagination()
         {
-            return _commandFactory.Create<PaginationDatabaseCommand>();
+            return _commandFactory.Create<PaginationCommand>();
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace FluentCommander
         /// </summary>
         /// <param name="sql">The SQL to execute</param>
         /// <returns>A scalar command builder</returns>
-        public ScalarDatabaseCommand<TResult> ForScalar<TResult>(string sql)
+        public ScalarCommand<TResult> ForScalar<TResult>(string sql)
         {
-            return _commandFactory.Create<ScalarDatabaseCommand<TResult>>().Sql(sql);
+            return _commandFactory.Create<ScalarCommand<TResult>>().Sql(sql);
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace FluentCommander
         /// </summary>
         /// <param name="sql">The SQL to execute</param>
         /// <returns>A non-query command builder</returns>
-        public SqlNonQueryDatabaseCommand ForSqlNonQuery(string sql)
+        public SqlNonQueryCommand ForSqlNonQuery(string sql)
         {
-            return _commandFactory.Create<SqlNonQueryDatabaseCommand>().Sql(sql);
+            return _commandFactory.Create<SqlNonQueryCommand>().Sql(sql);
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace FluentCommander
         /// </summary>
         /// <param name="sql">The SQL to execute</param>
         /// <returns>A SQL command builder</returns>
-        public SqlQueryDatabaseCommand ForSqlQuery(string sql)
+        public SqlQueryCommand ForSqlQuery(string sql)
         {
-            return _commandFactory.Create<SqlQueryDatabaseCommand>().Sql(sql);
+            return _commandFactory.Create<SqlQueryCommand>().Sql(sql);
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace FluentCommander
         /// </summary>
         /// <param name="storedProcedureName">The name of the stored procedure to execute</param>
         /// <returns>A stored procedure command builder</returns>
-        public StoredProcedureDatabaseCommand ForStoredProcedure(string storedProcedureName)
+        public StoredProcedureCommand ForStoredProcedure(string storedProcedureName)
         {
-            return _commandFactory.Create<StoredProcedureDatabaseCommand>().Name(storedProcedureName);
+            return _commandFactory.Create<StoredProcedureCommand>().Name(storedProcedureName);
         }
 
         /// <summary>

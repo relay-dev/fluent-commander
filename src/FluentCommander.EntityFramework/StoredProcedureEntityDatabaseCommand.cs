@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.EntityFramework
 {
-    public class StoredProcedureEntityDatabaseCommand<TEntity> : StoredProcedureDatabaseCommand
+    public class StoredProcedureEntityDatabaseCommand<TEntity> : StoredProcedureCommand
     {
         private Action<PropertyMapBuilder<TEntity>> _mappingBuilder;
 

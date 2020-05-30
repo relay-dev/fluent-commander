@@ -1,13 +1,13 @@
-﻿using FluentCommander.Core;
-using FluentCommander.Utility;
-using System;
+﻿using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
+using FluentCommander.Utility;
 
 namespace FluentCommander.Commands
 {
-    public class BulkCopyDatabaseCommand : IDatabaseCommand<BulkCopyResult>
+    public class BulkCopyCommand : IDatabaseCommand<BulkCopyResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly IAutoMapper _autoMapper;
@@ -15,7 +15,7 @@ namespace FluentCommander.Commands
         private readonly BulkCopyMappingOptions _options;
         private bool _isAutoMap;
 
-        public BulkCopyDatabaseCommand(IDatabaseCommander databaseCommander, IAutoMapper autoMapper)
+        public BulkCopyCommand(IDatabaseCommander databaseCommander, IAutoMapper autoMapper)
         {
             _databaseCommander = databaseCommander;
             _autoMapper = autoMapper;
@@ -23,28 +23,28 @@ namespace FluentCommander.Commands
             _options = new BulkCopyMappingOptions(this);
         }
 
-        public BulkCopyDatabaseCommand From(DataTable dataTable)
+        public BulkCopyCommand From(DataTable dataTable)
         {
             _bulkCopyRequest.DataTable = dataTable;
 
             return this;
         }
 
-        public BulkCopyDatabaseCommand Into(string tableName)
+        public BulkCopyCommand Into(string tableName)
         {
             _bulkCopyRequest.TableName = tableName;
 
             return this;
         }
 
-        public BulkCopyDatabaseCommand MappingOptions(Func<BulkCopyMappingOptions, BulkCopyMappingOptions> opt)
+        public BulkCopyCommand MappingOptions(Func<BulkCopyMappingOptions, BulkCopyMappingOptions> opt)
         {
             opt.Invoke(_options);
 
             return this;
         }
 
-        public BulkCopyDatabaseCommand Timeout(TimeSpan timeout)
+        public BulkCopyCommand Timeout(TimeSpan timeout)
         {
             _bulkCopyRequest.Timeout = timeout;
 
@@ -90,9 +90,9 @@ namespace FluentCommander.Commands
 
         public class BulkCopyMappingOptions
         {
-            private readonly BulkCopyDatabaseCommand _command;
+            private readonly BulkCopyCommand _command;
 
-            public BulkCopyMappingOptions(BulkCopyDatabaseCommand command)
+            public BulkCopyMappingOptions(BulkCopyCommand command)
             {
                 _command = command;
             }
