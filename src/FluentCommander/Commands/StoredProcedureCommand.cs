@@ -6,36 +6,36 @@ namespace FluentCommander.Commands
 {
     public class StoredProcedureCommand : ParameterizedCommandBuilder<StoredProcedureCommand, StoredProcedureResult>
     {
-        protected readonly IDatabaseCommander DatabaseCommander;
-        protected readonly StoredProcedureRequest StoredProcedureRequest;
+        private readonly IDatabaseCommander _databaseCommander;
+        private readonly StoredProcedureRequest _storedProcedureRequest;
 
         public StoredProcedureCommand(IDatabaseCommander databaseCommander)
         {
-            DatabaseCommander = databaseCommander;
-            StoredProcedureRequest = new StoredProcedureRequest();
+            _databaseCommander = databaseCommander;
+            _storedProcedureRequest = new StoredProcedureRequest();
         }
 
         public StoredProcedureCommand Name(string storedProcedureName)
         {
-            StoredProcedureRequest.StoredProcedureName = storedProcedureName;
+            _storedProcedureRequest.StoredProcedureName = storedProcedureName;
 
             return this;
         }
 
         public override StoredProcedureResult Execute()
         {
-            StoredProcedureRequest.DatabaseParameters = Parameters;
-            StoredProcedureRequest.Timeout = CommandTimeout;
+            _storedProcedureRequest.DatabaseParameters = Parameters;
+            _storedProcedureRequest.Timeout = CommandTimeout;
 
-            return DatabaseCommander.ExecuteStoredProcedure(StoredProcedureRequest);
+            return _databaseCommander.ExecuteStoredProcedure(_storedProcedureRequest);
         }
 
         public override async Task<StoredProcedureResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            StoredProcedureRequest.DatabaseParameters = Parameters;
-            StoredProcedureRequest.Timeout = CommandTimeout;
+            _storedProcedureRequest.DatabaseParameters = Parameters;
+            _storedProcedureRequest.Timeout = CommandTimeout;
 
-            return await DatabaseCommander.ExecuteStoredProcedureAsync(StoredProcedureRequest, cancellationToken);
+            return await _databaseCommander.ExecuteStoredProcedureAsync(_storedProcedureRequest, cancellationToken);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
                     sample.Property(s => s.ModifiedBy).Ignore();
                     sample.Property(s => s.ModifiedDate).Ignore();
                 })
-                .ExecuteAndProject();
+                .Execute();
 
             // Assert
             result.ShouldNotBeNull();
