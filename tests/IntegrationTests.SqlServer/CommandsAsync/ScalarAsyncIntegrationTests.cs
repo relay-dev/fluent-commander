@@ -1,17 +1,17 @@
-﻿using System;
+﻿using FluentCommander;
+using Shouldly;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander;
-using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class ScalarCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class ScalarAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public ScalarCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public ScalarAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

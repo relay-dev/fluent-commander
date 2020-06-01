@@ -3,15 +3,16 @@ using Shouldly;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Pagination;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class PaginationCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class PaginationAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public PaginationCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public PaginationAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

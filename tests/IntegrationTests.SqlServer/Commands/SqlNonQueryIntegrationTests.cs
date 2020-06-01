@@ -1,15 +1,16 @@
 ﻿using FluentCommander;
 using Shouldly;
 using System;
+using FluentCommander.SqlNonQuery;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class SqlNonQueryCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class SqlNonQueryIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public SqlNonQueryCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public SqlNonQueryIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

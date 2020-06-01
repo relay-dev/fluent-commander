@@ -3,15 +3,16 @@ using Shouldly;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.SqlNonQuery;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class SqlNonQueryCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class SqlNonQueryAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public SqlNonQueryCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public SqlNonQueryAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

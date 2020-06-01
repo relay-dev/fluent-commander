@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core.CommandBuilders;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.SqlQuery
 {
     public class SqlQueryCommand : ParameterizedSqlCommand<SqlQueryCommand, SqlQueryResult>
     {

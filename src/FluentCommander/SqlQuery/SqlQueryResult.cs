@@ -1,7 +1,7 @@
-﻿using FluentCommander.Core;
-using System.Data;
+﻿using System.Data;
+using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.SqlQuery
 {
     public class SqlQueryResult : DataTableResult
     {

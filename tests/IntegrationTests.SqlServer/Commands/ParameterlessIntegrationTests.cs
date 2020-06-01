@@ -2,15 +2,16 @@
 using Shouldly;
 using System;
 using System.Data;
+using FluentCommander.StoredProcedure;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class ParameterlessCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class ParameterlessIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public ParameterlessCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public ParameterlessIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace FluentCommander.Utility.Impl
+namespace FluentCommander.Core.Utility.Impl
 {
     internal class AutoMapper : IAutoMapper
     {

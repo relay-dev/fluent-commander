@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.BulkCopy
 {
     public class BulkCopyRequest : DatabaseCommandRequest
     {

@@ -1,6 +1,6 @@
 ﻿using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.Pagination
 {
     /// <summary>
     /// Allows you to set all input parameters needed to paginate a view

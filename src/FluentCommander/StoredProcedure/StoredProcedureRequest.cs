@@ -1,6 +1,6 @@
 ﻿using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureRequest : ParameterizedCommandRequest
     {

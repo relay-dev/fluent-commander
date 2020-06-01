@@ -1,4 +1,4 @@
-﻿namespace FluentCommander
+﻿namespace FluentCommander.BulkCopy
 {
     public class BulkCopyResult
     {

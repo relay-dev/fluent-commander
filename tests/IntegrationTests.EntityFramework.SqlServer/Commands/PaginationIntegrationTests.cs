@@ -1,17 +1,18 @@
 ﻿using FluentCommander;
 using FluentCommander.EntityFramework;
+using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
 using System;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.Pagination;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.EntityFramework.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class PaginationCommandIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
+    public class PaginationIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
     {
-        public PaginationCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public PaginationIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

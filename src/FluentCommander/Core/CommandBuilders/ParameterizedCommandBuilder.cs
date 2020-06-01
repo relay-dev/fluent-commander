@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace FluentCommander.Commands.Builders
+namespace FluentCommander.Core.CommandBuilders
 {
     public abstract class ParameterizedCommandBuilder<TCommand, TResult> : ParameterizedInputCommand<TCommand, TResult> where TCommand : class
     {

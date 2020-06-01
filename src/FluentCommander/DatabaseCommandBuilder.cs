@@ -1,5 +1,10 @@
-﻿using FluentCommander.Commands;
+﻿using FluentCommander.BulkCopy;
 using FluentCommander.Core;
+using FluentCommander.Pagination;
+using FluentCommander.Scalar;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
 
 namespace FluentCommander
 {

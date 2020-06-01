@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureResult : DataTableResult
     {

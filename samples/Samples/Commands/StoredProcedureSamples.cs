@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.StoredProcedure;
 
 namespace Samples.Commands
 {
@@ -13,11 +14,11 @@ namespace Samples.Commands
     /// To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files
     /// </notes>
     [SampleFixture]
-    public class StoredProcedureCommandSamples : CommandSampleBase
+    public class StoredProcedureSamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public StoredProcedureCommandSamples(
+        public StoredProcedureSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

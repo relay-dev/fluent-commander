@@ -1,11 +1,11 @@
-﻿using FluentCommander.Core;
-using FluentCommander.Utility;
-using System;
+﻿using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
+using FluentCommander.Core.Utility;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.BulkCopy
 {
     public class BulkCopyCommand : IDatabaseCommand<BulkCopyResult>
     {

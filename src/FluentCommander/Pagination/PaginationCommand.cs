@@ -1,9 +1,9 @@
-﻿using FluentCommander.Core;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.Pagination
 {
     public class PaginationCommand : IDatabaseCommand<PaginationResult>
     {

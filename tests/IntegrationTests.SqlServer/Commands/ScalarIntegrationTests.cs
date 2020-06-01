@@ -1,15 +1,15 @@
-﻿using System;
-using FluentCommander;
+﻿using FluentCommander;
 using Shouldly;
+using System;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class ScalarCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class ScalarIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public ScalarCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public ScalarIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

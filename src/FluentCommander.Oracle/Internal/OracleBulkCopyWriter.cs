@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using FluentCommander.BulkCopy;
+using FluentCommander.SqlQuery;
 
 namespace FluentCommander.Oracle.Internal
 {

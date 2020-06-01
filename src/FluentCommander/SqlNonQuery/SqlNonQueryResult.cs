@@ -1,4 +1,4 @@
-﻿namespace FluentCommander
+﻿namespace FluentCommander.SqlNonQuery
 {
     public class SqlNonQueryResult
     {

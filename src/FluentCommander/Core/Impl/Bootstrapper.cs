@@ -1,6 +1,11 @@
-﻿using FluentCommander.Commands;
-using FluentCommander.Utility;
-using FluentCommander.Utility.Impl;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core.Utility;
+using FluentCommander.Core.Utility.Impl;
+using FluentCommander.Pagination;
+using FluentCommander.Scalar;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FluentCommander.Core.Impl

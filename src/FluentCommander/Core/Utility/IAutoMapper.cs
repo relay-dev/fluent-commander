@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace FluentCommander.Utility
+namespace FluentCommander.Core.Utility
 {
     public interface IAutoMapper
     {

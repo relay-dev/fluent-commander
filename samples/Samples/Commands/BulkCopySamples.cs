@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.BulkCopy;
 
 namespace Samples.Commands
 {
@@ -14,11 +15,11 @@ namespace Samples.Commands
     /// When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server)
     /// </notes>
     [SampleFixture]
-    public class BulkCopyCommandSamples : CommandSampleBase
+    public class BulkCopySamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public BulkCopyCommandSamples(
+        public BulkCopySamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

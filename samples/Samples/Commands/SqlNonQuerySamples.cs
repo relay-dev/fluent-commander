@@ -4,6 +4,7 @@ using Sampler.ConsoleApplication;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.SqlNonQuery;
 
 namespace Samples.Commands
 {
@@ -11,11 +12,11 @@ namespace Samples.Commands
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE
     /// </notes>
     [SampleFixture]
-    public class SqlNonQueryCommandSamples : CommandSampleBase
+    public class SqlNonQuerySamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlNonQueryCommandSamples(
+        public SqlNonQuerySamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

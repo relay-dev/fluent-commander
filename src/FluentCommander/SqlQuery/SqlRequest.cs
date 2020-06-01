@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluentCommander.Core;
 
-namespace FluentCommander
+namespace FluentCommander.SqlQuery
 {
     public class SqlRequest : ParameterizedCommandRequest
     {

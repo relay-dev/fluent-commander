@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.BulkCopy;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class BulkCopyCommandAsyncIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
+    public class BulkCopyAsyncIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
     {
         private const int RowCount = 100;
 
-        public BulkCopyCommandAsyncIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public BulkCopyAsyncIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

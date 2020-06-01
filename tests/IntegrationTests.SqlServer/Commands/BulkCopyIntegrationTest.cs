@@ -3,17 +3,18 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using FluentCommander.BulkCopy;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class BulkCopyCommandIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
+    public class BulkCopyIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>
     {
         private const int RowCount = 100;
 
-        public BulkCopyCommandIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public BulkCopyIntegrationTest(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

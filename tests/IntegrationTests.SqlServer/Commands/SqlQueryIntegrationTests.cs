@@ -1,4 +1,5 @@
 using FluentCommander;
+using FluentCommander.SqlQuery;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -6,9 +7,9 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class SqlQueryCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class SqlQueryIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public SqlQueryCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public SqlQueryIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

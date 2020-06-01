@@ -1,9 +1,8 @@
-﻿using FluentCommander.Core;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentCommander.Commands.Builders
+namespace FluentCommander.Core.CommandBuilders
 {
     public abstract class CommandBuilder<TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class
     {

@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core.CommandBuilders;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.SqlNonQuery
 {
     public class SqlNonQueryCommand : ParameterizedSqlCommand<SqlNonQueryCommand, SqlNonQueryResult>
     {

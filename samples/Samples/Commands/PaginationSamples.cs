@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Pagination;
 
 namespace Samples.Commands
 {
@@ -12,11 +13,11 @@ namespace Samples.Commands
     /// This sample class demonstrates how to build command for a SQL pagination query
     /// </notes>
     [SampleFixture]
-    public class PaginationCommandSamples : CommandSampleBase
+    public class PaginationSamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public PaginationCommandSamples(
+        public PaginationSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

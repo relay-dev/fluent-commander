@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentCommander;
+using FluentCommander.SqlQuery;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,9 +9,9 @@ using Xunit.Abstractions;
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class SqlQueryCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class SqlQueryAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public SqlQueryCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public SqlQueryAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

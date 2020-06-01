@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.StoredProcedure;
 
 namespace Samples.Commands
 {
@@ -13,11 +14,11 @@ namespace Samples.Commands
     /// More complex commands that require parameters and return values should not use this strategy
     /// </notes>
     [SampleFixture]
-    public class ParameterlessCommandSamples : CommandSampleBase
+    public class ParameterlessSamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public ParameterlessCommandSamples(
+        public ParameterlessSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

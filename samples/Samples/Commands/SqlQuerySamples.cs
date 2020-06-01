@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.SqlQuery;
 
 namespace Samples.Commands
 {
@@ -12,11 +13,11 @@ namespace Samples.Commands
     /// This sample class demonstrates how to build command for a SQL statement
     /// </notes>
     [SampleFixture]
-    public class SqlQueryCommandSamples : CommandSampleBase
+    public class SqlQuerySamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlQueryCommandSamples(
+        public SqlQuerySamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

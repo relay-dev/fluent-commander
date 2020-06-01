@@ -1,4 +1,6 @@
-﻿namespace FluentCommander.Commands
+﻿using FluentCommander.SqlQuery;
+
+namespace FluentCommander.Core.CommandBuilders
 {
     public abstract class ParameterizedSqlCommand<TCommand, TResult> : ParameterizedInputCommand<TCommand, TResult> where TCommand : class
     {

@@ -1,9 +1,10 @@
-﻿using FluentCommander.Commands.Builders;
-using FluentCommander.EntityFramework.Internal;
+﻿using FluentCommander.EntityFramework.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core.CommandBuilders;
+using FluentCommander.StoredProcedure;
 
 namespace FluentCommander.EntityFramework
 {

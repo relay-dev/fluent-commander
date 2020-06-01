@@ -1,9 +1,9 @@
-﻿using System;
-using FluentCommander.SqlServer;
+﻿using FluentCommander.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Samples.Commands;
+using System;
 
 namespace Samples
 {
@@ -31,13 +31,13 @@ namespace Samples
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);
-            serviceCollection.AddTransient<ParameterlessCommandSamples>();
-            serviceCollection.AddTransient<BulkCopyCommandSamples>();
-            serviceCollection.AddTransient<PaginationCommandSamples>();
-            serviceCollection.AddTransient<ScalarCommandSamples>();
-            serviceCollection.AddTransient<SqlNonQueryCommandSamples>();
-            serviceCollection.AddTransient<SqlQueryCommandSamples>();
-            serviceCollection.AddTransient<StoredProcedureCommandSamples>();
+            serviceCollection.AddTransient<ParameterlessSamples>();
+            serviceCollection.AddTransient<BulkCopySamples>();
+            serviceCollection.AddTransient<PaginationSamples>();
+            serviceCollection.AddTransient<ScalarSamples>();
+            serviceCollection.AddTransient<SqlNonQuerySamples>();
+            serviceCollection.AddTransient<SqlQuerySamples>();
+            serviceCollection.AddTransient<StoredProcedureSamples>();
 
             // Build the IServiceProvider
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();

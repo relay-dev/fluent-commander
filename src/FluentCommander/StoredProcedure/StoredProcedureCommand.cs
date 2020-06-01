@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Commands.Builders;
+using FluentCommander.Core.CommandBuilders;
 
-namespace FluentCommander.Commands
+namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureCommand : ParameterizedCommandBuilder<StoredProcedureCommand, StoredProcedureResult>
     {

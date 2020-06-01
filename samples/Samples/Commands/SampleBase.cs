@@ -5,11 +5,11 @@ using System.Data;
 
 namespace Samples.Commands
 {
-    public abstract class CommandSampleBase : SampleAsync
+    public abstract class SampleBase : SampleAsync
     {
         private readonly DatabaseService _databaseService;
 
-        protected CommandSampleBase(IConfiguration config)
+        protected SampleBase(IConfiguration config)
         {
             _databaseService = new DatabaseService(config);
         }

@@ -4,15 +4,16 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.StoredProcedure;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
-    public class StoredProcedureCommandAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class StoredProcedureAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public StoredProcedureCommandAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public StoredProcedureAsyncIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

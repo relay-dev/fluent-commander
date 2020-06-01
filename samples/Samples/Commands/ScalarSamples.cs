@@ -12,11 +12,11 @@ namespace Samples.Commands
     /// This sample class demonstrates how to build command for a scalar SQL statement
     /// </notes>
     [SampleFixture]
-    public class ScalarCommandSamples : CommandSampleBase
+    public class ScalarSamples : SampleBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public ScalarCommandSamples(
+        public ScalarSamples(
             IDatabaseCommander databaseCommander,
             IConfiguration config)
             : base(config)

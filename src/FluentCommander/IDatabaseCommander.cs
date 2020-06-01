@@ -1,6 +1,11 @@
 ﻿using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.BulkCopy;
+using FluentCommander.Pagination;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
 
 namespace FluentCommander
 {

@@ -1,15 +1,16 @@
 ﻿using FluentCommander;
 using Shouldly;
 using System;
+using FluentCommander.Pagination;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class PaginationCommandIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
+    public class PaginationIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public PaginationCommandIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public PaginationIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]

@@ -3,6 +3,8 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {
