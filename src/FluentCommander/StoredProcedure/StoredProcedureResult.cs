@@ -14,7 +14,7 @@ namespace FluentCommander.StoredProcedure
         /// <summary>
         /// The count of all records returned
         /// </summary>
-        public int Count => DataTable.Rows.Count;
+        public int Count => DataTable?.Rows.Count ?? 0;
 
         /// <summary>
         /// The records returned for this iteration of the pager
@@ -48,6 +48,6 @@ namespace FluentCommander.StoredProcedure
         /// <summary>
         /// Indicates whether or not the DataTable has data in it
         /// </summary>
-        public bool HasData => Result != null && Result.Count > 0;
+        public bool HasData => Count > 0;
     }
 }

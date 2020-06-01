@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.BulkCopy
 {
-    public abstract partial class BulkCopyCommandBuilder : CommandBuilderBase<BulkCopyRequest, BulkCopyCommandBuilder, BulkCopyResult>
+    public abstract partial class BulkCopyCommandBuilder : CommandBuilder<BulkCopyRequest, BulkCopyCommandBuilder, BulkCopyResult>
     {
         private readonly BulkCopyMappingOptions _options;
+        protected readonly BulkCopyRequest CommandRequest;
         protected bool IsAutoMap;
 
-        protected BulkCopyCommandBuilder()
+        protected BulkCopyCommandBuilder(BulkCopyRequest commandRequest)
+            : base(commandRequest)
         {
-            CommandRequest = new BulkCopyRequest();
-            _options = new BulkCopyMappingOptions(this);
+            CommandRequest = commandRequest;
+            _options = new BulkCopyMappingOptions(this, CommandRequest);
         }
 
         public BulkCopyCommandBuilder From(DataTable dataTable)
@@ -31,7 +33,7 @@ namespace FluentCommander.BulkCopy
             return this;
         }
 
-        public BulkCopyCommandBuilder MappingOptions(Func<BulkCopyMappingOptions, BulkCopyMappingOptions> options)
+        public BulkCopyCommandBuilder Mapping(Func<BulkCopyMappingOptions, BulkCopyMappingOptions> options)
         {
             options.Invoke(_options);
 

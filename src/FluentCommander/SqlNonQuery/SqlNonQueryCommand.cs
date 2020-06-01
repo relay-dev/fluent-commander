@@ -10,24 +10,19 @@ namespace FluentCommander.SqlNonQuery
         private readonly IDatabaseCommander _databaseCommander;
 
         public SqlNonQueryCommand(IDatabaseCommander databaseCommander)
+            : base(new SqlRequest())
         {
             _databaseCommander = databaseCommander;
         }
 
         public override SqlNonQueryResult Execute()
         {
-            SqlRequest.Parameters = Parameters;
-            SqlRequest.Timeout = CommandTimeout;
-
-            return _databaseCommander.ExecuteNonQuery(SqlRequest);
+            return _databaseCommander.ExecuteNonQuery(CommandRequest);
         }
 
         public override async Task<SqlNonQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlRequest.Parameters = Parameters;
-            SqlRequest.Timeout = CommandTimeout;
-
-            return await _databaseCommander.ExecuteNonQueryAsync(SqlRequest, cancellationToken);
+            return await _databaseCommander.ExecuteNonQueryAsync(CommandRequest, cancellationToken);
         }
     }
 }

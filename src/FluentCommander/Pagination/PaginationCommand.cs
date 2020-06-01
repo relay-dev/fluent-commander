@@ -9,6 +9,7 @@ namespace FluentCommander.Pagination
         private readonly IDatabaseCommander _databaseCommander;
 
         public PaginationCommand(IDatabaseCommander databaseCommander)
+            : base(new PaginationRequest())
         {
             _databaseCommander = databaseCommander;
         }

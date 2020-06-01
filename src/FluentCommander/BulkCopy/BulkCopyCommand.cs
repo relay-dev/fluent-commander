@@ -11,6 +11,7 @@ namespace FluentCommander.BulkCopy
         private readonly IAutoMapper _autoMapper;
 
         public BulkCopyCommand(IDatabaseCommander databaseCommander, IAutoMapper autoMapper)
+            : base(new BulkCopyRequest())
         {
             _databaseCommander = databaseCommander;
             _autoMapper = autoMapper;

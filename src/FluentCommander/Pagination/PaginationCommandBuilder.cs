@@ -2,11 +2,14 @@
 
 namespace FluentCommander.Pagination
 {
-    public abstract class PaginationCommandBuilder : CommandBuilderBase<PaginationRequest, PaginationCommandBuilder, PaginationResult>
+    public abstract class PaginationCommandBuilder : CommandBuilder<PaginationRequest, PaginationCommandBuilder, PaginationResult>
     {
-        protected PaginationCommandBuilder()
+        protected readonly PaginationRequest CommandRequest;
+
+        protected PaginationCommandBuilder(PaginationRequest commandRequest)
+            : base(commandRequest)
         {
-            CommandRequest = new PaginationRequest();
+            CommandRequest = commandRequest;
         }
 
         public PaginationCommandBuilder Select(string columns)

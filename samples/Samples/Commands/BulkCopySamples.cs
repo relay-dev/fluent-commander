@@ -41,7 +41,7 @@ namespace Samples.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseAutoMap())
+                .Mapping(opt => opt.UseAutoMap())
                 .ExecuteAsync(new CancellationToken());
 
             int rowCountCopied = result.RowCountCopied;
@@ -78,7 +78,7 @@ namespace Samples.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UsePartialMap(columnMapping))
+                .Mapping(opt => opt.UsePartialMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 
             int rowCountCopied = result.RowCountCopied;
@@ -127,7 +127,7 @@ namespace Samples.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseMap(columnMapping))
+                .Mapping(opt => opt.UseMap(columnMapping))
                 .Timeout(TimeSpan.FromSeconds(30))
                 .ExecuteAsync(new CancellationToken());
 

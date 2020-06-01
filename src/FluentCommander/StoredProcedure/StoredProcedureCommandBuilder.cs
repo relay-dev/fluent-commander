@@ -4,9 +4,12 @@ namespace FluentCommander.StoredProcedure
 {
     public abstract class StoredProcedureCommandBuilder : ParameterizedCommandBuilder<StoredProcedureRequest, StoredProcedureCommand, StoredProcedureResult>
     {
-        protected StoredProcedureCommandBuilder()
+        protected readonly StoredProcedureRequest CommandRequest;
+
+        protected StoredProcedureCommandBuilder(StoredProcedureRequest commandRequest)
+            : base(commandRequest)
         {
-            CommandRequest = new StoredProcedureRequest();
+            CommandRequest = commandRequest;
         }
 
         public StoredProcedureCommand Name(string storedProcedureName)

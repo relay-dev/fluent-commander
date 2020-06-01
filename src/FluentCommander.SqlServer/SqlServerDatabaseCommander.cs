@@ -1,4 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.Pagination;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,11 +12,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.BulkCopy;
-using FluentCommander.Pagination;
-using FluentCommander.SqlNonQuery;
-using FluentCommander.SqlQuery;
-using FluentCommander.StoredProcedure;
 
 namespace FluentCommander.SqlServer
 {

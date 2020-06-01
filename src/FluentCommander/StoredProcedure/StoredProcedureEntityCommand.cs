@@ -13,6 +13,7 @@ namespace FluentCommander.StoredProcedure
         private Action<PropertyMapBuilder<TEntity>> _mappingBuilder;
 
         public StoredProcedureCommand(IDatabaseCommander databaseCommander)
+            : base(new StoredProcedureRequest())
         {
             _databaseCommander = databaseCommander;
         }
@@ -27,9 +28,6 @@ namespace FluentCommander.StoredProcedure
         // TODO: 
         public override StoredProcedureResult<TEntity> Execute()
         {
-            CommandRequest.Parameters = Parameters;
-            CommandRequest.Timeout = CommandTimeout;
-
             StoredProcedureResult storedProcedureResult =
                 _databaseCommander.ExecuteStoredProcedure(CommandRequest);
 
@@ -40,9 +38,6 @@ namespace FluentCommander.StoredProcedure
 
         public override async Task<StoredProcedureResult<TEntity>> ExecuteAsync(CancellationToken cancellationToken)
         {
-            CommandRequest.Parameters = Parameters;
-            CommandRequest.Timeout = CommandTimeout;
-
             StoredProcedureResult storedProcedureResult = await 
                 _databaseCommander.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
 

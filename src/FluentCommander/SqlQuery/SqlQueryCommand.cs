@@ -9,24 +9,19 @@ namespace FluentCommander.SqlQuery
         private readonly IDatabaseCommander _databaseCommander;
 
         public SqlQueryCommand(IDatabaseCommander databaseCommander)
+            : base(new SqlRequest())
         {
             _databaseCommander = databaseCommander;
         }
 
         public override SqlQueryResult Execute()
         {
-            SqlRequest.Parameters = Parameters;
-            SqlRequest.Timeout = CommandTimeout;
-
-            return _databaseCommander.ExecuteSql(SqlRequest);
+            return _databaseCommander.ExecuteSql(CommandRequest);
         }
 
         public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlRequest.Parameters = Parameters;
-            SqlRequest.Timeout = CommandTimeout;
-
-            return await _databaseCommander.ExecuteSqlAsync(SqlRequest, cancellationToken);
+            return await _databaseCommander.ExecuteSqlAsync(CommandRequest, cancellationToken);
         }
     }
 }

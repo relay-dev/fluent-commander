@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> : CommandBuilderBase<TRequest, TBuilder, TResult> where TBuilder : class
+    public abstract class ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> : CommandBuilder<TRequest, TBuilder, TResult> where TBuilder : class where TRequest : DatabaseCommandRequest
     {
-        protected readonly List<DatabaseCommandParameter> Parameters;
+        private readonly ParameterizedCommandRequest _commandRequest;
 
-        protected ParameterizedInputCommandBuilder()
+        protected ParameterizedInputCommandBuilder(ParameterizedCommandRequest commandRequest)
+            : base(commandRequest)
         {
-            Parameters = new List<DatabaseCommandParameter>();
+            _commandRequest = commandRequest;
         }
 
         public TBuilder AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
@@ -24,7 +24,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -41,7 +41,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -59,11 +59,9 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
-
-        
     }
 }

@@ -3,8 +3,16 @@ using System.Data;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedCommandBuilder<TCommand, TBuilder, TResult> : ParameterizedInputCommandBuilder<TCommand, TBuilder, TResult> where TBuilder : class
+    public abstract class ParameterizedCommandBuilder<TRequest, TBuilder, TResult> : ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> where TBuilder : class where TRequest : DatabaseCommandRequest
     {
+        private readonly ParameterizedCommandRequest _commandRequest;
+
+        protected ParameterizedCommandBuilder(ParameterizedCommandRequest commandRequest)
+            : base(commandRequest)
+        {
+            _commandRequest = commandRequest;
+        }
+
         public TBuilder AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
         {
             var parameter = new DatabaseCommandParameter
@@ -16,7 +24,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -33,7 +41,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -51,7 +59,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             parameter.Value ??= DBNull.Value;
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -65,7 +73,7 @@ namespace FluentCommander.Core.CommandBuilders
                 DatabaseType = databaseType.ToString()
             };
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -80,7 +88,7 @@ namespace FluentCommander.Core.CommandBuilders
                 Size = size
             };
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }
@@ -93,7 +101,7 @@ namespace FluentCommander.Core.CommandBuilders
                 Direction = ParameterDirection.ReturnValue
             };
 
-            Parameters.Add(parameter);
+            _commandRequest.Parameters.Add(parameter);
 
             return this as TBuilder;
         }

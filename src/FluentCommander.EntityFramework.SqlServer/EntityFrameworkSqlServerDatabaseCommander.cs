@@ -1,10 +1,10 @@
-﻿using FluentCommander.SqlServer;
+﻿using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.SqlNonQuery;
-using FluentCommander.SqlQuery;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {

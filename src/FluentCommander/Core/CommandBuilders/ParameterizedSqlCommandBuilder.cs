@@ -2,18 +2,19 @@
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedSqlCommandBuilder<TRequest, TBuilder, TResult> : ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> where TBuilder : class
+    public abstract class ParameterizedSqlCommandBuilder<TRequest, TBuilder, TResult> : ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> where TBuilder : class where TRequest : DatabaseCommandRequest
     {
-        protected readonly SqlRequest SqlRequest;
+        protected readonly SqlRequest CommandRequest;
 
-        protected ParameterizedSqlCommandBuilder()
+        protected ParameterizedSqlCommandBuilder(SqlRequest commandRequest)
+            : base(commandRequest)
         {
-            SqlRequest = new SqlRequest();
+            CommandRequest = commandRequest;
         }
 
         public TBuilder Sql(string sql)
         {
-            SqlRequest.Sql = sql;
+            CommandRequest.Sql = sql;
 
             return this as TBuilder;
         }

@@ -33,7 +33,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseAutoMap())
+                .Mapping(opt => opt.UseAutoMap())
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -68,7 +68,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UsePartialMap(columnMapping))
+                .Mapping(opt => opt.UsePartialMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 
             // Assert
@@ -115,7 +115,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseMap(columnMapping))
+                .Mapping(opt => opt.UseMap(columnMapping))
                 .ExecuteAsync(new CancellationToken());
 
             // Assert

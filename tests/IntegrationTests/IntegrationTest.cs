@@ -14,7 +14,6 @@ namespace IntegrationTests
 
         protected IntegrationTest(ITestOutputHelper output)
         {
-            
             _output = output;
         }
 

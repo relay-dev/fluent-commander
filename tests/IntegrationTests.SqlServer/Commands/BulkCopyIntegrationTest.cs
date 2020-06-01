@@ -29,7 +29,7 @@ namespace IntegrationTests.SqlServer.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseAutoMap())
+                .Mapping(opt => opt.UseAutoMap())
                 .Execute();
 
             // Assert
@@ -64,7 +64,7 @@ namespace IntegrationTests.SqlServer.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UsePartialMap(columnMapping))
+                .Mapping(opt => opt.UsePartialMap(columnMapping))
                 .Execute();
 
             // Assert
@@ -111,7 +111,7 @@ namespace IntegrationTests.SqlServer.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .MappingOptions(opt => opt.UseMap(columnMapping))
+                .Mapping(opt => opt.UseMap(columnMapping))
                 .Execute();
 
             // Assert
