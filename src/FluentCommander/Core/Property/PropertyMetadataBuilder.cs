@@ -23,16 +23,9 @@
             return this;
         }
 
-        public PropertyMetadataBuilder<TEntity> Key()
-        {
-            PropertyMetadata.IsKey = true;
-
-            return this;
-        }
-
         public PropertyMetadataBuilder<TEntity> Ignore()
         {
-            PropertyMetadata.IsIgnored = true;
+            PropertyMetadata.IsIgnore = true;
 
             return this;
         }

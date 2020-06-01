@@ -1,6 +1,5 @@
 ﻿using FluentCommander.Core.Property;
 using FluentCommander.Core.Utility.Impl;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ namespace FluentCommander.StoredProcedure
     public class StoredProcedureCommand<TEntity> : StoredProcedureCommandBuilder<TEntity>
     {
         private readonly IDatabaseCommander _databaseCommander;
-        private Action<PropertyMapBuilder<TEntity>> _mappingBuilder;
 
         public StoredProcedureCommand(IDatabaseCommander databaseCommander)
             : base(new StoredProcedureRequest())
@@ -18,14 +16,6 @@ namespace FluentCommander.StoredProcedure
             _databaseCommander = databaseCommander;
         }
 
-        public StoredProcedureCommand<TEntity> Project(Action<PropertyMapBuilder<TEntity>> mappingBuilder)
-        {
-            _mappingBuilder = mappingBuilder;
-
-            return this;
-        }
-
-        // TODO: 
         public override StoredProcedureResult<TEntity> Execute()
         {
             StoredProcedureResult storedProcedureResult =
@@ -50,7 +40,7 @@ namespace FluentCommander.StoredProcedure
         {
             var options = new PropertyMapBuilder<TEntity>();
 
-            _mappingBuilder(options);
+            MappingBuilder(options);
 
             List<TEntity> result = ReflectionUtility.DataTableToList(storedProcedureResult.DataTable, options);
 
