@@ -1,5 +1,5 @@
-﻿using System.Data;
-using FluentCommander.Core;
+﻿using FluentCommander.Core;
+using System.Data;
 
 namespace FluentCommander.BulkCopy
 {

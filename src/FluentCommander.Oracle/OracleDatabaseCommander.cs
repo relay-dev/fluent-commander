@@ -66,9 +66,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -88,9 +88,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -134,9 +134,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -158,9 +158,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -210,9 +210,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -234,9 +234,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -291,9 +291,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);
+            OracleParameter[] parameters = ToOracleParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -304,15 +304,15 @@ namespace FluentCommander.Oracle
             new OracleDataAdapter(command).Fill(dataTable);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
@@ -328,9 +328,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);
+            OracleParameter[] parameters = ToOracleParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -342,15 +342,15 @@ namespace FluentCommander.Oracle
             dataTable.Load(reader);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override string GetServerName()

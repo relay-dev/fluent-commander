@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentCommander.EntityFramework
+namespace FluentCommander.Core.Property
 {
     public class PropertyMap<TEntity>
     {

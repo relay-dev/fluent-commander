@@ -4,8 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentCommander.Core.Property;
 
-namespace FluentCommander.EntityFramework.Internal
+namespace FluentCommander.Core.Utility.Impl
 {
     public class ReflectionUtility
     {

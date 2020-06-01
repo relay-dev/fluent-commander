@@ -3,9 +3,9 @@ using System.Data;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedCommandBuilder<TCommand, TResult> : ParameterizedInputCommand<TCommand, TResult> where TCommand : class
+    public abstract class ParameterizedCommandBuilder<TCommand, TBuilder, TResult> : ParameterizedInputCommandBuilder<TCommand, TBuilder, TResult> where TBuilder : class
     {
-        public TCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
+        public TBuilder AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -18,10 +18,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
+        public TBuilder AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -35,10 +35,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
+        public TBuilder AddInputOutputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -53,10 +53,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddOutputParameter(string parameterName, object databaseType)
+        public TBuilder AddOutputParameter(string parameterName, object databaseType)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -67,10 +67,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddOutputParameter(string parameterName, object databaseType, int size)
+        public TBuilder AddOutputParameter(string parameterName, object databaseType, int size)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -82,10 +82,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand WithReturnParameter()
+        public TBuilder WithReturnParameter()
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -95,7 +95,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Threading;
+﻿using FluentCommander.Core.CommandBuilders;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Core.CommandBuilders;
 
 namespace FluentCommander.SqlQuery
 {
-    public class SqlQueryCommand : ParameterizedSqlCommand<SqlQueryCommand, SqlQueryResult>
+    public class SqlQueryCommand : ParameterizedSqlCommandBuilder<SqlRequest, SqlQueryCommand, SqlQueryResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -15,7 +15,7 @@ namespace FluentCommander.SqlQuery
 
         public override SqlQueryResult Execute()
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return _databaseCommander.ExecuteSql(SqlRequest);
@@ -23,7 +23,7 @@ namespace FluentCommander.SqlQuery
 
         public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return await _databaseCommander.ExecuteSqlAsync(SqlRequest, cancellationToken);

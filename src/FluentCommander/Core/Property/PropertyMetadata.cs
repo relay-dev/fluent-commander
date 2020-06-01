@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace FluentCommander.EntityFramework
+namespace FluentCommander.Core.Property
 {
     public class PropertyMetadata<TEntity, TProperty>
     {

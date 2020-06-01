@@ -4,16 +4,16 @@ using System.Data;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedInputCommand<TCommand, TResult> : CommandBuilder<TCommand, TResult> where TCommand : class
+    public abstract class ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> : CommandBuilderBase<TRequest, TBuilder, TResult> where TBuilder : class
     {
         protected readonly List<DatabaseCommandParameter> Parameters;
 
-        protected ParameterizedInputCommand()
+        protected ParameterizedInputCommandBuilder()
         {
             Parameters = new List<DatabaseCommandParameter>();
         }
 
-        public TCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
+        public TBuilder AddInputParameter<TParameter>(string parameterName, TParameter parameterValue)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -26,10 +26,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
+        public TBuilder AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -43,10 +43,10 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
-        public TCommand AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
+        public TBuilder AddInputParameter<TParameter>(string parameterName, TParameter parameterValue, object databaseType, int size)
         {
             var parameter = new DatabaseCommandParameter
             {
@@ -61,7 +61,7 @@ namespace FluentCommander.Core.CommandBuilders
 
             Parameters.Add(parameter);
 
-            return this as TCommand;
+            return this as TBuilder;
         }
 
         

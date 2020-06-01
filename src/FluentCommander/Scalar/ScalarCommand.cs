@@ -1,10 +1,10 @@
-﻿using System.Threading;
+﻿using FluentCommander.Core.CommandBuilders;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Core.CommandBuilders;
 
 namespace FluentCommander.Scalar
 {
-    public class ScalarCommand<TResult> : ParameterizedSqlCommand<ScalarCommand<TResult>, TResult>
+    public class ScalarCommand<TResult> : ParameterizedSqlCommandBuilder<ScalarCommand<TResult>, ScalarCommand<TResult>, TResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -15,7 +15,7 @@ namespace FluentCommander.Scalar
 
         public override TResult Execute()
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return _databaseCommander.ExecuteScalar<TResult>(SqlRequest);
@@ -23,7 +23,7 @@ namespace FluentCommander.Scalar
 
         public override async Task<TResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return await _databaseCommander.ExecuteScalarAsync<TResult>(SqlRequest, cancellationToken);

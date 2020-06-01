@@ -9,7 +9,6 @@ namespace FluentCommander.EntityFramework
         public static IServiceCollection AddEntityFrameworkDatabaseCommander(this IServiceCollection services)
         {
             services.AddTransient<DbContextCommandBuilder>();
-            services.AddTransient(typeof(StoredProcedureEntityCommand<>));
 
             return new Bootstrapper().Bootstrap(services);
         }

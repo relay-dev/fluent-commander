@@ -1,4 +1,5 @@
 ﻿using FluentCommander.EntityFramework;
+using FluentCommander.StoredProcedure;
 using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
 using System;
@@ -17,10 +18,10 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
 
         // TODO: 
         [Fact]
-        public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnDataTable()
+        public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnListOfEntities()
         {
             // Arrange & Act
-            StoredProcedureEntityResult<Sample> result = SUT.BuildCommand()
+            StoredProcedureResult<Sample> result = SUT.BuildCommand()
                 .ForStoredProcedure<Sample>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .Project(sample =>
@@ -53,7 +54,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
             result.Result.First().SampleVarChar.ShouldNotBeNullOrEmpty("SampleVarChar");
 
             // Print result
-            WriteLine(result.DataTable);
+            WriteLine(result.Result);
         }
     }
 }

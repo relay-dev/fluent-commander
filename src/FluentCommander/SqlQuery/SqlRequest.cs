@@ -12,8 +12,8 @@ namespace FluentCommander.SqlQuery
             Sql = sql;
         }
 
-        public SqlRequest(string sql, List<DatabaseCommandParameter> databaseParameters)
-            : base(databaseParameters)
+        public SqlRequest(string sql, List<DatabaseCommandParameter> parameters)
+            : base(parameters)
         {
             Sql = sql;
         }

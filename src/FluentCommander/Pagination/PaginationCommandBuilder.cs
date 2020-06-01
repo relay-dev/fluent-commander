@@ -1,10 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentCommander.Core.CommandBuilders;
 
 namespace FluentCommander.Pagination
 {
-    class PaginationCommandBuilder
+    public abstract class PaginationCommandBuilder : CommandBuilderBase<PaginationRequest, PaginationCommandBuilder, PaginationResult>
     {
+        protected PaginationCommandBuilder()
+        {
+            CommandRequest = new PaginationRequest();
+        }
+
+        public PaginationCommandBuilder Select(string columns)
+        {
+            CommandRequest.Columns = columns;
+
+            return this;
+        }
+
+        public PaginationCommandBuilder From(string target)
+        {
+            CommandRequest.TableName = target;
+
+            return this;
+        }
+
+        public PaginationCommandBuilder Where(string conditions)
+        {
+            CommandRequest.Conditions = conditions;
+
+            return this;
+        }
+
+        public PaginationCommandBuilder OrderBy(string columns)
+        {
+            CommandRequest.OrderBy = columns;
+
+            return this;
+        }
+
+        public PaginationCommandBuilder PageNumber(int pageNumber)
+        {
+            CommandRequest.PageNumber = pageNumber;
+
+            return this;
+        }
+
+        public PaginationCommandBuilder PageSize(int pageSize)
+        {
+            CommandRequest.PageSize = pageSize;
+
+            return this;
+        }
     }
 }

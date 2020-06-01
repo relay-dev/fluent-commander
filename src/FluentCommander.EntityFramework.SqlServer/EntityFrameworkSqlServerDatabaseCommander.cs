@@ -22,13 +22,13 @@ namespace FluentCommander.EntityFramework.SqlServer
         {
             int rowCountAffected;
 
-            if (request.DatabaseParameters == null)
+            if (request.Parameters == null)
             {
                 rowCountAffected = _dbContext.Database.ExecuteSqlRaw(request.Sql);
             }
             else
             {
-                SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
+                SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
                 rowCountAffected = _dbContext.Database.ExecuteSqlRaw(request.Sql, parameters);
             }
@@ -40,13 +40,13 @@ namespace FluentCommander.EntityFramework.SqlServer
         {
             int rowCountAffected;
 
-            if (request.DatabaseParameters == null)
+            if (request.Parameters == null)
             {
                 rowCountAffected = await _dbContext.Database.ExecuteSqlRawAsync(request.Sql, cancellationToken);
             }
             else
             {
-                SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
+                SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
                 rowCountAffected = await _dbContext.Database.ExecuteSqlRawAsync(request.Sql, parameters, cancellationToken);
             }

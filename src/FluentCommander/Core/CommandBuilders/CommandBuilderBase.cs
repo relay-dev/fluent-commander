@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class CommandBuilder<TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class
+    public abstract class CommandBuilderBase<TRequest, TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class
     {
+        protected TRequest CommandRequest;
         protected TimeSpan CommandTimeout;
 
         public TBuilder Timeout(TimeSpan timeout)

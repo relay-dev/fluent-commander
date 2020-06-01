@@ -1,4 +1,4 @@
-﻿namespace FluentCommander.EntityFramework
+﻿namespace FluentCommander.Core.Property
 {
     public class PropertyMetadataBuilder<TEntity>
     {

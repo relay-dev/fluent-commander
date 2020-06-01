@@ -76,12 +76,13 @@ namespace FluentCommander
         }
 
         /// <summary>
-        /// Builds a command to execute based on the command type
+        /// Builds a command to execute a stored procedure
         /// </summary>
-        /// <returns>A command builder of the requested type</returns>
-        public TCommand ForCommand<TCommand>() where TCommand : IDatabaseCommand
+        /// <param name="storedProcedureName">The name of the stored procedure to execute</param>
+        /// <returns>A stored procedure command builder</returns>
+        public StoredProcedureCommand<TEntity> ForStoredProcedure<TEntity>(string storedProcedureName)
         {
-            return _commandFactory.Create<TCommand>();
+            return _commandFactory.Create<StoredProcedureCommand<TEntity>>().Name(storedProcedureName);
         }
     }
 }

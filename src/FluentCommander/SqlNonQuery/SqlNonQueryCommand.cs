@@ -1,10 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentCommander.Core.CommandBuilders;
+using FluentCommander.SqlQuery;
 
 namespace FluentCommander.SqlNonQuery
 {
-    public class SqlNonQueryCommand : ParameterizedSqlCommand<SqlNonQueryCommand, SqlNonQueryResult>
+    public class SqlNonQueryCommand : ParameterizedSqlCommandBuilder<SqlRequest, SqlNonQueryCommand, SqlNonQueryResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -15,7 +16,7 @@ namespace FluentCommander.SqlNonQuery
 
         public override SqlNonQueryResult Execute()
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return _databaseCommander.ExecuteNonQuery(SqlRequest);
@@ -23,7 +24,7 @@ namespace FluentCommander.SqlNonQuery
 
         public override async Task<SqlNonQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlRequest.DatabaseParameters = Parameters;
+            SqlRequest.Parameters = Parameters;
             SqlRequest.Timeout = CommandTimeout;
 
             return await _databaseCommander.ExecuteNonQueryAsync(SqlRequest, cancellationToken);

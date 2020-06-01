@@ -109,9 +109,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             connection.Open();
@@ -131,9 +131,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             connection.Open();
@@ -177,9 +177,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             connection.Open();
@@ -201,9 +201,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             connection.Open();
@@ -253,9 +253,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -277,9 +277,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToSqlParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -334,9 +334,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
+            SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -347,15 +347,15 @@ namespace FluentCommander.SqlServer
             new SqlDataAdapter(command).Fill(dataTable);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
@@ -371,9 +371,9 @@ namespace FluentCommander.SqlServer
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            SqlParameter[] parameters = ToSqlParameters(request.DatabaseParameters);
+            SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -385,15 +385,15 @@ namespace FluentCommander.SqlServer
             dataTable.Load(reader);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override string GetServerName()

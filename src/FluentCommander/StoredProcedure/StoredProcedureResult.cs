@@ -1,83 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using FluentCommander.Core;
 
 namespace FluentCommander.StoredProcedure
 {
-    public class StoredProcedureResult : DataTableResult
+    public class StoredProcedureResult : StoredProcedureResultBase
     {
-        public StoredProcedureResult(List<DatabaseCommandParameter> parameters, DataTable dataTable)
-            : base(dataTable)
+        public StoredProcedureResult(DataTable dataTable, List<DatabaseCommandParameter> parameters)
+            : base(parameters)
         {
-            Parameters = parameters;
+            DataTable = dataTable;
         }
 
         /// <summary>
-        /// The parameters used when calling the stored procedure
+        /// The count of all records returned
         /// </summary>
-        public List<DatabaseCommandParameter> Parameters { get; }
+        public int Count => DataTable.Rows.Count;
 
         /// <summary>
-        /// The output parameters from the stored procedure
+        /// The records returned for this iteration of the pager
         /// </summary>
-        public Dictionary<string, DatabaseCommandParameter> OutputParameters
-        {
-            get
-            {
-                if (Parameters == null)
-                {
-                    return new Dictionary<string, DatabaseCommandParameter>();
-                }
+        public DataTable DataTable { get; }
 
-                return Parameters.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.InputOutput).ToDictionary(kvp => kvp.Name, kvp => kvp);
-            }
-        }
-        
         /// <summary>
-        /// If the stored procedure has a return parameter, it can be retrieved here
+        /// Indicates whether or not the DataTable has data in it
         /// </summary>
-        public DatabaseCommandParameter ReturnParameter
+        public bool HasData => DataTable != null && DataTable.Rows.Count > 0;
+    }
+
+    public class StoredProcedureResult<TEntity> : StoredProcedureResultBase
+    {
+        public StoredProcedureResult(List<TEntity> result, List<DatabaseCommandParameter> parameters)
+            : base(parameters)
         {
-            get
-            {
-                DatabaseCommandParameter returnParameter =
-                    Parameters.SingleOrDefault(p => p.Direction == ParameterDirection.ReturnValue);
-
-                if (returnParameter == null)
-                {
-                    throw new InvalidOperationException("No return parameter was found");
-                }
-
-                return returnParameter;
-            }
+            Result = result;
         }
 
         /// <summary>
-        /// Casts an output parameter by name to the specified type
+        /// The count of all records returned
         /// </summary>
-        /// <typeparam name="TResult">The value of the output parameter</typeparam>
-        /// <param name="parameterName">The name of the parameter</param>
-        /// <returns>The value of the output parameter</returns>
-        public TResult GetOutputParameter<TResult>(string parameterName)
-        {
-            if (!OutputParameters.ContainsKey(parameterName))
-            {
-                throw new Exception($"No Output parameter named {parameterName} was found");
-            }
-
-            return (TResult)OutputParameters[parameterName].Value;
-        }
+        public int Count => Result?.Count ?? 0;
 
         /// <summary>
-        /// Casts an return parameter by name to the specified type
+        /// The records returned for this iteration of the pager
         /// </summary>
-        /// <typeparam name="TResult">The value of the return parameter</typeparam>
-        /// <returns>The value of the return parameter</returns>
-        public TResult GetReturnParameter<TResult>()
-        {
-            return (TResult)ReturnParameter.Value;
-        }
+        public List<TEntity> Result { get; }
+
+        /// <summary>
+        /// Indicates whether or not the DataTable has data in it
+        /// </summary>
+        public bool HasData => Result != null && Result.Count > 0;
     }
 }

@@ -15,12 +15,4 @@ namespace FluentCommander.EntityFramework
             return builder.SetContext(dbContext);
         }
     }
-
-    public class LocalContext : DbContext
-    {
-        public LocalContext()
-        {
-            //this.Database.connection
-        }
-    }
 }

@@ -5,7 +5,7 @@ namespace FluentCommander.Core
 {
     public interface IDatabaseCommand { }
 
-    internal interface IDatabaseCommand<TResult> : IDatabaseCommand
+    public interface IDatabaseCommand<TResult> : IDatabaseCommand
     {
         /// <summary>
         /// Executes the command

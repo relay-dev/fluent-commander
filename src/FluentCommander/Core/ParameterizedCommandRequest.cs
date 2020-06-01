@@ -6,17 +6,17 @@ namespace FluentCommander.Core
     {
         public ParameterizedCommandRequest()
         {
-            DatabaseParameters = new List<DatabaseCommandParameter>();
+            Parameters = new List<DatabaseCommandParameter>();
         }
 
-        public ParameterizedCommandRequest(List<DatabaseCommandParameter> databaseParameters)
+        public ParameterizedCommandRequest(List<DatabaseCommandParameter> parameters)
         {
-            DatabaseParameters = databaseParameters;
+            Parameters = parameters;
         }
 
         /// <summary>
         /// Database parameters required to execute the command
         /// </summary>
-        public List<DatabaseCommandParameter> DatabaseParameters { get; set; }
+        public List<DatabaseCommandParameter> Parameters { get; set; }
     }
 }

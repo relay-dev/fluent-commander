@@ -2,18 +2,18 @@
 
 namespace FluentCommander.StoredProcedure
 {
-    public abstract class StoredProcedureCommandBuilder : ParameterizedCommandBuilder<StoredProcedureRequest, StoredProcedureCommand, StoredProcedureResult>
+    public abstract class StoredProcedureCommandBuilder<TEntity> : ParameterizedCommandBuilder<StoredProcedureRequest, StoredProcedureCommand<TEntity>, StoredProcedureResult<TEntity>>
     {
         protected StoredProcedureCommandBuilder()
         {
             CommandRequest = new StoredProcedureRequest();
         }
 
-        public StoredProcedureCommand Name(string storedProcedureName)
+        public StoredProcedureCommand<TEntity> Name(string storedProcedureName)
         {
             CommandRequest.StoredProcedureName = storedProcedureName;
 
-            return this as StoredProcedureCommand;
+            return this as StoredProcedureCommand<TEntity>;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace FluentCommander.Core.Impl
             services.AddTransient<SqlNonQueryCommand>();
             services.AddTransient<SqlQueryCommand>();
             services.AddTransient<StoredProcedureCommand>();
+            services.AddTransient(typeof(StoredProcedureCommand<>));
             services.AddScoped<IAutoMapper, AutoMapper>();
             services.AddScoped<IDatabaseCommandFactory, DatabaseCommandFactory>();
             services.AddSingleton<IConnectionStringCollection, ConnectionStringCollection>();
