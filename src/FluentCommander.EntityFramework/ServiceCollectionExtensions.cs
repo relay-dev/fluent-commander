@@ -16,7 +16,7 @@ namespace FluentCommander.EntityFramework
 
         public static IServiceProvider UseEntityFrameworkDatabaseCommander(this IServiceProvider serviceProvider)
         {
-            DbContextExtensions.DatabaseCommandBuilder = serviceProvider.GetRequiredService<DbContextCommandBuilder>();
+            DbContextExtensions.ServiceProvider = serviceProvider;
 
             return serviceProvider;
         }

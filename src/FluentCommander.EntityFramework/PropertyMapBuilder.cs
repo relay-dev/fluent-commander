@@ -14,16 +14,14 @@ namespace FluentCommander.EntityFramework
 
         public PropertyMetadataBuilder<TEntity> Property(Expression<Func<TEntity, object>> propertySelector)
         {
-            var propertyMap = new PropertyMetadata<TEntity, object>
+            var propertyMetadata = new PropertyMetadata<TEntity, object>
             {
                 Selector = propertySelector
             };
 
-            PropertyMap.PropertyMetadata.Add(propertyMap);
+            PropertyMap.PropertyMetadata.Add(propertyMetadata);
 
-            var builder = new PropertyMetadataBuilder<TEntity>(propertyMap);
-
-            return builder;
+            return new PropertyMetadataBuilder<TEntity>(propertyMetadata);
         }
     }
 }
