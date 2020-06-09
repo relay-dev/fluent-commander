@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace FluentCommander.Core.CommandBuilders
 {
@@ -11,6 +12,13 @@ namespace FluentCommander.Core.CommandBuilders
         protected CommandBuilder(DatabaseCommandRequest databaseCommandCommandRequest)
         {
             _commandCommandRequest = databaseCommandCommandRequest;
+        }
+
+        public TBuilder Join(Transaction transaction)
+        {
+            _commandCommandRequest.Transaction = transaction;
+
+            return this as TBuilder;
         }
 
         public TBuilder Timeout(TimeSpan timeout)

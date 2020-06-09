@@ -6,7 +6,7 @@ namespace FluentCommander.EntityFramework
 {
     public static class DbContextExtensions
     {
-        public static IServiceProvider ServiceProvider { get; set; }
+        internal static IServiceProvider ServiceProvider { get; set; }
 
         public static DbContextCommandBuilder BuildCommand(this DbContext dbContext)
         {

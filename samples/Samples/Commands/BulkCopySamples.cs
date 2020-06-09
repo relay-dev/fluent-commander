@@ -64,21 +64,19 @@ namespace Samples.Commands
             // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
             dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
 
-            // Now specify the mapping
-            var columnMapping = new ColumnMapping
-            {
-                ColumnMaps = new List<ColumnMap>
-                {
-                    new ColumnMap("SampleString", "SampleVarChar")
-                }
-            };
-
             // Bulk Copy
             BulkCopyResult result = await _databaseCommander.BuildCommand()
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .Mapping(opt => opt.UsePartialMap(columnMapping))
+                .Mapping(opt => opt.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+                {
+                    new ColumnMap
+                    {
+                        Source = "SampleString",
+                        Destination = "SampleVarChar"
+                    }
+                })))
                 .ExecuteAsync(new CancellationToken());
 
             int rowCountCopied = result.RowCountCopied;

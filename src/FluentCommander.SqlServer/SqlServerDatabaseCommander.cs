@@ -28,7 +28,7 @@ namespace FluentCommander.SqlServer
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
             using var connection = GetDbConnection();
-            using var command = new SqlBulkCopy(connection)
+            using var command = new SqlBulkCopy(connection.ConnectionString)
             {
                 DestinationTableName = request.TableName
             };
@@ -349,9 +349,9 @@ namespace FluentCommander.SqlServer
 
             if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter parameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
-                    databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
+                    parameter.Value = parameters.Single(sp => sp.ParameterName == parameter.Name).Value;
                 }
             }
 

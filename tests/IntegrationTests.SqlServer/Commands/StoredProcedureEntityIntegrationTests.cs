@@ -1,30 +1,32 @@
 ﻿using FluentCommander.EntityFramework;
 using FluentCommander.StoredProcedure;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
 using System;
 using System.Linq;
+using FluentCommander;
+using IntegrationTests.SqlServer.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.SqlServer.Commands
+namespace IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
-    public class StoredProcedureEntityIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>
+    public class StoredProcedureEntityIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>
     {
-        public StoredProcedureEntityIntegrationTests(ServiceProviderFixture serviceProviderFixture, ITestOutputHelper output)
+        public StoredProcedureEntityIntegrationTests(ServiceProviderFixture serviceProviderFixture,
+            ITestOutputHelper output)
             : base(serviceProviderFixture, output) { }
 
         [Fact]
         public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnListOfEntities()
         {
             // Arrange & Act
-            StoredProcedureResult<SampleTable> result = SUT.BuildCommand()
-                .ForStoredProcedure<SampleTable>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+            StoredProcedureResult<Sample> result = SUT.BuildCommand()
+                .ForStoredProcedure<Sample>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .Project(sample =>
                 {
-                    sample.Property(s => s.SampleTableId).MapFrom("SampleTableID");
+                    sample.Property(s => s.SampleId).MapFrom("SampleTableID");
                     sample.Property(s => s.SampleInt).MapFrom("SampleInt");
                     sample.Property(s => s.SampleSmallInt).MapFrom("SampleSmallInt");
                     sample.Property(s => s.SampleTinyInt).MapFrom("SampleTinyInt");
@@ -46,7 +48,7 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
             result.HasData.ShouldBeTrue();
             result.Result.ShouldNotBeNull();
             result.Result.Count.ShouldBeGreaterThan(0);
-            result.Result.First().SampleTableId.ShouldBeGreaterThan(0);
+            result.Result.First().SampleId.ShouldBeGreaterThan(0);
             result.Result.First().SampleDateTime.ShouldNotBe(DateTime.MinValue);
             result.Result.First().SampleUniqueIdentifier.ShouldNotBe(Guid.Empty);
             result.Result.First().SampleVarChar.ShouldNotBeNullOrEmpty("SampleVarChar");

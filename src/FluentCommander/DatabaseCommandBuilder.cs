@@ -21,7 +21,7 @@ namespace FluentCommander
         /// Builds a command to bulk copy into the database
         /// </summary>
         /// <returns>A bulk copy command builder</returns>
-        public BulkCopyCommand ForBulkCopy()
+        public BulkCopyCommandBuilder ForBulkCopy()
         {
             return _commandFactory.Create<BulkCopyCommand>();
         }
@@ -30,7 +30,7 @@ namespace FluentCommander
         /// Builds a command to paginate across a database table
         /// </summary>
         /// <returns>A pagination command builder</returns>
-        public PaginationCommand ForPagination()
+        public PaginationCommandBuilder ForPagination()
         {
             return _commandFactory.Create<PaginationCommand>();
         }
@@ -70,7 +70,7 @@ namespace FluentCommander
         /// </summary>
         /// <param name="storedProcedureName">The name of the stored procedure to execute</param>
         /// <returns>A stored procedure command builder</returns>
-        public StoredProcedureCommand ForStoredProcedure(string storedProcedureName)
+        public StoredProcedureCommandBuilder ForStoredProcedure(string storedProcedureName)
         {
             return _commandFactory.Create<StoredProcedureCommand>().Name(storedProcedureName);
         }
@@ -80,7 +80,7 @@ namespace FluentCommander
         /// </summary>
         /// <param name="storedProcedureName">The name of the stored procedure to execute</param>
         /// <returns>A stored procedure command builder</returns>
-        public StoredProcedureCommand<TEntity> ForStoredProcedure<TEntity>(string storedProcedureName)
+        public StoredProcedureCommandBuilder<TEntity> ForStoredProcedure<TEntity>(string storedProcedureName)
         {
             return _commandFactory.Create<StoredProcedureCommand<TEntity>>().Name(storedProcedureName);
         }

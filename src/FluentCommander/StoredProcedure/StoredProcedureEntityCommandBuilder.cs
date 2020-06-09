@@ -1,6 +1,6 @@
-﻿using System;
-using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.CommandBuilders;
 using FluentCommander.Core.Property;
+using System;
 
 namespace FluentCommander.StoredProcedure
 {

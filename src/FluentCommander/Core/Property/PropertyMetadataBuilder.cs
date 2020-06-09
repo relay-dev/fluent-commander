@@ -2,30 +2,30 @@
 {
     public class PropertyMetadataBuilder<TEntity>
     {
-        public readonly PropertyMetadata<TEntity, object> PropertyMetadata;
+        private readonly PropertyMetadata<TEntity, object> _propertyMetadata;
 
         public PropertyMetadataBuilder(PropertyMetadata<TEntity, object> propertyMetadata)
         {
-            PropertyMetadata = propertyMetadata;
+            _propertyMetadata = propertyMetadata;
         }
 
         public PropertyMetadataBuilder<TEntity> Name(string value)
         {
-            PropertyMetadata.Name = value;
+            _propertyMetadata.Name = value;
 
             return this;
         }
 
         public PropertyMetadataBuilder<TEntity> MapFrom(string value)
         {
-            PropertyMetadata.MapFrom = value;
+            _propertyMetadata.MapFrom = value;
 
             return this;
         }
 
         public PropertyMetadataBuilder<TEntity> Ignore()
         {
-            PropertyMetadata.IsIgnore = true;
+            _propertyMetadata.IsIgnore = true;
 
             return this;
         }

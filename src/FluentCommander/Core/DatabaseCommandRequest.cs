@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 
 namespace FluentCommander.Core
 {
@@ -8,5 +9,7 @@ namespace FluentCommander.Core
         /// Sets the timeout for one specific command request
         /// </summary>
         public TimeSpan? Timeout { get; set; }
+
+        public Transaction Transaction { get; set; }
     }
 }

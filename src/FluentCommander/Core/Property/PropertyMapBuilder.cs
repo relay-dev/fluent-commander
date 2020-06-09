@@ -5,7 +5,7 @@ namespace FluentCommander.Core.Property
 {
     public class PropertyMapBuilder<TEntity>
     {
-        public PropertyMap<TEntity> PropertyMap { get; }
+        internal PropertyMap<TEntity> PropertyMap { get; }
 
         public PropertyMapBuilder()
         {

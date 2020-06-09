@@ -1,40 +1,38 @@
-﻿namespace FluentCommander.BulkCopy
+﻿using FluentCommander.Core.Mapping;
+
+namespace FluentCommander.BulkCopy
 {
-    public abstract partial class BulkCopyCommandBuilder
+    public class BulkCopyMappingOptions
     {
-        public class BulkCopyMappingOptions
+        private readonly IHaveColumnMapping _request;
+        internal bool IsAutoMap { get; private set; }
+
+        public BulkCopyMappingOptions(IHaveColumnMapping request)
         {
-            private readonly BulkCopyCommandBuilder _builder;
-            private readonly BulkCopyRequest _commandRequest;
+            _request = request;
+        }
 
-            public BulkCopyMappingOptions(BulkCopyCommandBuilder builder, BulkCopyRequest commandRequest)
-            {
-                _builder = builder;
-                _commandRequest = commandRequest;
-            }
+        public BulkCopyMappingOptions UseAutoMap()
+        {
+            IsAutoMap = true;
 
-            public BulkCopyMappingOptions UseAutoMap()
-            {
-                _builder.IsAutoMap = true;
+            return this;
+        }
 
-                return this;
-            }
+        public BulkCopyMappingOptions UsePartialMap(ColumnMapping columnMapping)
+        {
+            _request.ColumnMapping = columnMapping;
+            IsAutoMap = true;
 
-            public BulkCopyMappingOptions UsePartialMap(ColumnMapping columnMapping)
-            {
-                _commandRequest.ColumnMapping = columnMapping;
-                _builder.IsAutoMap = true;
+            return this;
+        }
 
-                return this;
-            }
+        public BulkCopyMappingOptions UseMap(ColumnMapping columnMapping)
+        {
+            _request.ColumnMapping = columnMapping;
+            IsAutoMap = false;
 
-            public BulkCopyMappingOptions UseMap(ColumnMapping columnMapping)
-            {
-                _commandRequest.ColumnMapping = columnMapping;
-                _builder.IsAutoMap = false;
-
-                return this;
-            }
+            return this;
         }
     }
 }

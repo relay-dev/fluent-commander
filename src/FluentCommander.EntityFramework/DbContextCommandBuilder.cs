@@ -5,7 +5,7 @@ namespace FluentCommander.EntityFramework
 {
     public class DbContextCommandBuilder : DatabaseCommandBuilder
     {
-        public DbContext DbContext { get; private set; }
+        internal DbContext DbContext { get; private set; }
 
         public DbContextCommandBuilder(IDatabaseCommandFactory commandFactory) 
             : base(commandFactory) { }

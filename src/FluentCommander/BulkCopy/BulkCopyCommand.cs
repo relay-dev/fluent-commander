@@ -21,7 +21,7 @@ namespace FluentCommander.BulkCopy
         {
             Validate();
             
-            if (IsAutoMap)
+            if (MappingOptions.IsAutoMap)
             {
                 _autoMapper.MapDataTableToTable(CommandRequest.TableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
@@ -33,7 +33,7 @@ namespace FluentCommander.BulkCopy
         {
             Validate();
 
-            if (IsAutoMap)
+            if (MappingOptions.IsAutoMap)
             {
                 _autoMapper.MapDataTableToTable(CommandRequest.TableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
