@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlQuery
 {
-    public class SqlQueryCommand : ParameterizedSqlCommandBuilder<SqlRequest, SqlQueryCommand, SqlQueryResult>
+    public class SqlQueryCommand : ParameterizedSqlCommandBuilder<SqlQueryCommand, SqlQueryResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 

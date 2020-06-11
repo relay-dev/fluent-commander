@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.Scalar
 {
-    public class ScalarCommand<TResult> : ParameterizedSqlCommandBuilder<SqlRequest, ScalarCommand<TResult>, TResult>
+    public class ScalarCommand<TResult> : ParameterizedSqlCommandBuilder<ScalarCommand<TResult>, TResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 

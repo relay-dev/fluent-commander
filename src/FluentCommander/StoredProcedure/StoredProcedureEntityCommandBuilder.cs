@@ -4,7 +4,7 @@ using System;
 
 namespace FluentCommander.StoredProcedure
 {
-    public abstract class StoredProcedureCommandBuilder<TEntity> : ParameterizedCommandBuilder<StoredProcedureRequest, StoredProcedureCommand<TEntity>, StoredProcedureResult<TEntity>>
+    public abstract class StoredProcedureCommandBuilder<TEntity> : ParameterizedCommandBuilder<StoredProcedureCommand<TEntity>, StoredProcedureResult<TEntity>>
     {
         protected Action<PropertyMapBuilder<TEntity>> MappingBuilder;
         protected readonly StoredProcedureRequest CommandRequest;

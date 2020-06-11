@@ -5,11 +5,11 @@ using FluentCommander.SqlQuery;
 
 namespace FluentCommander.Oracle.Internal
 {
-    internal class OracleBulkCopyWriter
+    internal class OracleBulkCopyPreProcessor
     {
         private readonly BulkCopyRequest _bulkCopyRequest;
 
-        public OracleBulkCopyWriter(BulkCopyRequest bulkCopyRequest)
+        public OracleBulkCopyPreProcessor(BulkCopyRequest bulkCopyRequest)
         {
             _bulkCopyRequest = bulkCopyRequest;
         }

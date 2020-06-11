@@ -5,7 +5,7 @@ using System.Transactions;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class CommandBuilder<TRequest, TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class where TRequest : DatabaseCommandRequest
+    public abstract class CommandBuilder<TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class
     {
         private readonly DatabaseCommandRequest _commandCommandRequest;
 

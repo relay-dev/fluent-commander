@@ -3,7 +3,7 @@ using System.Data;
 
 namespace FluentCommander.Core.CommandBuilders
 {
-    public abstract class ParameterizedCommandBuilder<TRequest, TBuilder, TResult> : ParameterizedInputCommandBuilder<TRequest, TBuilder, TResult> where TBuilder : class where TRequest : DatabaseCommandRequest
+    public abstract class ParameterizedCommandBuilder<TBuilder, TResult> : ParameterizedInputCommandBuilder<TBuilder, TResult> where TBuilder : class
     {
         private readonly ParameterizedCommandRequest _commandRequest;
 

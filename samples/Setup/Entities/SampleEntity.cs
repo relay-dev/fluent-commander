@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace IntegrationTests.SqlServer.Entities
+namespace Setup.Entities
 {
-    public class Sample
+    public class SampleEntity
     {
         public long SampleId { get; set; }
         public int SampleInt { get; set; }

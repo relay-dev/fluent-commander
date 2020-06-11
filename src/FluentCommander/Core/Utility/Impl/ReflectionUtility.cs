@@ -16,7 +16,7 @@ namespace FluentCommander.Core.Utility.Impl
             {
                 TEntity entity = Activator.CreateInstance<TEntity>();
 
-                foreach (PropertyMetadata<TEntity, object> propertyMetadata in builder.PropertyMap.PropertyMetadata.Where(pm => !pm.IsIgnore))
+                foreach (PropertyMetadata<TEntity, object> propertyMetadata in builder.PropertyMap.PropertyMetadataCollection.Where(pm => !pm.IsIgnore))
                 {
                     var memberSelectorExpression = GetMemberExpression(propertyMetadata.Selector);
 

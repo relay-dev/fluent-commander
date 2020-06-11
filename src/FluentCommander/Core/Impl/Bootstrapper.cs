@@ -22,6 +22,8 @@ namespace FluentCommander.Core.Impl
             services.AddTransient<SqlQueryCommand>();
             services.AddTransient<StoredProcedureCommand>();
             services.AddTransient(typeof(StoredProcedureCommand<>));
+            services.AddTransient<IRequestValidator<BulkCopyRequest>, BulkCopyRequestValidator>();
+            services.AddTransient<IRequestValidator<PaginationRequest>, PaginationRequestValidator>();
             services.AddScoped<IAutoMapper, AutoMapper>();
             services.AddScoped<IDatabaseCommandFactory, DatabaseCommandFactory>();
             services.AddSingleton<IConnectionStringCollection, ConnectionStringCollection>();

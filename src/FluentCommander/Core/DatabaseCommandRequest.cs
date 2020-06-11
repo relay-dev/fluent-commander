@@ -6,7 +6,7 @@ namespace FluentCommander.Core
     public class DatabaseCommandRequest
     {
         /// <summary>
-        /// Sets the timeout for one specific command request
+        /// Number of seconds for the operation to complete before it times out
         /// </summary>
         public TimeSpan? Timeout { get; set; }
 

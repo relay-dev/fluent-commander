@@ -19,7 +19,7 @@ namespace FluentCommander.Core.Property
                 Selector = propertySelector
             };
 
-            PropertyMap.PropertyMetadata.Add(propertyMetadata);
+            PropertyMap.PropertyMetadataCollection.Add(propertyMetadata);
 
             return new PropertyMetadataBuilder<TEntity>(propertyMetadata);
         }

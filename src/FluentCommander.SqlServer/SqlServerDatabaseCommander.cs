@@ -12,91 +12,30 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
 
 namespace FluentCommander.SqlServer
 {
     public class SqlServerDatabaseCommander : DatabaseCommanderBase
     {
         private readonly SqlConnectionStringBuilder _builder;
+        private readonly IDatabaseCommandFactory _commandFactory;
 
-        public SqlServerDatabaseCommander(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
+        public SqlServerDatabaseCommander(IDatabaseCommandFactory commandFactory, SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
             : base(databaseCommandBuilder)
         {
+            _commandFactory = commandFactory;
             _builder = builder;
         }
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            using var connection = GetDbConnection();
-            using var command = new SqlBulkCopy(connection.ConnectionString)
-            {
-                DestinationTableName = request.TableName
-            };
-
-            if (request.Timeout.HasValue)
-            {
-                command.BulkCopyTimeout = request.Timeout.Value.Seconds;
-            }
-
-            if (request.ColumnMapping != null)
-            {
-                foreach (ColumnMap columnMap in request.ColumnMapping.ColumnMaps)
-                {
-                    command.ColumnMappings.Add(columnMap.Source, columnMap.Destination);
-                }
-            }
-
-            try
-            {
-                connection.Open();
-                command.WriteToServer(request.DataTable);
-                connection.Close();
-            }
-            catch (Exception e)
-            {
-                HandleBulkCopyException(e, command);
-
-                throw;
-            }
-
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return _commandFactory.Create<IBulkCopyCommand>().Execute(request);
         }
 
         public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            await using var connection = GetDbConnection();
-            using var command = new SqlBulkCopy(connection)
-            {
-                DestinationTableName = request.TableName
-            };
-
-            if (request.Timeout.HasValue)
-            {
-                command.BulkCopyTimeout = request.Timeout.Value.Seconds;
-            }
-
-            if (request.ColumnMapping != null)
-            {
-                foreach (ColumnMap columnMap in request.ColumnMapping.ColumnMaps)
-                {
-                    command.ColumnMappings.Add(columnMap.Source, columnMap.Destination);
-                }
-            }
-
-            try
-            {
-                connection.Open();
-                await command.WriteToServerAsync(request.DataTable, cancellationToken);
-                connection.Close();
-            }
-            catch (Exception e)
-            {
-                HandleBulkCopyException(e, command);
-
-                throw;
-            }
-
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return await _commandFactory.Create<IBulkCopyCommand>().ExecuteAsync(request, cancellationToken);
         }
 
         public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)

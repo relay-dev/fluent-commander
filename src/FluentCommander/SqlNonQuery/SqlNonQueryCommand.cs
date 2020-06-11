@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.CommandBuilders;
 using FluentCommander.SqlQuery;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FluentCommander.SqlNonQuery
 {
-    public class SqlNonQueryCommand : ParameterizedSqlCommandBuilder<SqlRequest, SqlNonQueryCommand, SqlNonQueryResult>
+    public class SqlNonQueryCommand : ParameterizedSqlCommandBuilder<SqlNonQueryCommand, SqlNonQueryResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 

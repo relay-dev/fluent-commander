@@ -28,7 +28,7 @@ namespace FluentCommander.Oracle
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            var writer = new OracleBulkCopyWriter(request);
+            var writer = new OracleBulkCopyPreProcessor(request);
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {
@@ -42,7 +42,7 @@ namespace FluentCommander.Oracle
 
         public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            var writer = new OracleBulkCopyWriter(request);
+            var writer = new OracleBulkCopyPreProcessor(request);
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {

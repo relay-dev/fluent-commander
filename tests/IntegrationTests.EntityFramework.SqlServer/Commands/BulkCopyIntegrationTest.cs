@@ -1,11 +1,12 @@
 ﻿using FluentCommander;
+using FluentCommander.BulkCopy;
 using FluentCommander.EntityFramework;
 using IntegrationTests.EntityFramework.SqlServer.Entities;
+using Microsoft.Data.SqlClient;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using FluentCommander.BulkCopy;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -118,6 +119,104 @@ namespace IntegrationTests.EntityFramework.SqlServer.Commands
 
             // Assert
             result.ShouldNotBeNull();
+            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
+
+            // Print
+            WriteLine(expectedCount);
+        }
+
+        [Fact]
+        public void ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingOptions()
+        {
+            // Arrange
+            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
+            DataTable dataTable = GetDataToInsert();
+
+            // Act
+            BulkCopyResult result = SUT.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable)
+                .Into("[dbo].[SampleTable]")
+                .Mapping(map => map.UseAutoMap())
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.RowCountCopied.ShouldBe(RowCount);
+            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
+
+            // Print
+            WriteLine(expectedCount);
+        }
+
+        [Fact]
+        public void ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingEvents()
+        {
+            // Arrange
+            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
+            DataTable dataTable = GetDataToInsert();
+
+            // Act
+            BulkCopyResult result = SUT.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable)
+                .Into("[dbo].[SampleTable]")
+                .Mapping(map => map.UseAutoMap())
+                .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
+                {
+                    var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
+
+                    WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+                }))
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.RowCountCopied.ShouldBe(RowCount);
+            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
+
+            // Print
+            WriteLine(expectedCount);
+        }
+
+        [Fact]
+        public void ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingAllApis()
+        {
+            // Arrange
+            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
+            DataTable dataTable = GetDataToInsert();
+
+            // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
+            dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
+
+            // Act
+            BulkCopyResult result = SUT.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable, DataRowState.Added)
+                .Into("[dbo].[SampleTable]")
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .BatchSize(100)
+                .Timeout(TimeSpan.FromSeconds(30))
+                .Mapping(map => map.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+                {
+                    new ColumnMap
+                    {
+                        Source = "SampleString",
+                        Destination = "SampleVarChar"
+                    }
+                })))
+                .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
+                {
+                    var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
+
+                    WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+                }))
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.RowCountCopied.ShouldBe(RowCount);
             ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print

@@ -2,7 +2,7 @@
 
 namespace FluentCommander.Pagination
 {
-    public abstract class PaginationCommandBuilder : CommandBuilder<PaginationRequest, PaginationCommandBuilder, PaginationResult>
+    public abstract class PaginationCommandBuilder : CommandBuilder<PaginationCommandBuilder, PaginationResult>
     {
         protected readonly PaginationRequest CommandRequest;
 

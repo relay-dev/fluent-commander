@@ -1,10 +1,9 @@
-﻿using FluentCommander.EntityFramework;
+﻿using FluentCommander;
 using FluentCommander.StoredProcedure;
+using Setup.Entities;
 using Shouldly;
 using System;
 using System.Linq;
-using FluentCommander;
-using IntegrationTests.SqlServer.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,8 +20,8 @@ namespace IntegrationTests.SqlServer.Commands
         public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnListOfEntities()
         {
             // Arrange & Act
-            StoredProcedureResult<Sample> result = SUT.BuildCommand()
-                .ForStoredProcedure<Sample>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+            StoredProcedureResult<SampleEntity> result = SUT.BuildCommand()
+                .ForStoredProcedure<SampleEntity>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .Project(sample =>
                 {

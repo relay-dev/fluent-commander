@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FluentCommander.Core;
 using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlQuery;
 using FluentCommander.SqlServer;
 using FluentCommander.StoredProcedure;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace FluentCommander.EntityFramework.SqlServer
     {
         private readonly DbContext _dbContext;
 
-        public EntityFrameworkSqlServerDatabaseCommander(DbContext dbContext, DatabaseCommandBuilder databaseCommandBuilder)
-            : base(new SqlConnectionStringBuilder(dbContext.Database.GetDbConnection().ConnectionString), databaseCommandBuilder)
+        public EntityFrameworkSqlServerDatabaseCommander(DbContext dbContext, DatabaseCommandBuilder databaseCommandBuilder, IDatabaseCommandFactory commandFactory)
+            : base(commandFactory, new SqlConnectionStringBuilder(dbContext.Database.GetDbConnection().ConnectionString), databaseCommandBuilder)
         {
             _dbContext = dbContext;
         }
