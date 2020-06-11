@@ -3,12 +3,12 @@ using FluentCommander.BulkCopy;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
+using Setup.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Setup.Entities;
 
 namespace Samples.Commands
 {
@@ -129,7 +129,6 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// This variation relies on you to specify mappings where you know the column names do not match
         /// When you have an entity type that reflects the shape of the table, you can use it to drive your mappings
         /// </notes>
         [Sample(Key = "4")]
@@ -151,15 +150,15 @@ namespace Samples.Commands
                 .ForBulkCopy()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .Mapping<SampleEntity>(mapping => mapping.UseMap(sample =>
+                .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
                 {
-                    sample.Property(s => s.SampleInt).MapFrom("Column1");
-                    sample.Property(s => s.SampleSmallInt).MapFrom("Column2");
-                    sample.Property(s => s.SampleTinyInt).MapFrom("Column3");
-                    sample.Property(s => s.SampleBit).MapFrom("Column4");
-                    sample.Property(s => s.SampleDecimal).MapFrom("Column5");
-                    sample.Property(s => s.SampleFloat).MapFrom("Column6");
-                    sample.Property(s => s.SampleVarChar).MapFrom("Column7");
+                    entity.Property(e => e.SampleInt).MapFrom("Column1");
+                    entity.Property(e => e.SampleSmallInt).MapFrom("Column2");
+                    entity.Property(e => e.SampleTinyInt).MapFrom("Column3");
+                    entity.Property(e => e.SampleBit).MapFrom("Column4");
+                    entity.Property(e => e.SampleDecimal).MapFrom("Column5");
+                    entity.Property(e => e.SampleFloat).MapFrom("Column6");
+                    entity.Property(e => e.SampleVarChar).MapFrom("Column7");
                 }))
                 .ExecuteAsync(new CancellationToken());
 
@@ -190,7 +189,7 @@ namespace Samples.Commands
         }
 
         /// <notes>
-        /// The Events event can be subscribed to
+        /// The OnRowsCopied event can be subscribed to
         /// </notes>
         [Sample(Key = "6")]
         public async Task BulkCopyUsingEvents()

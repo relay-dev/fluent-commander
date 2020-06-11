@@ -1,6 +1,6 @@
-﻿using System;
-using FluentCommander.Core;
+﻿using FluentCommander.Core;
 using FluentCommander.Core.Mapping;
+using System;
 using System.Data;
 using System.Data.Common;
 using MappingType = FluentCommander.Core.Mapping.MappingType;
@@ -40,6 +40,11 @@ namespace FluentCommander.BulkCopy
         public DataTable DataTable { get; set; }
 
         /// <summary>
+        /// Name of the destination table on the server
+        /// </summary>
+        public string DestinationTableName { get; set; }
+
+        /// <summary>
         /// The DbDataReader to stream the data to be copied
         /// </summary>
         public DbDataReader DbDataReader { get; set; }
@@ -68,10 +73,5 @@ namespace FluentCommander.BulkCopy
         /// Options to be set for the command
         /// </summary>
         public BulkCopyCommandOptions Options { get; set; }
-
-        /// <summary>
-        /// Name of the destination table on the server
-        /// </summary>
-        public string DestinationTableName { get; set; }
     }
 }

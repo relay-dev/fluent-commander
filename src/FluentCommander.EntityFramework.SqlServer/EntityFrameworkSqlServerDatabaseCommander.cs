@@ -19,7 +19,7 @@ namespace FluentCommander.EntityFramework.SqlServer
         private readonly DbContext _dbContext;
 
         public EntityFrameworkSqlServerDatabaseCommander(DbContext dbContext, DatabaseCommandBuilder databaseCommandBuilder, IDatabaseCommandFactory commandFactory)
-            : base(commandFactory, new SqlConnectionStringBuilder(dbContext.Database.GetDbConnection().ConnectionString), databaseCommandBuilder)
+            : base(commandFactory, databaseCommandBuilder)
         {
             _dbContext = dbContext;
         }
@@ -70,30 +70,6 @@ namespace FluentCommander.EntityFramework.SqlServer
             return await _dbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
         }
 
-        public override TResult ExecuteScalar<TResult>(SqlRequest request)
-        {
-            using var connection = GetDbConnection();
-            using var command = new SqlCommand(request.Sql, connection);
-
-            if (request.Timeout.HasValue)
-            {
-                command.CommandTimeout = request.Timeout.Value.Seconds;
-            }
-
-            if (request.Parameters != null)
-            {
-                command.Parameters.AddRange(ToSqlParameters(request.Parameters));
-            }
-
-            connection.Open();
-            var result = command.ExecuteScalar();
-            connection.Close();
-
-            return result == null || result == DBNull.Value
-                ? default(TResult)
-                : (TResult)result;
-        }
-
         public StoredProcedureResult<TEntity> ExecuteStoredProcedure<TEntity>(StoredProcedureRequest request) where TEntity : class
         {
             List<TEntity> result;
@@ -142,9 +118,32 @@ namespace FluentCommander.EntityFramework.SqlServer
             return new StoredProcedureResult<TEntity>(result, request.Parameters);
         }
 
-        protected override SqlConnection GetDbConnection()
+        private SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
         {
-            return new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString);
+            return databaseCommandParameters?.Select(ToSqlParameter).ToArray();
+        }
+
+        private SqlParameter ToSqlParameter(DatabaseCommandParameter databaseCommandParameter)
+        {
+            var parameter = new SqlParameter
+            {
+                ParameterName = databaseCommandParameter.Name,
+                Value = databaseCommandParameter.Value,
+                Direction = databaseCommandParameter.Direction,
+                Size = databaseCommandParameter.Size
+            };
+
+            if (!string.IsNullOrEmpty(databaseCommandParameter.DatabaseType))
+            {
+                if (!Enum.TryParse(databaseCommandParameter.DatabaseType, true, out SqlDbType sqlDbType))
+                {
+                    throw new InvalidOperationException($"Could not parse databaseType of '{databaseCommandParameter.DatabaseType}' to a System.Data.DbType");
+                }
+
+                parameter.SqlDbType = sqlDbType;
+            }
+
+            return parameter;
         }
     }
 }

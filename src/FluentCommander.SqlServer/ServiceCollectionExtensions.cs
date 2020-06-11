@@ -1,5 +1,4 @@
-﻿using FluentCommander.BulkCopy;
-using FluentCommander.Core.Impl;
+﻿using FluentCommander.Core.Impl;
 using FluentCommander.SqlServer.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +14,6 @@ namespace FluentCommander.SqlServer
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
-            services.AddTransient<IBulkCopyCommand, SqlServerBulkCopyCommand>();
 
             var connectionStringCollection = new ConnectionStringCollection(config);
 
@@ -30,7 +28,12 @@ namespace FluentCommander.SqlServer
 
         public static IServiceCollection AddSqlServerDatabaseCommands(this IServiceCollection services)
         {
-            services.AddTransient<IBulkCopyCommand, SqlServerBulkCopyCommand>();
+            services.AddTransient<SqlServerBulkCopyCommand>();
+            services.AddTransient<SqlServerPaginationCommand>();
+            services.AddTransient(typeof(SqlServerScalarCommand<>));
+            services.AddTransient<SqlServerSqlNonQueryCommand>();
+            services.AddTransient<SqlServerSqlQueryCommand>();
+            services.AddTransient<SqlServerStoredProcedureCommand>();
 
             return services;
         }

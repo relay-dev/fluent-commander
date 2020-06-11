@@ -79,7 +79,7 @@ private async Task BulkCopyUsingAutoMapping()
         .ForBulkCopy()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .MappingOptions(opt => opt.UseAutoMap())
+        .Mapping(mapping => mapping.UseAutoMap())
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
@@ -95,20 +95,18 @@ private async Task BulkCopyUsingPartialMap()
 {
     DataTable dataTable = GetDataToInsert();
 
-    // Specify the mapping
-    var columnMapping = new ColumnMapping
-    {
-        ColumnMaps = new List<ColumnMap>
-        {
-            new ColumnMap("SampleString", "SampleVarChar")
-        }
-    };
-
     BulkCopyResult result = await _databaseCommander.BuildCommand()
         .ForBulkCopy()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .MappingOptions(opt => opt.UsePartialMap(columnMapping))
+        .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+        {
+            new ColumnMap
+            {
+                Source = "SampleString",
+                Destination = "SampleVarChar"
+            }
+        })))
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
@@ -143,11 +141,142 @@ private async Task BulkCopyUsingMap()
         .ForBulkCopy()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .MappingOptions(opt => opt.UseMap(columnMapping))
+        .Mapping(mapping => mapping.UseMap(columnMapping))
         .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
+}
+```
+
+#### Strongly-typed Mapping
+
+When you have an entity type that reflects the shape of the table, you can use it to drive your mappings:
+
+```c#
+private async Task BulkCopyUsingStronglyTypedMap()
+{
+    DataTable dataTable = GetDataToInsert();
+
+    // Alter the DataTable to simulate a source where all column names are different than the destination
+    dataTable.Columns["SampleInt"].ColumnName = "Column1";
+    dataTable.Columns["SampleSmallInt"].ColumnName = "Column2";
+    dataTable.Columns["SampleTinyInt"].ColumnName = "Column3";
+    dataTable.Columns["SampleBit"].ColumnName = "Column4";
+    dataTable.Columns["SampleDecimal"].ColumnName = "Column5";
+    dataTable.Columns["SampleFloat"].ColumnName = "Column6";
+    dataTable.Columns["SampleVarChar"].ColumnName = "Column7";
+
+    // Bulk Copy
+    BulkCopyResult result = await _databaseCommander.BuildCommand()
+        .ForBulkCopy()
+        .From(dataTable)
+        .Into("[dbo].[SampleTable]")
+        .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
+        {
+            entity.Property(e => e.SampleInt).MapFrom("Column1");
+            entity.Property(e => e.SampleSmallInt).MapFrom("Column2");
+            entity.Property(e => e.SampleTinyInt).MapFrom("Column3");
+            entity.Property(e => e.SampleBit).MapFrom("Column4");
+            entity.Property(e => e.SampleDecimal).MapFrom("Column5");
+            entity.Property(e => e.SampleFloat).MapFrom("Column6");
+            entity.Property(e => e.SampleVarChar).MapFrom("Column7");
+        }))
+        .ExecuteAsync(new CancellationToken());
+
+    int rowCountCopied = result.RowCountCopied;
+
+    Console.WriteLine("Row count copied: {0}", rowCountCopied);
+}
+```
+
+#### Bulk Copy Options
+
+All BulkCopy options are exposed via the Options API:
+
+```c#
+private async Task BulkCopyUsingOptions()
+{
+    DataTable dataTable = GetDataToInsert();
+
+    BulkCopyResult result = await _databaseCommander.BuildCommand()
+        .ForBulkCopy()
+        .From(dataTable)
+        .Into("[dbo].[SampleTable]")
+        .Mapping(mapping => mapping.UseAutoMap())
+        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .ExecuteAsync(new CancellationToken());
+
+    int rowCountCopied = result.RowCountCopied;
+
+    Console.WriteLine("Row count copied: {0}", rowCountCopied);
+}
+```
+
+#### Bulk Copy Events
+
+The OnRowsCopied event can be subscribed to:
+
+```c#
+private async Task BulkCopyUsingEvents()
+{
+    DataTable dataTable = GetDataToInsert();
+
+    BulkCopyResult result = await _databaseCommander.BuildCommand()
+        .ForBulkCopy()
+        .From(dataTable)
+        .Into("[dbo].[SampleTable]")
+        .Mapping(mapping => mapping.UseAutoMap())
+        .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
+        {
+            var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
+
+            Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+        }))
+        .ExecuteAsync(new CancellationToken());
+
+    int rowCountCopied = result.RowCountCopied;
+
+    Console.WriteLine("Row count copied: {0}", rowCountCopied);
+}
+```
+
+#### All Options
+
+```c#
+private async Task BulkCopyUsingAllApis()
+{
+    DataTable dataTable = GetDataToInsert();
+
+    // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
+    dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
+
+    BulkCopyResult result = await _databaseCommander.BuildCommand()
+        .ForBulkCopy()
+        .From(dataTable, DataRowState.Added)
+        .Into("[dbo].[SampleTable]")
+        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .BatchSize(100)
+        .Timeout(TimeSpan.FromSeconds(30))
+        .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+        {
+            new ColumnMap
+            {
+                Source = "SampleString",
+                Destination = "SampleVarChar"
+            }
+        })))
+        .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
+        {
+            var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
+
+            Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+        }))
+        .ExecuteAsync(new CancellationToken());
+
+    int rowCountCopied = result.RowCountCopied;
+
+    Console.WriteLine("Row count copied: {0}", rowCountCopied);
 }
 ```
 

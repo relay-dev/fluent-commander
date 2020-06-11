@@ -1,4 +1,5 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    internal class SqlServerBulkCopyCommand : IBulkCopyCommand
+    internal class SqlServerBulkCopyCommand : SqlServerCommand, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
 
@@ -18,6 +19,11 @@ namespace FluentCommander.SqlServer.Internal
             _connectionProvider = connectionProvider;
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <param name="request">The command request</param>
+        /// <returns>The result of the command</returns>
         public BulkCopyResult Execute(BulkCopyRequest request)
         {
             using SqlConnection connection = _connectionProvider.GetConnection();
@@ -39,7 +45,13 @@ namespace FluentCommander.SqlServer.Internal
 
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
-        
+
+        /// <summary>
+        /// Executes the command asynchronously
+        /// </summary>
+        /// <param name="request">The command request</param>
+        /// <param name="cancellationToken">The cancellation token in scope for the operation</param>
+        /// <returns>The result of the command</returns>
         public async Task<BulkCopyResult> ExecuteAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
             await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);

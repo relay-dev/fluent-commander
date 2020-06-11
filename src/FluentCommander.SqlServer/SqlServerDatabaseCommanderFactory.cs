@@ -25,7 +25,7 @@ namespace FluentCommander.SqlServer
 
             var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionName));
 
-            return new SqlServerDatabaseCommander(_commandFactory, builder, _databaseCommandBuilder);
+            return new SqlServerDatabaseCommander(_commandFactory, _databaseCommandBuilder);
         }
     }
 }
