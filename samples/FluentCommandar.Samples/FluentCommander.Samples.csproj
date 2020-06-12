@@ -17,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
-    <ProjectReference Include="..\Setup\FluentCommander.Samples.Setup.csproj" />
+    <ProjectReference Include="..\FluentCommandar.Samples.Setup\FluentCommander.Samples.Setup.csproj" />
   </ItemGroup>
 
   <ItemGroup>
