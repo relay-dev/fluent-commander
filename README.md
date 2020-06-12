@@ -414,6 +414,41 @@ private async Task ExecutePaginationUsingMinimalInput()
 }
 ```
 
+### Factories
+
+If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
+
+```c#
+using FluentCommander;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Samples
+{
+    public class DatabaseCommanderFactorySample
+    {
+        private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
+
+        public DatabaseCommanderFactorySample(IDatabaseCommanderFactory databaseCommanderFactory)
+        {
+            _databaseCommanderFactory = databaseCommanderFactory;
+        }
+        
+        public async Task DatabaseCommanderFactoryWorksWithAlternateConnectionStrings()
+        {
+            //Creates an instance of an IDatabaseCommander connected to a data source using the connection string named AlternateConnectionString
+            IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnectionString");
+
+            // Verify the connection by running a the GetServerName() command
+            string serverName = await databaseCommander.GetServerNameAsync(new CancellationToken());
+
+            Console.WriteLine("Connected to: {0}", serverName);
+        }
+    }
+}
+```
+
 ### Other
 
 There are several other commands available on the API that are often unneeded if you're using an ORM. These miscellaneous commands are available if you should find that you need them
