@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Samples.Commands;
+using Samples.Framework;
 using System;
 
 namespace Samples
@@ -38,6 +39,7 @@ namespace Samples
             serviceCollection.AddTransient<SqlNonQuerySamples>();
             serviceCollection.AddTransient<SqlQuerySamples>();
             serviceCollection.AddTransient<StoredProcedureSamples>();
+            serviceCollection.AddTransient<DatabaseCommanderFactorySamples>();
 
             // Build the IServiceProvider
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
