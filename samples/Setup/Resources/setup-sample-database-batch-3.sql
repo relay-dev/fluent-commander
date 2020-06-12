@@ -131,7 +131,7 @@ AS
 BEGIN
     SELECT *
     FROM [DatabaseCommander].[dbo].[SampleTable]
-    WHERE SampleVarChar = @SampleVarChar
+    WHERE SampleVarChar LIKE @SampleVarChar
 END
 GO
 

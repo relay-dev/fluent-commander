@@ -2,6 +2,7 @@
 using Setup;
 using System;
 using System.Data;
+using System.Text.Json;
 using Xunit.Abstractions;
 
 namespace IntegrationTests
@@ -13,7 +14,6 @@ namespace IntegrationTests
 
         protected IntegrationTest(ITestOutputHelper output)
         {
-            
             _output = output;
         }
 
@@ -47,7 +47,7 @@ namespace IntegrationTests
 
         protected virtual void WriteLine(object o)
         {
-            _output.WriteLine(o.ToString());
+            _output.WriteLine(JsonSerializer.Serialize(o));
         }
 
         protected DataTable ExecuteSql(string sql)

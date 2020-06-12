@@ -10,6 +10,11 @@ namespace FluentCommander
         {
             ColumnMaps = new List<ColumnMap>();
         }
+
+        public ColumnMapping(List<ColumnMap> columnMaps)
+        {
+            ColumnMaps = columnMaps;
+        }
     }
 
     public class ColumnMap

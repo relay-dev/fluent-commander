@@ -6,6 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.BulkCopy;
+using FluentCommander.Pagination;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
 
 namespace FluentCommander.Oracle
 {
@@ -23,7 +28,7 @@ namespace FluentCommander.Oracle
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            var writer = new OracleBulkCopyWriter(request);
+            var writer = new OracleBulkCopyPreProcessor(request);
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {
@@ -37,7 +42,7 @@ namespace FluentCommander.Oracle
 
         public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            var writer = new OracleBulkCopyWriter(request);
+            var writer = new OracleBulkCopyPreProcessor(request);
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {
@@ -61,9 +66,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -83,9 +88,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -129,9 +134,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -153,9 +158,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             connection.Open();
@@ -205,9 +210,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -229,9 +234,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                command.Parameters.AddRange(ToOracleParameters(request.DatabaseParameters));
+                command.Parameters.AddRange(ToOracleParameters(request.Parameters));
             }
 
             var dataTable = new DataTable();
@@ -286,9 +291,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);
+            OracleParameter[] parameters = ToOracleParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -299,15 +304,15 @@ namespace FluentCommander.Oracle
             new OracleDataAdapter(command).Fill(dataTable);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
@@ -323,9 +328,9 @@ namespace FluentCommander.Oracle
                 command.CommandTimeout = request.Timeout.Value.Seconds;
             }
 
-            OracleParameter[] parameters = ToOracleParameters(request.DatabaseParameters);
+            OracleParameter[] parameters = ToOracleParameters(request.Parameters);
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
                 command.Parameters.AddRange(parameters);
             }
@@ -337,15 +342,15 @@ namespace FluentCommander.Oracle
             dataTable.Load(reader);
             connection.Close();
 
-            if (request.DatabaseParameters != null)
+            if (request.Parameters != null)
             {
-                foreach (DatabaseCommandParameter databaseCommandParameter in request.DatabaseParameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
+                foreach (DatabaseCommandParameter databaseCommandParameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
                     databaseCommandParameter.Value = parameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
                 }
             }
 
-            return new StoredProcedureResult(request.DatabaseParameters, dataTable);
+            return new StoredProcedureResult(dataTable, request.Parameters);
         }
 
         public override string GetServerName()

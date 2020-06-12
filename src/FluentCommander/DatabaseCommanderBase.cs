@@ -1,4 +1,9 @@
-﻿using System.Data;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.Pagination;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,16 +11,16 @@ namespace FluentCommander
 {
     public abstract class DatabaseCommanderBase : IDatabaseCommander
     {
-        private readonly DatabaseCommandBuilder _databaseCommandBuilder;
+        protected readonly DatabaseCommandBuilder DatabaseCommandBuilder;
 
         protected DatabaseCommanderBase(DatabaseCommandBuilder databaseCommandBuilder)
         {
-            _databaseCommandBuilder = databaseCommandBuilder;
+            DatabaseCommandBuilder = databaseCommandBuilder;
         }
 
         public DatabaseCommandBuilder BuildCommand()
         {
-            return _databaseCommandBuilder;
+            return DatabaseCommandBuilder;
         }
 
         public abstract BulkCopyResult BulkCopy(BulkCopyRequest request);
