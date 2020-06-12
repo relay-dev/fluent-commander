@@ -151,21 +151,12 @@ private async Task BulkCopyUsingMap()
 
 #### Strongly-typed Mapping
 
-When you have an entity type that reflects the shape of the table, you can use it to drive your mappings:
+When you have an entity type that reflects the shape of the table you are targeting, you can use it to drive your mappings:
 
 ```c#
 private async Task BulkCopyUsingStronglyTypedMap()
 {
     DataTable dataTable = GetDataToInsert();
-
-    // Alter the DataTable to simulate a source where all column names are different than the destination
-    dataTable.Columns["SampleInt"].ColumnName = "Column1";
-    dataTable.Columns["SampleSmallInt"].ColumnName = "Column2";
-    dataTable.Columns["SampleTinyInt"].ColumnName = "Column3";
-    dataTable.Columns["SampleBit"].ColumnName = "Column4";
-    dataTable.Columns["SampleDecimal"].ColumnName = "Column5";
-    dataTable.Columns["SampleFloat"].ColumnName = "Column6";
-    dataTable.Columns["SampleVarChar"].ColumnName = "Column7";
 
     // Bulk Copy
     BulkCopyResult result = await _databaseCommander.BuildCommand()
@@ -370,6 +361,25 @@ private async Task ExecuteStoredProcedureWithReturnParameter()
 
 There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
 
+#### Assume Defaults
+
+Several defaults are specified so the only input required is the target:
+
+```c#
+private async Task ExecutePaginationUsingMinimalInput()
+{
+    PaginationResult result = await _databaseCommander.BuildCommand()
+        .ForPagination()
+        .From("[dbo].[SampleTable]")
+        .ExecuteAsync(new CancellationToken());
+
+    int count = result.Count;
+    int totalCount = result.TotalCount;
+    bool hasData = result.HasData;
+    DataTable dataTable = result.DataTable;
+}
+```
+
 #### All Options
 
 In this sample, all options are used:
@@ -386,25 +396,6 @@ private async Task ExecutePaginationAllSettingsAreUsed()
         .PageSize(25)
         .PageNumber(2)
         .Timeout(TimeSpan.FromSeconds(30))
-        .ExecuteAsync(new CancellationToken());
-
-    int count = result.Count;
-    int totalCount = result.TotalCount;
-    bool hasData = result.HasData;
-    DataTable dataTable = result.DataTable;
-}
-```
-
-#### Assume Defaults
-
-Several defaults are specified so the only input required is the target:
-
-```c#
-private async Task ExecutePaginationUsingMinimalInput()
-{
-    PaginationResult result = await _databaseCommander.BuildCommand()
-        .ForPagination()
-        .From("[dbo].[SampleTable]")
         .ExecuteAsync(new CancellationToken());
 
     int count = result.Count;
