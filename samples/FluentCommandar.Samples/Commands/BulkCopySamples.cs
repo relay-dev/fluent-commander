@@ -146,10 +146,10 @@ namespace FluentCommander.Samples.Commands
 
             // Bulk Copy
             BulkCopyResult result = await _databaseCommander.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
+                .Mapping(mapping => mapping.UseMap(entity =>
                 {
                     entity.Property(e => e.SampleInt).MapFrom("Column1");
                     entity.Property(e => e.SampleSmallInt).MapFrom("Column2");

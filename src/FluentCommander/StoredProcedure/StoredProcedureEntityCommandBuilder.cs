@@ -9,10 +9,10 @@ namespace FluentCommander.StoredProcedure
         protected Action<PropertyMapBuilder<TEntity>> MappingBuilder;
         protected readonly StoredProcedureRequest CommandRequest;
 
-        protected StoredProcedureCommandBuilder(StoredProcedureRequest commandRequest)
-            : base(commandRequest)
+        protected StoredProcedureCommandBuilder(StoredProcedureRequest request)
+            : base(request)
         {
-            CommandRequest = commandRequest;
+            CommandRequest = request;
         }
 
         public StoredProcedureCommand<TEntity> Name(string storedProcedureName)

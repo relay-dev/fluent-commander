@@ -27,6 +27,15 @@ namespace FluentCommander
         }
 
         /// <summary>
+        /// Builds a command to bulk copy into the database
+        /// </summary>
+        /// <returns>A bulk copy command builder</returns>
+        public BulkCopyCommandBuilder<TEntity> ForBulkCopy<TEntity>()
+        {
+            return _commandFactory.Create<BulkCopyCommand<TEntity>>();
+        }
+
+        /// <summary>
         /// Builds a command to paginate across a database table
         /// </summary>
         /// <returns>A pagination command builder</returns>

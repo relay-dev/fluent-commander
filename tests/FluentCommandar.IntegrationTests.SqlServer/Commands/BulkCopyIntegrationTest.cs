@@ -144,10 +144,10 @@ namespace FluentCommander.IntegrationTests.SqlServer.Commands
 
             // Act
             BulkCopyResult result = SUT.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .Mapping<SampleEntity>(mapping => mapping.UseMap(sample =>
+                .Mapping(mapping => mapping.UseMap(sample =>
                 {
                     sample.Property(s => s.SampleInt).MapFrom("Column1");
                     sample.Property(s => s.SampleSmallInt).MapFrom("Column2");

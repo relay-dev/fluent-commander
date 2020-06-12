@@ -146,10 +146,10 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 
             // Act
             BulkCopyResult result = await SUT.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
-                .Mapping<SampleEntity>(mapping => mapping.UseMap(sample =>
+                .Mapping(mapping => mapping.UseMap(sample =>
                 {
                     sample.Property(s => s.SampleInt).MapFrom("Column1");
                     sample.Property(s => s.SampleSmallInt).MapFrom("Column2");
@@ -237,13 +237,13 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 
             // Act
             BulkCopyResult result = await SUT.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Mapping<SampleEntity>(map => map.UsePartialMap(sample =>
+                .Mapping(map => map.UsePartialMap(sample =>
                 {
                     sample.Property(s => s.SampleVarChar).MapFrom("SampleString");
                 }))

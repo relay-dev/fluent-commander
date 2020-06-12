@@ -16,6 +16,7 @@ namespace FluentCommander.Core.Impl
         {
             services.AddTransient<DatabaseCommandBuilder>();
             services.AddTransient<BulkCopyCommand>();
+            services.AddTransient(typeof(BulkCopyCommand<>));
             services.AddTransient<PaginationCommand>();
             services.AddTransient(typeof(ScalarCommand<>));
             services.AddTransient<SqlNonQueryCommand>();
