@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace IntegrationTests.EntityFramework.SqlServer.Entities
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities
 {
     public partial class DatabaseCommanderContext : DbContext
     {

@@ -1,12 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FluentCommander;
-using FluentCommander.SqlQuery;
+﻿using FluentCommander.SqlQuery;
 using Shouldly;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.CommandsAsync
+namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
     public class SqlQueryAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

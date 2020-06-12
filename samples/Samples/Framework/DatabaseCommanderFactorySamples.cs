@@ -1,12 +1,11 @@
-﻿using FluentCommander;
+﻿using FluentCommander.Samples.Commands;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
-using Samples.Commands;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Samples.Framework
+namespace FluentCommander.Samples.Framework
 {
     /// <summary>
     /// If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings

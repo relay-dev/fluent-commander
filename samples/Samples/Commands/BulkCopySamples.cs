@@ -1,16 +1,15 @@
-﻿using FluentCommander;
-using FluentCommander.BulkCopy;
+﻿using FluentCommander.BulkCopy;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
-using Setup.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Samples.Setup.Entities;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     /// <notes>
     /// The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable

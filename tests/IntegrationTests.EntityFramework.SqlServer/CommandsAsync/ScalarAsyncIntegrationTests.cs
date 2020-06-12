@@ -1,5 +1,5 @@
 ﻿using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities;
 using Shouldly;
 using System;
 using System.Threading;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
     public class ScalarAsyncIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>

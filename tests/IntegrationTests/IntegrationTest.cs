@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Setup;
+﻿using FluentCommander.Samples.Setup;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
 using System.Text.Json;
 using Xunit.Abstractions;
 
-namespace IntegrationTests
+namespace FluentCommander.IntegrationTests
 {
     public abstract class IntegrationTest<TSUT>
     {

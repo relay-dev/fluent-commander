@@ -1,10 +1,9 @@
-﻿using FluentCommander;
-using Shouldly;
+﻿using Shouldly;
 using System;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class ScalarIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

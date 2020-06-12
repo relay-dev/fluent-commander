@@ -1,14 +1,13 @@
-﻿using FluentCommander;
-using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
+﻿using FluentCommander.EntityFramework;
+using FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.SqlQuery;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.SqlQuery;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.SqlServer.CommandsAsync
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
     public class SqlQueryAsyncIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>

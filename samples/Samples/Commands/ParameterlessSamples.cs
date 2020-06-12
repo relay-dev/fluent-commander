@@ -1,13 +1,12 @@
-﻿using FluentCommander;
+﻿using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.StoredProcedure;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     /// <notes>
     /// Basic commands exist directly on the IDatabaseCommander so that you're not required to build a full command if you don't need one

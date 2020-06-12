@@ -2,7 +2,7 @@
 using FluentCommander.EntityFramework.SqlServer;
 using Xunit;
 
-namespace IntegrationTests.EntityFramework.SqlServer
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer
 {
     public class ServiceProviderFixture : IDisposable
     {

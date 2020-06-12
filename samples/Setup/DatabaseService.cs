@@ -8,7 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Setup
+namespace FluentCommander.Samples.Setup
 {
     public class DatabaseService
     {
@@ -116,7 +116,7 @@ namespace Setup
 
         private string GetResourceFile(string filename)
         {
-            string resourceFilename = $"Setup.Resources.{filename}";
+            string resourceFilename = $"FluentCommander.Samples.Setup.Resources.{filename}";
 
             using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceFilename);
 
@@ -198,7 +198,7 @@ namespace Setup
         {
             int spacesNeeded = lengthNeeded - value.Length;
 
-            return value + String.Empty.PadRight(spacesNeeded + 2, ' ');
+            return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
         }
 
         private string InsertSql =>

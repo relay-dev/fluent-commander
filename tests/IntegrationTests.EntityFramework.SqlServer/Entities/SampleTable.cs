@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntegrationTests.EntityFramework.SqlServer.Entities
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities
 {
     public partial class SampleTable
     {

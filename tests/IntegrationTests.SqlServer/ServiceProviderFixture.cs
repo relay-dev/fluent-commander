@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace IntegrationTests.SqlServer
+namespace FluentCommander.IntegrationTests.SqlServer
 {
     public class ServiceProviderFixture : IDisposable
     {

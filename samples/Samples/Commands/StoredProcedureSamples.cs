@@ -1,13 +1,12 @@
-﻿using FluentCommander;
+﻿using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.StoredProcedure;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     /// <notes>
     /// This Sample class demonstrates how to build a stored procedure command using various combinations of input, output and return parameters

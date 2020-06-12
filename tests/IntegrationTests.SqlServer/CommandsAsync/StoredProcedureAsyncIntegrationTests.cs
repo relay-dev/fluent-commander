@@ -1,5 +1,4 @@
-﻿using FluentCommander;
-using FluentCommander.StoredProcedure;
+﻿using FluentCommander.StoredProcedure;
 using Shouldly;
 using System;
 using System.Data;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.CommandsAsync
+namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 {
     [Collection("Service Provider collection")]
     public class StoredProcedureAsyncIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

@@ -242,7 +242,7 @@ private async Task BulkCopyUsingAllApis()
         .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
         .BatchSize(100)
         .Timeout(TimeSpan.FromSeconds(30))
-        .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
+        .Mapping<SampleEntity>(mapping => mapping.UsePartialMap(entity =>
         {
             entity
                 .Property(e => e.SampleVarChar)

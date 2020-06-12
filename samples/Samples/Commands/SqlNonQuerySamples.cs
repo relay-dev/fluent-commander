@@ -1,12 +1,11 @@
-﻿using FluentCommander;
+﻿using FluentCommander.SqlNonQuery;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.SqlNonQuery;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE

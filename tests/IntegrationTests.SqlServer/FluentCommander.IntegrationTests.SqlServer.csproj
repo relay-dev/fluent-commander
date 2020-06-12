@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\samples\Setup\Setup.csproj" />
+    <ProjectReference Include="..\..\samples\Setup\FluentCommander.Samples.Setup.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
-    <ProjectReference Include="..\IntegrationTests\IntegrationTests.csproj" />
+    <ProjectReference Include="..\IntegrationTests\FluentCommander.IntegrationTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,12 @@
-﻿using FluentCommander;
+﻿using FluentCommander.Pagination;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Pagination;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL pagination query

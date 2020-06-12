@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
-using Setup;
 using System.Data;
+using FluentCommander.Samples.Setup;
 
-namespace Samples.Commands
+namespace FluentCommander.Samples.Commands
 {
     public abstract class SampleBase : SampleAsync
     {

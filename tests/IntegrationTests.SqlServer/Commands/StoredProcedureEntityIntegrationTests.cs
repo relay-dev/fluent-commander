@@ -1,13 +1,12 @@
-﻿using FluentCommander;
+﻿using FluentCommander.Samples.Setup.Entities;
 using FluentCommander.StoredProcedure;
-using Setup.Entities;
 using Shouldly;
 using System;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class StoredProcedureEntityIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

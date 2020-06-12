@@ -1,10 +1,10 @@
 ﻿using FluentCommander.EntityFramework.SqlServer;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IntegrationTests.EntityFramework.SqlServer
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer
 {
     public class Startup : Bootstrapper
     {

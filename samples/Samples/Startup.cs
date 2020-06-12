@@ -1,12 +1,12 @@
-﻿using FluentCommander.SqlServer;
+﻿using System;
+using FluentCommander.Samples.Commands;
+using FluentCommander.Samples.Framework;
+using FluentCommander.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Samples.Commands;
-using Samples.Framework;
-using System;
 
-namespace Samples
+namespace FluentCommander.Samples
 {
     public class Startup
     {

@@ -1,13 +1,12 @@
-﻿using FluentCommander;
-using FluentCommander.EntityFramework;
-using IntegrationTests.EntityFramework.SqlServer.Entities;
+﻿using FluentCommander.EntityFramework;
+using FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.SqlNonQuery;
 using Shouldly;
 using System;
-using FluentCommander.SqlNonQuery;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class SqlNonQueryIntegrationTests : EntityFrameworkSqlServerIntegrationTest<DatabaseCommanderDomainContext>

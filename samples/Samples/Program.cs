@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
-using Setup;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using FluentCommander.Samples.Setup;
+using Microsoft.Extensions.Configuration;
+using Sampler.ConsoleApplication;
 
-namespace Samples
+namespace FluentCommander.Samples
 {
     class Program
     {

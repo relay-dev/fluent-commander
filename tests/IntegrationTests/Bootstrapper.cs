@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentCommander.Samples.Setup;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Setup;
 using System;
 using System.IO;
 
-namespace IntegrationTests
+namespace FluentCommander.IntegrationTests
 {
     public abstract class Bootstrapper
     {

@@ -1,11 +1,10 @@
-﻿using FluentCommander;
+﻿using FluentCommander.SqlNonQuery;
 using Shouldly;
 using System;
-using FluentCommander.SqlNonQuery;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class SqlNonQueryIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

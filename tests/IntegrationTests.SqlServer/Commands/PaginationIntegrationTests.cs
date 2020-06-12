@@ -1,11 +1,10 @@
-﻿using FluentCommander;
+﻿using FluentCommander.Pagination;
 using Shouldly;
 using System;
-using FluentCommander.Pagination;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class PaginationIntegrationTests : SqlServerIntegrationTest<IDatabaseCommander>

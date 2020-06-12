@@ -1,10 +1,9 @@
-﻿using FluentCommander;
-using Shouldly;
+﻿using Shouldly;
 using System;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.EntityFramework.SqlServer.Framework
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.Framework
 {
     [Collection("Service Provider collection")]
     public class DatabaseCommanderFactoryIntegrationTests : EntityFrameworkSqlServerIntegrationTest<IDatabaseCommanderFactory>

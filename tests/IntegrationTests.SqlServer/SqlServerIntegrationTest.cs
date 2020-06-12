@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer
+namespace FluentCommander.IntegrationTests.SqlServer
 {
     public class SqlServerIntegrationTest<TSUT> : IntegrationTest<TSUT>
     {

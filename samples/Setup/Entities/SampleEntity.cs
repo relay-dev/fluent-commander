@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Setup.Entities
+namespace FluentCommander.Samples.Setup.Entities
 {
     public class SampleEntity
     {

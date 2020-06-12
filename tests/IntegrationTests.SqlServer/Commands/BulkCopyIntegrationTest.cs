@@ -1,7 +1,6 @@
-﻿using FluentCommander;
-using FluentCommander.BulkCopy;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.Samples.Setup.Entities;
 using Microsoft.Data.SqlClient;
-using Setup.Entities;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Data;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.SqlServer.Commands
+namespace FluentCommander.IntegrationTests.SqlServer.Commands
 {
     [Collection("Service Provider collection")]
     public class BulkCopyIntegrationTest : SqlServerIntegrationTest<IDatabaseCommander>

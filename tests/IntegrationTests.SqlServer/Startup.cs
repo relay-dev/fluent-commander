@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IntegrationTests.SqlServer
+namespace FluentCommander.IntegrationTests.SqlServer
 {
     public class Startup : Bootstrapper
     {
