@@ -122,26 +122,23 @@ private async Task BulkCopyUsingMap()
 {
     DataTable dataTable = GetDataToInsert();
 
-    // Specify the mapping
-    var columnMapping = new ColumnMapping
-    {
-        ColumnMaps = new List<ColumnMap>
-        {
-            new ColumnMap("Column1", "SampleInt"),
-            new ColumnMap("Column2", "SampleSmallInt"),
-            new ColumnMap("Column3", "SampleTinyInt"),
-            new ColumnMap("Column4", "SampleBit"),
-            new ColumnMap("Column5", "SampleDecimal"),
-            new ColumnMap("Column6", "SampleFloat"),
-            new ColumnMap("Column7", "SampleVarChar"),
-        }
-    };
-
     BulkCopyResult result = await _databaseCommander.BuildCommand()
         .ForBulkCopy()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .Mapping(mapping => mapping.UseMap(columnMapping))
+        .Mapping(mapping => mapping.UseMap(new ColumnMapping
+        {
+            ColumnMaps = new List<ColumnMap>
+            {
+                new ColumnMap("Column1", "SampleInt"),
+                new ColumnMap("Column2", "SampleSmallInt"),
+                new ColumnMap("Column3", "SampleTinyInt"),
+                new ColumnMap("Column4", "SampleBit"),
+                new ColumnMap("Column5", "SampleDecimal"),
+                new ColumnMap("Column6", "SampleFloat"),
+                new ColumnMap("Column7", "SampleVarChar"),
+            }
+        }))
         .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
 
@@ -158,7 +155,6 @@ private async Task BulkCopyUsingStronglyTypedMap()
 {
     DataTable dataTable = GetDataToInsert();
 
-    // Bulk Copy
     BulkCopyResult result = await _databaseCommander.BuildCommand()
         .ForBulkCopy()
         .From(dataTable)
@@ -239,9 +235,6 @@ private async Task BulkCopyUsingAllApis()
 {
     DataTable dataTable = GetDataToInsert();
 
-    // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
-    dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
-
     BulkCopyResult result = await _databaseCommander.BuildCommand()
         .ForBulkCopy()
         .From(dataTable, DataRowState.Added)
@@ -249,14 +242,12 @@ private async Task BulkCopyUsingAllApis()
         .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
         .BatchSize(100)
         .Timeout(TimeSpan.FromSeconds(30))
-        .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+        .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
         {
-            new ColumnMap
-            {
-                Source = "SampleString",
-                Destination = "SampleVarChar"
-            }
-        })))
+            entity
+                .Property(e => e.SampleVarChar)
+                .MapFrom("SampleString");
+        }))
         .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
         {
             var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
