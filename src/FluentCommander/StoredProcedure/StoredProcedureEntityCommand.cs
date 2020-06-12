@@ -1,6 +1,7 @@
 ﻿using FluentCommander.Core.Property;
 using FluentCommander.Core.Utility.Impl;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace FluentCommander.StoredProcedure
             StoredProcedureResult storedProcedureResult =
                 _databaseCommander.ExecuteStoredProcedure(CommandRequest);
 
-            List<TEntity> result = MapToEntities(storedProcedureResult);
+            List<TEntity> result = MapToEntities(storedProcedureResult.DataTable);
 
             return new StoredProcedureResult<TEntity>(result, storedProcedureResult.Parameters);
         }
@@ -31,18 +32,18 @@ namespace FluentCommander.StoredProcedure
             StoredProcedureResult storedProcedureResult = await 
                 _databaseCommander.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
 
-            List<TEntity> result = MapToEntities(storedProcedureResult);
+            List<TEntity> result = MapToEntities(storedProcedureResult.DataTable);
 
             return new StoredProcedureResult<TEntity>(result, storedProcedureResult.Parameters);
         }
 
-        private List<TEntity> MapToEntities(StoredProcedureResult storedProcedureResult)
+        private List<TEntity> MapToEntities(DataTable dataTable)
         {
             var options = new PropertyMapBuilder<TEntity>();
 
             MappingBuilder(options);
 
-            List<TEntity> result = ReflectionUtility.DataTableToList(storedProcedureResult.DataTable, options);
+            List<TEntity> result = ReflectionUtility.DataTableToList(dataTable, options);
 
             return result;
         }

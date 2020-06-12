@@ -21,6 +21,7 @@ namespace FluentCommander.Core.Impl
             services.AddTransient(typeof(ScalarCommand<>));
             services.AddTransient<SqlNonQueryCommand>();
             services.AddTransient<SqlQueryCommand>();
+            services.AddTransient(typeof(SqlQueryCommand<>));
             services.AddTransient<StoredProcedureCommand>();
             services.AddTransient(typeof(StoredProcedureCommand<>));
             services.AddTransient<IRequestValidator<BulkCopyRequest>, BulkCopyRequestValidator>();

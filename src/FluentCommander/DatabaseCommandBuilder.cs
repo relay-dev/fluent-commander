@@ -75,6 +75,16 @@ namespace FluentCommander
         }
 
         /// <summary>
+        /// Builds a command to execute a query
+        /// </summary>
+        /// <param name="sql">The SQL to execute</param>
+        /// <returns>A SQL command builder</returns>
+        public SqlQueryCommand<TEntity> ForSqlQuery<TEntity>(string sql)
+        {
+            return _commandFactory.Create<SqlQueryCommand<TEntity>>().Sql(sql);
+        }
+
+        /// <summary>
         /// Builds a command to execute a stored procedure
         /// </summary>
         /// <param name="storedProcedureName">The name of the stored procedure to execute</param>
