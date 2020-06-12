@@ -1,10 +1,10 @@
 ﻿using FluentCommander.BulkCopy;
-using FluentCommander.Core;
 using FluentCommander.Pagination;
 using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlQuery;
 using FluentCommander.SqlServer.Internal;
 using FluentCommander.StoredProcedure;
+using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,34 +13,34 @@ namespace FluentCommander.SqlServer
 {
     public class SqlServerDatabaseCommander : DatabaseCommanderBase
     {
-        private readonly IDatabaseCommandFactory _commandFactory;
+        private readonly SqlConnectionStringBuilder _builder;
 
         public SqlServerDatabaseCommander(
-            IDatabaseCommandFactory commandFactory,
+            SqlConnectionStringBuilder builder,
             DatabaseCommandBuilder databaseCommandBuilder)
             : base(databaseCommandBuilder)
         {
-            _commandFactory = commandFactory;
+            _builder = builder;
         }
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            return _commandFactory.Create<SqlServerBulkCopyCommand>().Execute(request);
+            return new SqlServerBulkCopyCommand(ConnectionProvider).Execute(request);
         }
 
         public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerBulkCopyCommand>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerBulkCopyCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
         {
-            return _commandFactory.Create<SqlServerSqlNonQueryCommand>().Execute(request);
+            return new SqlServerSqlNonQueryCommand(ConnectionProvider).Execute(request);
         }
 
         public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerSqlNonQueryCommand>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerSqlNonQueryCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override int ExecuteNonQuery(string sql)
@@ -55,12 +55,12 @@ namespace FluentCommander.SqlServer
 
         public override TResult ExecuteScalar<TResult>(SqlRequest request)
         {
-            return _commandFactory.Create<SqlServerScalarCommand<TResult>>().Execute(request);
+            return new SqlServerScalarCommand<TResult>(ConnectionProvider).Execute(request);
         }
 
         public override async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerScalarCommand<TResult>>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerScalarCommand<TResult>(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override TResult ExecuteScalar<TResult>(string sql)
@@ -75,12 +75,12 @@ namespace FluentCommander.SqlServer
 
         public override SqlQueryResult ExecuteSql(SqlRequest request)
         {
-            return _commandFactory.Create<SqlServerSqlQueryCommand>().Execute(request);
+            return new SqlServerSqlQueryCommand(ConnectionProvider).Execute(request);
         }
 
         public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerSqlQueryCommand>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerSqlQueryCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override DataTable ExecuteSql(string sql)
@@ -95,12 +95,12 @@ namespace FluentCommander.SqlServer
 
         public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
-            return _commandFactory.Create<SqlServerStoredProcedureCommand>().Execute(request);
+            return new SqlServerStoredProcedureCommand(ConnectionProvider).Execute(request);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerStoredProcedureCommand>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerStoredProcedureCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override string GetServerName()
@@ -115,14 +115,15 @@ namespace FluentCommander.SqlServer
 
         public override PaginationResult Paginate(PaginationRequest request)
         {
-            return _commandFactory.Create<SqlServerPaginationCommand>().Execute(request);
+            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder).Execute(request);
         }
 
         public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
-            return await _commandFactory.Create<SqlServerPaginationCommand>().ExecuteAsync(request, cancellationToken);
+            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder).ExecuteAsync(request, cancellationToken);
         }
 
         private string SqlSelectServerName => "SELECT @@SERVERNAME";
+        private ISqlServerConnectionProvider ConnectionProvider => new SqlServerConnectionProvider(_builder);
     }
 }

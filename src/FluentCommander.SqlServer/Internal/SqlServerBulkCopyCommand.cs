@@ -254,7 +254,7 @@ namespace FluentCommander.SqlServer.Internal
                 var column = metadata.GetType().GetField("column", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(metadata);
                 var length = metadata.GetType().GetField("length", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(metadata);
 
-                throw new BulkCopyException($"Column: {column} contains data with a length greater than: {length}", e);
+                throw new BulkCopyException($"Column '{column}' contains a string whose length is greater than {length} characters", e);
             }
             catch (Exception)
             {

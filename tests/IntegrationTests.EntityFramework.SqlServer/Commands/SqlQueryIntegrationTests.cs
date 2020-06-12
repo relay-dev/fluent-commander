@@ -1,4 +1,3 @@
-using FluentCommander;
 using FluentCommander.EntityFramework;
 using FluentCommander.SqlQuery;
 using IntegrationTests.EntityFramework.SqlServer.Entities;

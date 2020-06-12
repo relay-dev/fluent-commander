@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="connectionStringName">The name of the connection string in the IConnectionStringCollection</param>
         /// <returns>A new IDatabaseCommander instance</returns>
-        IDatabaseCommander Create(string connectionStringName = null);
+        IDatabaseCommander Create(string connectionStringName = "DefaultConnection");
     }
 }

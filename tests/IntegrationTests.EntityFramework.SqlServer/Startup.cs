@@ -1,7 +1,5 @@
-﻿using FluentCommander.Core.Impl;
-using FluentCommander.EntityFramework.SqlServer;
+﻿using FluentCommander.EntityFramework.SqlServer;
 using IntegrationTests.EntityFramework.SqlServer.Entities;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,16 +10,13 @@ namespace IntegrationTests.EntityFramework.SqlServer
     {
         public override void AddDatabaseCommander(ServiceCollection serviceCollection, IConfiguration config)
         {
-            serviceCollection.AddEntityFrameworkSqlServerDatabaseCommander();
+            serviceCollection.AddEntityFrameworkSqlServerDatabaseCommander(config);
         }
 
         protected override void ConfigureDomainServices(ServiceCollection serviceCollection, IConfiguration config)
         {
-            var connectionStringCollection = new ConnectionStringCollection(config);
-
             serviceCollection.AddScoped<DatabaseCommanderDomainContext>();
             serviceCollection.AddScoped<DbContext, DatabaseCommanderDomainContext>();
-            serviceCollection.AddSingleton(new SqlConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
         }
     }
 }

@@ -15,18 +15,10 @@ namespace FluentCommander.SqlServer
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
 
-            var connectionStringCollection = new ConnectionStringCollection(config);
-
-            if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
-            {
-                services.AddSingleton(new SqlConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
-                services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
-            }
-
-            return services.AddSqlServerDatabaseCommands();
+            return services.AddSqlServerDatabaseCommands(config);
         }
 
-        public static IServiceCollection AddSqlServerDatabaseCommands(this IServiceCollection services)
+        public static IServiceCollection AddSqlServerDatabaseCommands(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<SqlServerBulkCopyCommand>();
             services.AddTransient<SqlServerPaginationCommand>();
@@ -34,6 +26,14 @@ namespace FluentCommander.SqlServer
             services.AddTransient<SqlServerSqlNonQueryCommand>();
             services.AddTransient<SqlServerSqlQueryCommand>();
             services.AddTransient<SqlServerStoredProcedureCommand>();
+
+            var connectionStringCollection = new ConnectionStringCollection(config);
+
+            if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
+            {
+                services.AddSingleton(new SqlConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
+                services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
+            }
 
             return services;
         }

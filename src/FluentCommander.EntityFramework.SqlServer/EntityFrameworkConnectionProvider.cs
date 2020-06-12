@@ -1,9 +1,8 @@
-﻿using FluentCommander.SqlServer.Internal;
+﻿using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.SqlServer;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {

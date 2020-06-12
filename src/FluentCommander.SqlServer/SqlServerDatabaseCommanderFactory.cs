@@ -7,25 +7,25 @@ namespace FluentCommander.SqlServer
     {
         private readonly IConnectionStringCollection _connectionStringCollection;
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
-        private readonly IDatabaseCommandFactory _commandFactory;
 
         public SqlServerDatabaseCommanderFactory(
             IConnectionStringCollection connectionStringCollection,
-            DatabaseCommandBuilder databaseCommandBuilder,
-            IDatabaseCommandFactory commandFactory)
+            DatabaseCommandBuilder databaseCommandBuilder)
         {
             _connectionStringCollection = connectionStringCollection;
             _databaseCommandBuilder = databaseCommandBuilder;
-            _commandFactory = commandFactory;
         }
 
-        public IDatabaseCommander Create(string connectionName = null)
+        /// <summary>
+        /// Creates a new IDatabaseCommander instance
+        /// </summary>
+        /// <param name="connectionStringName">The name of the connection string in the IConnectionStringCollection</param>
+        /// <returns>A new IDatabaseEntityCommander instance</returns>
+        public IDatabaseCommander Create(string connectionStringName = "DefaultConnection")
         {
-            connectionName ??= "DefaultConnection";
+            var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionStringName));
 
-            var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionName));
-
-            return new SqlServerDatabaseCommander(_commandFactory, _databaseCommandBuilder);
+            return new SqlServerDatabaseCommander(builder, _databaseCommandBuilder);
         }
     }
 }
