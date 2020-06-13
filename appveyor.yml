@@ -30,8 +30,8 @@ build:
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: normal
-test_script:
-  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+#test_script:
+#  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 #after_test:
 #  - dotnet test -c Debug -f netcoreapp3.1 tests/FluentCommander.IntegrationTests.SqlServer/FluentCommander.IntegrationTests.SqlServer.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
@@ -40,6 +40,17 @@ test_script:
 
 #after_test:
 #  - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.UnitTests\coverage.netcoreapp3.1.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\coverage.netcoreapp3.1.opencover.xml"
+
+test_script:
+- ps: >-
+    nuget install xunit.runner.console -OutputDirectory packages -Version 2.3.1    
+    nuget install OpenCover -OutputDirectory packages -Version 4.6.166
+    
+    .\packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -register:user -target:dotnet.exe "-targetargs:"".\packages\xunit.runner.console.2.3.1\tools\netcoreapp2.0\xunit.console.dll"" ""tests\FluentCommander.IntegrationTests.SqlServer\bin\Debug\netcoreapp3.1\FluentCommander.IntegrationTests.SqlServer.dll"" -noshadow -appveyor" -filter:"+[FluentCommander*]*" -oldStyle -output:opencoverCoverage.xml
+    $coveralls = ".\tools\csmacnz.coveralls.exe"
+    & $coveralls --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+
+
 artifacts:
 - path: src\FluentCommander\bin\Release\*.nupkg
   name: NuGet
