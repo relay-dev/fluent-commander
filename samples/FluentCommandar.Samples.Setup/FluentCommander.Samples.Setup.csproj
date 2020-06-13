@@ -12,10 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\setup-sample-database-batch-1.sql" />
-    <EmbeddedResource Include="Resources\setup-sample-database-batch-2.sql" />
-    <EmbeddedResource Include="Resources\setup-sample-database-batch-3.sql" />
-    <EmbeddedResource Include="Resources\teardown-sample-database.sql" />
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-2.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\setup-sample-database-batch-3.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\teardown-sample-database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
