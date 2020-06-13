@@ -15,6 +15,7 @@ namespace FluentCommander.Samples
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false)
+                .AddJsonFile($"appsettings.{EnvironmentName}.json", true)
                 .Build();
 
             // Generate the Service Provider
@@ -49,5 +50,7 @@ namespace FluentCommander.Samples
         {
             new DatabaseService(config).TeardownDatabase();
         }
+
+        private static string EnvironmentName => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     }
 }

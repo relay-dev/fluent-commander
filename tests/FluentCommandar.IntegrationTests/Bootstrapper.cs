@@ -16,6 +16,7 @@ namespace FluentCommander.IntegrationTests
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false)
+                .AddJsonFile($"appsettings.{EnvironmentName}.json", true)
                 .Build();
 
             // Initialize a ServiceCollection
@@ -51,5 +52,7 @@ namespace FluentCommander.IntegrationTests
                  databaseService.SetupDatabase();
              }
         }
+
+        private static string EnvironmentName => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     }
 }
