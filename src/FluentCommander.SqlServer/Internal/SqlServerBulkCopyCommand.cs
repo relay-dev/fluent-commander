@@ -4,10 +4,12 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>

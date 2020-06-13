@@ -1,5 +1,4 @@
 ﻿using FluentCommander.BulkCopy;
-using FluentCommander.Core;
 using FluentCommander.Pagination;
 using FluentCommander.Scalar;
 using FluentCommander.SqlNonQuery;

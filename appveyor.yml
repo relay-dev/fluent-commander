@@ -22,7 +22,10 @@ build:
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: normal
-test: off
+test:
+  assemblies:
+    only:
+    - FluentCommander.UnitTests
 artifacts:
 - path: src\FluentCommander.Database\bin\Release\*.nupkg
   name: NuGet
