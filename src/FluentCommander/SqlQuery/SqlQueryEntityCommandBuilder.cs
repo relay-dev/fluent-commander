@@ -1,4 +1,5 @@
-﻿using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.Behaviors;
+using FluentCommander.Core.Builders;
 using FluentCommander.Core.Property;
 using System;
 
@@ -8,8 +9,15 @@ namespace FluentCommander.SqlQuery
     {
         protected Action<PropertyMapBuilder<TEntity>> MappingBuilder;
 
-        protected SqlQueryCommandBuilder(SqlRequest commandRequest) 
+        protected SqlQueryCommandBuilder(SqlQueryRequest commandRequest) 
             : base(commandRequest) { }
+
+        public SqlQueryCommandBuilder<TEntity> Behaviors(Func<ReadBehaviorsBuilder, ReadBehaviorsBuilder> options)
+        {
+            options.Invoke(new ReadBehaviorsBuilder((SqlQueryRequest)CommandRequest));
+
+            return this;
+        }
 
         public SqlQueryCommandBuilder<TEntity> Project(Action<PropertyMapBuilder<TEntity>> mappingBuilder)
         {

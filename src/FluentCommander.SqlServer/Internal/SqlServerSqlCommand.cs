@@ -1,12 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FluentCommander.Core;
-using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
 using Microsoft.Data.SqlClient;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    public abstract class SqlServerSqlCommand<TResult> : SqlServerCommand, IDatabaseCommand<SqlRequest, TResult>
+    internal abstract class SqlServerSqlCommand<TResult> : SqlServerCommandBase, IDatabaseCommand<SqlRequest, TResult>
     {
         protected SqlCommand GetSqlCommand(SqlConnection connection, SqlRequest request)
         {

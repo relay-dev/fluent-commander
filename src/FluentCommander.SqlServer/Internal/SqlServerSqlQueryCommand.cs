@@ -3,6 +3,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
+using FluentCommander.Core.Behaviors;
 
 namespace FluentCommander.SqlServer.Internal
 {
@@ -47,11 +49,30 @@ namespace FluentCommander.SqlServer.Internal
 
             var dataTable = new DataTable();
 
-            var reader = await command.ExecuteReaderAsync(cancellationToken);
+            CommandBehavior behavior = ToSqlCommandBehaviors(((SqlQueryRequest)request).ReadBehaviors);
+
+            var reader = await command.ExecuteReaderAsync(behavior, cancellationToken);
 
             dataTable.Load(reader);
 
             return new SqlQueryResult(dataTable);
+        }
+
+        private CommandBehavior ToSqlCommandBehaviors(ReadBehaviors behaviors)
+        {
+            CommandBehavior behavior = CommandBehavior.Default;
+
+            if (behaviors != null)
+            {
+                behavior = SetFlag(behavior, CommandBehavior.SingleResult, behaviors.SingleResult);
+                behavior = SetFlag(behavior, CommandBehavior.SchemaOnly, behaviors.SchemaOnly);
+                behavior = SetFlag(behavior, CommandBehavior.KeyInfo, behaviors.KeyInfo);
+                behavior = SetFlag(behavior, CommandBehavior.SingleRow, behaviors.SingleRow);
+                behavior = SetFlag(behavior, CommandBehavior.SequentialAccess, behaviors.SequentialAccess);
+                behavior = SetFlag(behavior, CommandBehavior.CloseConnection, behaviors.CloseConnection);
+            }
+
+            return behavior;
         }
     }
 }

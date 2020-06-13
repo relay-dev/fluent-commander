@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FluentCommander.Core;
+using System.Collections.Generic;
 using System.Data;
-using FluentCommander.Core;
 
 namespace FluentCommander.SqlQuery
 {

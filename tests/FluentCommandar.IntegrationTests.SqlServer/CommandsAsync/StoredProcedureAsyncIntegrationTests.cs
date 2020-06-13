@@ -1,11 +1,11 @@
-﻿using FluentCommander.StoredProcedure;
+﻿using FluentCommander.Samples.Setup.Entities;
+using FluentCommander.StoredProcedure;
 using Shouldly;
 using System;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Samples.Setup.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -259,6 +259,24 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 
             // Print result
             WriteLine("Return Parameter: {0}", result.GetReturnParameter<int>());
+        }
+
+        [Fact]
+        public async Task ExecuteStoredProcedureAsync_WithBehaviorsSet_ShouldRespectBehaviorSettings()
+        {
+            // Arrange & Act
+            StoredProcedureResult result = await SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
+                .Behaviors(behavior => behavior.SingleResult().KeyInfo())
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
+            WriteLine(result.DataTable);
         }
 
         [Fact]

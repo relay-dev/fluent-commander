@@ -1,8 +1,6 @@
-﻿using FluentCommander.SqlQuery;
-
-namespace FluentCommander.Core.CommandBuilders
+﻿namespace FluentCommander.Core.Builders
 {
-    public abstract class ParameterizedSqlCommandBuilder<TBuilder, TResult> : ParameterizedInputCommandBuilder<TBuilder, TResult> where TBuilder : class
+    public abstract class ParameterizedSqlCommandBuilder<TBuilder, TResult> : ParameterizedCommandBuilder<TBuilder, TResult> where TBuilder : class
     {
         protected readonly SqlRequest CommandRequest;
 

@@ -260,6 +260,24 @@ namespace FluentCommander.IntegrationTests.SqlServer.Commands
         }
 
         [Fact]
+        public void ExecuteStoredProcedureAsync_WithBehaviorsSet_ShouldRespectBehaviorSettings()
+        {
+            // Arrange & Act
+            StoredProcedureResult result = SUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
+                .Behaviors(behavior => behavior.SingleResult().KeyInfo())
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
         public void ExecuteStoredProcedure_WithAllInputTypesAndTableResult_ShouldReturnListOfEntities()
         {
             // Arrange & Act

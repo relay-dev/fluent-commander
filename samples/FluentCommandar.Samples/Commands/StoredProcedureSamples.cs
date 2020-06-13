@@ -142,7 +142,7 @@ namespace FluentCommander.Samples.Commands
         }
 
         /// <notes>
-        /// If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter<T>():
+        /// If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter():
         /// </notes>
         [Sample(Key = "6")]
         public async Task ExecuteStoredProcedureWithReturnParameter()
@@ -207,6 +207,27 @@ namespace FluentCommander.Samples.Commands
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
+                .ExecuteAsync(new CancellationToken());
+
+            int count = result.Count;
+            bool hasData = result.HasData;
+            DataTable dataTable = result.DataTable;
+
+            Console.WriteLine("Row count: {0}", count);
+            Console.WriteLine("Has Data: {0}", hasData);
+            Console.WriteLine("DataTable: {0}", Print(dataTable));
+        }
+
+        /// <notes>
+        /// SqlDataReader behaviors are exposed
+        /// </notes>
+        [Sample(Key = "10")]
+        public async Task ExecuteStoredProcedureWithBehaviors()
+        {
+            StoredProcedureResult result = await _databaseCommander.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+                .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
+                .Behaviors(behavior => behavior.SingleResult().KeyInfo())
                 .ExecuteAsync(new CancellationToken());
 
             int count = result.Count;

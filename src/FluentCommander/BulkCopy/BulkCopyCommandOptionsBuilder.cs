@@ -11,11 +11,11 @@
         }
 
         /// <summary>
-        /// Preserve source identity values. When not specified, identity values are assigned by the destination
+        /// When specified, **AllowEncryptedValueModifications** enables bulk copying of encrypted data between tables or databases, without decrypting the data. Typically, an application would select data from encrypted columns from one table without decrypting the data (the app would connect to the database with the column encryption setting keyword set to disabled) and then would use this option to bulk insert the data, which is still encrypted. Use caution when specifying **AllowEncryptedValueModifications** as this may lead to corrupting the database because the driver does not check if the data is indeed encrypted, or if it is correctly encrypted using the same encryption type, algorithm and key as the target column
         /// </summary>
-        public BulkCopyCommandOptionsBuilder KeepIdentity(bool flag = true)
+        public BulkCopyCommandOptionsBuilder AllowEncryptedValueModifications(bool flag = true)
         {
-            _request.Options.KeepIdentity = flag;
+            _request.Options.AllowEncryptedValueModifications = flag;
 
             return this;
         }
@@ -31,11 +31,21 @@
         }
 
         /// <summary>
-        /// Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used
+        /// When specified, cause the server to fire the insert triggers for the rows being inserted into the database
         /// </summary>
-        public BulkCopyCommandOptionsBuilder TableLock(bool flag = true)
+        public BulkCopyCommandOptionsBuilder FireTriggers(bool flag = true)
         {
-            _request.Options.TableLock = flag;
+            _request.Options.FireTriggers = flag;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Preserve source identity values. When not specified, identity values are assigned by the destination
+        /// </summary>
+        public BulkCopyCommandOptionsBuilder KeepIdentity(bool flag = true)
+        {
+            _request.Options.KeepIdentity = flag;
 
             return this;
         }
@@ -51,11 +61,11 @@
         }
 
         /// <summary>
-        /// When specified, cause the server to fire the insert triggers for the rows being inserted into the database
+        /// Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used
         /// </summary>
-        public BulkCopyCommandOptionsBuilder FireTriggers(bool flag = true)
+        public BulkCopyCommandOptionsBuilder TableLock(bool flag = true)
         {
-            _request.Options.FireTriggers = flag;
+            _request.Options.TableLock = flag;
 
             return this;
         }
@@ -66,16 +76,6 @@
         public BulkCopyCommandOptionsBuilder UseInternalTransaction(bool flag = true)
         {
             _request.Options.UseInternalTransaction = flag;
-
-            return this;
-        }
-
-        /// <summary>
-        /// When specified, **AllowEncryptedValueModifications** enables bulk copying of encrypted data between tables or databases, without decrypting the data. Typically, an application would select data from encrypted columns from one table without decrypting the data (the app would connect to the database with the column encryption setting keyword set to disabled) and then would use this option to bulk insert the data, which is still encrypted. Use caution when specifying **AllowEncryptedValueModifications** as this may lead to corrupting the database because the driver does not check if the data is indeed encrypted, or if it is correctly encrypted using the same encryption type, algorithm and key as the target column
-        /// </summary>
-        public BulkCopyCommandOptionsBuilder AllowEncryptedValueModifications(bool flag = true)
-        {
-            _request.Options.AllowEncryptedValueModifications = flag;
 
             return this;
         }

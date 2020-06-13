@@ -1,4 +1,5 @@
-﻿using FluentCommander.Core.Property;
+﻿using FluentCommander.Core;
+using FluentCommander.Core.Property;
 using FluentCommander.Core.Utility.Impl;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,7 @@ namespace FluentCommander.SqlQuery
         private readonly IDatabaseCommander _databaseCommander;
 
         public SqlQueryCommand(IDatabaseCommander databaseCommander)
-            : base(new SqlRequest())
+            : base(new SqlQueryRequest())
         {
             _databaseCommander = databaseCommander;
         }
@@ -21,7 +22,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override SqlQueryResult<TEntity> Execute()
         {
-            SqlQueryResult result = _databaseCommander.ExecuteSql(CommandRequest);
+            SqlQueryResult result = _databaseCommander.ExecuteSql((SqlQueryRequest)CommandRequest);
 
             List<TEntity> entities = MapToEntities(result.DataTable);
 
@@ -33,7 +34,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override async Task<SqlQueryResult<TEntity>> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlQueryResult result = await _databaseCommander.ExecuteSqlAsync(CommandRequest, cancellationToken);
+            SqlQueryResult result = await _databaseCommander.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
 
             List<TEntity> entities = MapToEntities(result.DataTable);
 

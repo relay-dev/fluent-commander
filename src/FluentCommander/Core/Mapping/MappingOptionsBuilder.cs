@@ -7,9 +7,9 @@ namespace FluentCommander.Core.Mapping
 {
     public class MappingOptionsBuilder
     {
-        private readonly IColumnMappingRequest _request;
+        private readonly IHaveColumnMapping _request;
 
-        public MappingOptionsBuilder(IColumnMappingRequest request)
+        public MappingOptionsBuilder(IHaveColumnMapping request)
         {
             _request = request;
         }
@@ -40,9 +40,9 @@ namespace FluentCommander.Core.Mapping
 
     public class MappingOptionsBuilder<TEntity>
     {
-        private readonly IColumnMappingRequest _request;
+        private readonly IHaveColumnMapping _request;
 
-        public MappingOptionsBuilder(IColumnMappingRequest request)
+        public MappingOptionsBuilder(IHaveColumnMapping request)
         {
             _request = request;
         }

@@ -1,4 +1,4 @@
-﻿using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.Builders;
 using FluentCommander.Core.Mapping;
 using System;
 using System.Data;

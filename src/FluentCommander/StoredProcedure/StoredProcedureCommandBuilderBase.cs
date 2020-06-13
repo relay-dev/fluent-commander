@@ -1,13 +1,16 @@
-﻿using System;
+﻿using FluentCommander.Core;
+using FluentCommander.Core.Behaviors;
+using FluentCommander.Core.Builders;
+using System;
 using System.Data;
 
-namespace FluentCommander.Core.CommandBuilders
+namespace FluentCommander.StoredProcedure
 {
-    public abstract class ParameterizedCommandBuilder<TBuilder, TResult> : ParameterizedInputCommandBuilder<TBuilder, TResult> where TBuilder : class
+    public abstract class StoredProcedureCommandBuilderBase<TBuilder, TResult> : ParameterizedCommandBuilder<TBuilder, TResult> where TBuilder : class
     {
         private readonly ParameterizedCommandRequest _commandRequest;
 
-        protected ParameterizedCommandBuilder(ParameterizedCommandRequest commandRequest)
+        protected StoredProcedureCommandBuilderBase(ParameterizedCommandRequest commandRequest)
             : base(commandRequest)
         {
             _commandRequest = commandRequest;

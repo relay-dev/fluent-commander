@@ -1,4 +1,6 @@
-﻿using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.Behaviors;
+using FluentCommander.Core.Builders;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,16 +11,23 @@ namespace FluentCommander.SqlQuery
         private readonly IDatabaseCommander _databaseCommander;
 
         public SqlQueryCommand(IDatabaseCommander databaseCommander)
-            : base(new SqlRequest())
+            : base(new SqlQueryRequest())
         {
             _databaseCommander = databaseCommander;
+        }
+
+        public SqlQueryCommand Behaviors(Func<ReadBehaviorsBuilder, ReadBehaviorsBuilder> options)
+        {
+            options.Invoke(new ReadBehaviorsBuilder((SqlQueryRequest)CommandRequest));
+
+            return this;
         }
 
         /// <summary>Executes the command</summary>
         /// <returns>The result of the command</returns>
         public override SqlQueryResult Execute()
         {
-            return _databaseCommander.ExecuteSql(CommandRequest);
+            return _databaseCommander.ExecuteSql((SqlQueryRequest)CommandRequest);
         }
 
         /// <summary>Executes the command asynchronously</summary>
@@ -26,7 +35,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await _databaseCommander.ExecuteSqlAsync(CommandRequest, cancellationToken);
+            return await _databaseCommander.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
         }
     }
 }

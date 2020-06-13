@@ -1,5 +1,4 @@
-﻿using FluentCommander.Core;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 

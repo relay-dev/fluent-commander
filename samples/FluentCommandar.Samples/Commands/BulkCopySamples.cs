@@ -225,20 +225,16 @@ namespace FluentCommander.Samples.Commands
             dataTable.Columns["SampleVarChar"].ColumnName = "SampleString";
 
             BulkCopyResult result = await _databaseCommander.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
-                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .Mapping(mapping => mapping.UsePartialMap(entity =>
                 {
-                    new ColumnMap
-                    {
-                        Source = "SampleString",
-                        Destination = "SampleVarChar"
-                    }
-                })))
+                    entity.Property(e => e.SampleVarChar).MapFrom("SampleString");
+                }))
                 .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
                 {
                     var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;

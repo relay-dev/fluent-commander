@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using FluentCommander.Samples.Setup.Entities;
 using FluentCommander.SqlQuery;
 using Shouldly;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Samples.Setup.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,6 +24,25 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
+        public async Task ExecuteSqlQueryCommandAsync_WithBehaviorsSet_ShouldRespectBehaviorSettings()
+        {
+            // Arrange & Act
+            SqlQueryResult result = await SUT.BuildCommand()
+                .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputParameter("SampleVarChar", "Row 1")
+                .Behaviors(behavior => behavior.SingleResult().KeyInfo())
                 .ExecuteAsync(new CancellationToken());
 
             // Assert

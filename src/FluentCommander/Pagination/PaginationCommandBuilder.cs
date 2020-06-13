@@ -1,4 +1,4 @@
-﻿using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.Builders;
 
 namespace FluentCommander.Pagination
 {

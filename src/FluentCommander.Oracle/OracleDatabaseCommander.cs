@@ -1,4 +1,11 @@
-﻿using FluentCommander.Oracle.Internal;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
+using FluentCommander.Oracle.Internal;
+using FluentCommander.Pagination;
+using FluentCommander.Scalar;
+using FluentCommander.SqlNonQuery;
+using FluentCommander.SqlQuery;
+using FluentCommander.StoredProcedure;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -6,11 +13,6 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.BulkCopy;
-using FluentCommander.Pagination;
-using FluentCommander.SqlNonQuery;
-using FluentCommander.SqlQuery;
-using FluentCommander.StoredProcedure;
 
 namespace FluentCommander.Oracle
 {
@@ -32,7 +34,7 @@ namespace FluentCommander.Oracle
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {
-                SqlRequest sqlRequest = writer.ToSqlRequest(dataRow);
+                SqlNonQueryRequest sqlRequest = writer.ToSqlRequest(dataRow);
 
                 ExecuteNonQuery(sqlRequest);
             }
@@ -46,7 +48,7 @@ namespace FluentCommander.Oracle
 
             foreach (DataRow dataRow in request.DataTable.Rows)
             {
-                SqlRequest sqlRequest = writer.ToSqlRequest(dataRow);
+                SqlNonQueryRequest sqlRequest = writer.ToSqlRequest(dataRow);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -56,7 +58,7 @@ namespace FluentCommander.Oracle
             return new BulkCopyResult(request.DataTable.Rows.Count);
         }
 
-        public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
+        public override SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -78,7 +80,7 @@ namespace FluentCommander.Oracle
             return new SqlNonQueryResult(numberOfRowsAffected);
         }
 
-        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlNonQueryRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
@@ -124,7 +126,7 @@ namespace FluentCommander.Oracle
             return numberOfRowsAffected;
         }
 
-        public override TResult ExecuteScalar<TResult>(SqlRequest request)
+        public override TResult ExecuteScalar<TResult>(ScalarRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -148,7 +150,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public override async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(ScalarRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
@@ -200,7 +202,7 @@ namespace FluentCommander.Oracle
                 : (TResult)result;
         }
 
-        public override SqlQueryResult ExecuteSql(SqlRequest request)
+        public override SqlQueryResult ExecuteSql(SqlQueryRequest request)
         {
             using var connection = new OracleConnection(_builder.ConnectionString);
             using var command = new OracleCommand(request.Sql, connection);
@@ -224,7 +226,7 @@ namespace FluentCommander.Oracle
             return new SqlQueryResult(dataTable);
         }
 
-        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken)
         {
             await using var connection = new OracleConnection(_builder.ConnectionString);
             await using var command = new OracleCommand(request.Sql, connection);
