@@ -169,7 +169,7 @@ private async Task BulkCopyUsingStronglyTypedMap()
 }
 ```
 
-#### Bulk Copy Options
+#### Options
 
 All BulkCopy options are exposed via the Options API:
 
@@ -192,7 +192,7 @@ private async Task BulkCopyUsingOptions()
 }
 ```
 
-#### Bulk Copy Events
+#### Events
 
 The OnRowsCopied event can be subscribed to:
 
@@ -434,7 +434,7 @@ namespace Samples
             //Creates an instance of an IDatabaseCommander connected to a data source using the connection string named AlternateConnectionString
             IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnectionString");
 
-            // Verify the connection by running a the GetServerName() command
+            // Verify the connection by running the GetServerName() command
             string serverName = await databaseCommander.GetServerNameAsync(new CancellationToken());
 
             Console.WriteLine("Connected to: {0}", serverName);

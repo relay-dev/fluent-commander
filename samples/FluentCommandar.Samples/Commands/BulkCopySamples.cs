@@ -1,4 +1,5 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Samples.Setup.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Samples.Setup.Entities;
 
 namespace FluentCommander.Samples.Commands
 {
