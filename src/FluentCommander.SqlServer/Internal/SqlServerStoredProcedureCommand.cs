@@ -75,7 +75,6 @@ namespace FluentCommander.SqlServer.Internal
 
             SqlDataReader reader = await command.ExecuteReaderAsync(behavior, cancellationToken);
 
-            // LoadOptions
             dataTable.Load(reader);
 
             HandleResult(request, parameters);

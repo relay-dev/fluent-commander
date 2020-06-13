@@ -1,5 +1,5 @@
-﻿using System;
-using FluentCommander.Core.Behaviors;
+﻿using FluentCommander.Core.Behaviors;
+using System;
 
 namespace FluentCommander.StoredProcedure
 {
