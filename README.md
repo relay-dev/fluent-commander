@@ -15,19 +15,7 @@ A lightweight database command abstraction featuring a fluent API
 
 <br />
 
-## Production Deployment
-
-The NuGet package is available on nuget.org:
-
-https://www.nuget.org/packages/FluentCommander
-
-https://www.nuget.org/packages/FluentCommander.SqlServer
-
-https://www.nuget.org/packages/FluentCommander.Oracle
-
-<br />
-
-## Installation
+## Installing Fluent Commander
 
 Here's how you can install the SQL Server NuGet Package:
 
@@ -143,7 +131,6 @@ private async Task BulkCopyUsingMap()
                 new ColumnMap("Column7", "SampleVarChar"),
             }
         }))
-        .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
@@ -253,9 +240,9 @@ private async Task BulkCopyUsingAllApis()
         }))
         .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
         {
-            var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
+            var event = (SqlRowsCopiedEventArgs)e;
 
-            Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+            Console.WriteLine($"Total rows copied: {event.RowsCopied}");
         }))
         .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
@@ -265,6 +252,7 @@ private async Task BulkCopyUsingAllApis()
     Console.WriteLine("Row count copied: {0}", rowCountCopied);
 }
 ```
+
 
 ### Stored Procedures
 
@@ -369,6 +357,7 @@ public async Task ExecuteStoredProcedureWithBehaviors()
 }
 ```
 
+
 ### Pagination
 
 There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
@@ -417,6 +406,7 @@ private async Task ExecutePaginationAllSettingsAreUsed()
 }
 ```
 
+
 ### Database Commander Factory
 
 If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
@@ -451,6 +441,7 @@ namespace Samples
     }
 }
 ```
+
 
 ### Other
 
@@ -542,4 +533,7 @@ private async Task ExecuteScalarWithInput()
 }
 ```
 
-There are several other variations of these samples can be found [here](https://github.com/relay-dev/fluent-commander/tree/master/samples/Samples/Commands)
+
+### More
+
+There are several other variations not documented here. You can find a Console Application with these samples [here](https://github.com/relay-dev/fluent-commander/tree/dev/samples/FluentCommandar.Samples/Commands).
