@@ -1,4 +1,8 @@
 version: 1.0.{build}
+environment:
+  ASPNETCORE_ENVIRONMENT: appveyor
+  COVERALLS_REPO_TOKEN:
+    secure: Aib0dt/M2yLE5OAyHD33ENZU7MbUhDdGpVf/WDd+ECgOV7TEBrPN3tiMfqZrvCAj
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -14,8 +18,12 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
+install:
+  - dotnet tool install --global coveralls.net
+services:
+  - mssql2017
 nuget:
-  disable_publish_on_pr: true
+  disable_publish_on_pr: false
 before_build:
 - cmd: dotnet restore
 build:
@@ -23,7 +31,9 @@ build:
   publish_nuget_symbols: true
   verbosity: normal
 test_script:
-  - dotnet test "C:\projects\fluent-commander\tests\FluentCommander.UnitTests\FluentCommander.UnitTests.csproj" --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
+  - dotnet test tests\FluentCommander.UnitTests\FluentCommander.UnitTests.csproj;tests\FluentCommander.UnitTests\FluentCommander.UnitTests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
+after_test:
+  - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.UnitTests\coverage.netcoreapp3.1.opencover.xml;opencover=tests\FluentCommandar.IntegrationTests.SqlServer\coverage.netcoreapp3.1.opencover.xml"
 artifacts:
-- path: src\FluentCommander.Database\bin\Release\*.nupkg
+- path: src\FluentCommander\bin\Release\*.nupkg
   name: NuGet
