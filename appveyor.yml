@@ -23,7 +23,7 @@ build:
   publish_nuget_symbols: true
   verbosity: normal
 test_script:
-  - dotnet test yFluentCommander.UnitTests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
+  - dotnet test FluentCommander.UnitTests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
 artifacts:
 - path: src\FluentCommander.Database\bin\Release\*.nupkg
   name: NuGet
