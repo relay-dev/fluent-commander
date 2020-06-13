@@ -37,6 +37,3 @@ after_test:
 artifacts:
 - path: src\FluentCommander\bin\Release\*.nupkg
   name: NuGet
-deploy:
-- provider: Environment
-  name: NuGet
