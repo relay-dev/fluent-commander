@@ -22,10 +22,8 @@ build:
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: normal
-test:
-  assemblies:
-    only:
-    - FluentCommander.UnitTests.dll
+test_script:
+  - dotnet test ~/tests/FluentCommander.UnitTests/FluentCommander.UnitTests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
 artifacts:
 - path: src\FluentCommander.Database\bin\Release\*.nupkg
   name: NuGet
