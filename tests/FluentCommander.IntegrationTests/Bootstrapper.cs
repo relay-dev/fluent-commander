@@ -40,17 +40,17 @@ namespace FluentCommander.IntegrationTests
 
         protected virtual void ConfigureDomainServices(ServiceCollection serviceCollection, IConfiguration config)
         {
-            
+
         }
 
         private void Initialize(IConfiguration config)
         {
-             var databaseService = new DatabaseService(config);
+            var databaseService = new DatabaseService(config);
 
-             if (!databaseService.IsInitialized())
-             {
-                 databaseService.SetupDatabase();
-             }
+            if (!databaseService.IsInitialized())
+            {
+                databaseService.SetupDatabase();
+            }
         }
 
         private static string EnvironmentName => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

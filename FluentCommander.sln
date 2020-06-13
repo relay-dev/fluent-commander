@@ -7,27 +7,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander", "src\Flue
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B7A82303-550D-4D00-9886-328014775C72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.Samples", "samples\FluentCommandar.Samples\FluentCommander.Samples.csproj", "{D93D6C63-ACC3-4313-93D9-57C92C475169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.Samples", "samples\FluentCommander.Samples\FluentCommander.Samples.csproj", "{D93D6C63-ACC3-4313-93D9-57C92C475169}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.SqlServer", "src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj", "{38DB2CDE-F7F4-49BC-AE7A-48FAE9E227E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7F99DA00-E7A3-454C-98EA-6C250D8A0A74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.IntegrationTests.SqlServer", "tests\FluentCommandar.IntegrationTests.SqlServer\FluentCommander.IntegrationTests.SqlServer.csproj", "{8BF7F5A1-1E62-4A43-95A6-C0B64EB76B3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.IntegrationTests.SqlServer", "tests\FluentCommander.IntegrationTests.SqlServer\FluentCommander.IntegrationTests.SqlServer.csproj", "{8BF7F5A1-1E62-4A43-95A6-C0B64EB76B3E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.Samples.Setup", "samples\FluentCommandar.Samples.Setup\FluentCommander.Samples.Setup.csproj", "{D0BAD99F-EDDB-44E6-91EC-31F557A9245A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.Samples.Setup", "samples\FluentCommander.Samples.Setup\FluentCommander.Samples.Setup.csproj", "{D0BAD99F-EDDB-44E6-91EC-31F557A9245A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.Oracle", "src\FluentCommander.Oracle\FluentCommander.Oracle.csproj", "{1C440A34-8D30-4BFC-81D7-1DE85E6860B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.EntityFramework", "src\FluentCommander.EntityFramework\FluentCommander.EntityFramework.csproj", "{F3D1016B-BAE9-4B74-8CF3-1FB43075C65E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.IntegrationTests.EntityFramework.SqlServer", "tests\FluentCommandar.IntegrationTests.EntityFramework.SqlServer\FluentCommander.IntegrationTests.EntityFramework.SqlServer.csproj", "{E8FE07D3-39A0-4B88-B181-53134B396D92}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.IntegrationTests", "tests\FluentCommandar.IntegrationTests\FluentCommander.IntegrationTests.csproj", "{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.IntegrationTests.EntityFramework.SqlServer", "tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\FluentCommander.IntegrationTests.EntityFramework.SqlServer.csproj", "{E8FE07D3-39A0-4B88-B181-53134B396D92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.EntityFramework.SqlServer", "src\FluentCommander.EntityFramework.SqlServer\FluentCommander.EntityFramework.SqlServer.csproj", "{78FDED18-0459-492F-8A6E-3A172F189FB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommander.UnitTests", "tests\FluentCommander.UnitTests\FluentCommander.UnitTests.csproj", "{BB73DC8C-8779-475B-8620-12ABAA3BFC1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentCommander.UnitTests", "tests\FluentCommander.UnitTests\FluentCommander.UnitTests.csproj", "{BB73DC8C-8779-475B-8620-12ABAA3BFC1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommander.IntegrationTests", "tests\FluentCommander.IntegrationTests\FluentCommander.IntegrationTests.csproj", "{A3F9AF58-7330-48F5-8544-FB5F97FB6009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,6 @@ Global
 		{E8FE07D3-39A0-4B88-B181-53134B396D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8FE07D3-39A0-4B88-B181-53134B396D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8FE07D3-39A0-4B88-B181-53134B396D92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78FDED18-0459-492F-8A6E-3A172F189FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78FDED18-0459-492F-8A6E-3A172F189FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78FDED18-0459-492F-8A6E-3A172F189FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,6 +75,10 @@ Global
 		{BB73DC8C-8779-475B-8620-12ABAA3BFC1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB73DC8C-8779-475B-8620-12ABAA3BFC1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB73DC8C-8779-475B-8620-12ABAA3BFC1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F9AF58-7330-48F5-8544-FB5F97FB6009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F9AF58-7330-48F5-8544-FB5F97FB6009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F9AF58-7330-48F5-8544-FB5F97FB6009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F9AF58-7330-48F5-8544-FB5F97FB6009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,8 +88,8 @@ Global
 		{8BF7F5A1-1E62-4A43-95A6-C0B64EB76B3E} = {7F99DA00-E7A3-454C-98EA-6C250D8A0A74}
 		{D0BAD99F-EDDB-44E6-91EC-31F557A9245A} = {B7A82303-550D-4D00-9886-328014775C72}
 		{E8FE07D3-39A0-4B88-B181-53134B396D92} = {7F99DA00-E7A3-454C-98EA-6C250D8A0A74}
-		{4113B5AA-5ECA-46AB-B01E-4AFEF6D40CC8} = {7F99DA00-E7A3-454C-98EA-6C250D8A0A74}
 		{BB73DC8C-8779-475B-8620-12ABAA3BFC1F} = {7F99DA00-E7A3-454C-98EA-6C250D8A0A74}
+		{A3F9AF58-7330-48F5-8544-FB5F97FB6009} = {7F99DA00-E7A3-454C-98EA-6C250D8A0A74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {582FF39F-D9E3-47FE-887E-FCE3D543534C}

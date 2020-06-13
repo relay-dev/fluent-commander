@@ -24,13 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\samples\FluentCommandar.Samples.Setup\FluentCommander.Samples.Setup.csproj" />
-    <ProjectReference Include="..\..\samples\FluentCommandar.Samples\FluentCommander.Samples.csproj" />
+    <ProjectReference Include="..\..\samples\FluentCommander.Samples.Setup\FluentCommander.Samples.Setup.csproj" />
+    <ProjectReference Include="..\..\samples\FluentCommander.Samples\FluentCommander.Samples.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.EntityFramework.SqlServer\FluentCommander.EntityFramework.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.EntityFramework\FluentCommander.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.Oracle\FluentCommander.Oracle.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
+    <ProjectReference Include="..\FluentCommander.IntegrationTests\FluentCommander.IntegrationTests.csproj" />
   </ItemGroup>
 
 </Project>

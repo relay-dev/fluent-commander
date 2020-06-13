@@ -32,7 +32,7 @@
     <ProjectReference Include="..\..\src\FluentCommander.EntityFramework.SqlServer\FluentCommander.EntityFramework.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.EntityFramework\FluentCommander.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
-    <ProjectReference Include="..\FluentCommandar.IntegrationTests\FluentCommander.IntegrationTests.csproj" />
+    <ProjectReference Include="..\FluentCommander.IntegrationTests\FluentCommander.IntegrationTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
