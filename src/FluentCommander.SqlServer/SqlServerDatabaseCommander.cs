@@ -1,5 +1,7 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
 using FluentCommander.Pagination;
+using FluentCommander.Scalar;
 using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlQuery;
 using FluentCommander.SqlServer.Internal;
@@ -33,64 +35,64 @@ namespace FluentCommander.SqlServer
             return await new SqlServerBulkCopyCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
-        public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
+        public override SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request)
         {
             return new SqlServerSqlNonQueryCommand(ConnectionProvider).Execute(request);
         }
 
-        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlNonQueryRequest request, CancellationToken cancellationToken)
         {
             return await new SqlServerSqlNonQueryCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override int ExecuteNonQuery(string sql)
         {
-            return ExecuteNonQuery(new SqlRequest(sql)).RowCountAffected;
+            return ExecuteNonQuery(new SqlNonQueryRequest(sql)).RowCountAffected;
         }
 
         public override async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken)
         {
-            return (await ExecuteNonQueryAsync(new SqlRequest(sql), cancellationToken)).RowCountAffected;
+            return (await ExecuteNonQueryAsync(new SqlNonQueryRequest(sql), cancellationToken)).RowCountAffected;
         }
 
-        public override TResult ExecuteScalar<TResult>(SqlRequest request)
+        public override TResult ExecuteScalar<TResult>(ScalarRequest request)
         {
             return new SqlServerScalarCommand<TResult>(ConnectionProvider).Execute(request);
         }
 
-        public override async Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<TResult> ExecuteScalarAsync<TResult>(ScalarRequest request, CancellationToken cancellationToken)
         {
             return await new SqlServerScalarCommand<TResult>(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override TResult ExecuteScalar<TResult>(string sql)
         {
-            return ExecuteScalar<TResult>(new SqlRequest(sql));
+            return ExecuteScalar<TResult>(new ScalarRequest(sql));
         }
 
         public override async Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken)
         {
-            return await ExecuteScalarAsync<TResult>(new SqlRequest(sql), cancellationToken);
+            return await ExecuteScalarAsync<TResult>(new ScalarRequest(sql), cancellationToken);
         }
 
-        public override SqlQueryResult ExecuteSql(SqlRequest request)
+        public override SqlQueryResult ExecuteSql(SqlQueryRequest request)
         {
             return new SqlServerSqlQueryCommand(ConnectionProvider).Execute(request);
         }
 
-        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken)
         {
             return await new SqlServerSqlQueryCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override DataTable ExecuteSql(string sql)
         {
-            return ExecuteSql(new SqlRequest(sql)).DataTable;
+            return ExecuteSql(new SqlQueryRequest(sql)).DataTable;
         }
 
         public override async Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken)
         {
-            return (await ExecuteSqlAsync(new SqlRequest(sql), cancellationToken)).DataTable;
+            return (await ExecuteSqlAsync(new SqlQueryRequest(sql), cancellationToken)).DataTable;
         }
 
         public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)

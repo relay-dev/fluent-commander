@@ -1,5 +1,7 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
 using FluentCommander.Pagination;
+using FluentCommander.Scalar;
 using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlQuery;
 using FluentCommander.StoredProcedure;
@@ -40,7 +42,7 @@ namespace FluentCommander
         /// </summary>
         /// <param name="request">The data needed to execute the non-query command</param>
         /// <returns>The result of the command</returns>
-        SqlNonQueryResult ExecuteNonQuery(SqlRequest request);
+        SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request);
 
         /// <summary>
         /// Executes a SQL statement which is either an Insert, Update or Delete
@@ -48,7 +50,7 @@ namespace FluentCommander
         /// <param name="request">The data needed to execute the non-query command</param>
         /// <param name="cancellationToken">The CancellationToken from the caller</param>
         /// <returns>The result of the command</returns>
-        Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken);
+        Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlNonQueryRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         /// Executes a SQL statement which is either an Insert, Update or Delete
@@ -71,7 +73,7 @@ namespace FluentCommander
         /// <typeparam name="TResult">The type to convert the result to</typeparam>
         /// <param name="request">The data needed to execute the scalar command</param>
         /// <returns>The result of the SQL string</returns>
-        TResult ExecuteScalar<TResult>(SqlRequest request);
+        TResult ExecuteScalar<TResult>(ScalarRequest request);
 
         /// <summary>
         /// Executes a SQL string against the database this <see cref="IDatabaseCommander"/> is connected to which returns a single value
@@ -80,7 +82,7 @@ namespace FluentCommander
         /// <param name="request">The data needed to execute the scalar command</param>
         /// <param name="cancellationToken">The CancellationToken from the caller</param>
         /// <returns>The result of the SQL string</returns>
-        Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken);
+        Task<TResult> ExecuteScalarAsync<TResult>(ScalarRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         /// Executes a SQL string against the database this <see cref="IDatabaseCommander"/> is connected to which returns a single value
@@ -104,7 +106,7 @@ namespace FluentCommander
         /// </summary>
         /// <param name="request">The data needed to execute the non-query command</param>
         /// <returns>The result of the command</returns>
-        SqlQueryResult ExecuteSql(SqlRequest request);
+        SqlQueryResult ExecuteSql(SqlQueryRequest request);
 
         /// <summary>
         /// Executes a SQL string against the database this <see cref="IDatabaseCommander"/> is connected to
@@ -112,7 +114,7 @@ namespace FluentCommander
         /// <param name="request">The data needed to execute the non-query command</param>
         /// <param name="cancellationToken">The CancellationToken from the caller</param>
         /// <returns>The result of the command</returns>
-        Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken);
+        Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         /// Executes a SQL string against the database this <see cref="IDatabaseCommander"/> is connected to

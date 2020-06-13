@@ -1,4 +1,5 @@
 ﻿using FluentCommander.Core;
+using FluentCommander.Core.Behaviors;
 using FluentCommander.StoredProcedure;
 using Microsoft.Data.SqlClient;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    internal class SqlServerStoredProcedureCommand : SqlServerCommand, IDatabaseCommand<StoredProcedureRequest, StoredProcedureResult>
+    internal class SqlServerStoredProcedureCommand : SqlServerCommandBase, IDatabaseCommand<StoredProcedureRequest, StoredProcedureResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
 
@@ -70,7 +71,9 @@ namespace FluentCommander.SqlServer.Internal
 
             var dataTable = new DataTable();
 
-            SqlDataReader reader = await command.ExecuteReaderAsync(cancellationToken);
+            CommandBehavior behavior = ToSqlCommandBehaviors(request.ReadBehaviors);
+
+            SqlDataReader reader = await command.ExecuteReaderAsync(behavior, cancellationToken);
 
             dataTable.Load(reader);
 
@@ -112,6 +115,23 @@ namespace FluentCommander.SqlServer.Internal
             {
                 parameter.Value = parameters.Single(sp => sp.ParameterName == parameter.Name).Value;
             }
+        }
+
+        private CommandBehavior ToSqlCommandBehaviors(ReadBehaviors behaviors)
+        {
+            CommandBehavior behavior = CommandBehavior.Default;
+
+            if (behaviors != null)
+            {
+                behavior = SetFlag(behavior, CommandBehavior.SingleResult, behaviors.SingleResult);
+                behavior = SetFlag(behavior, CommandBehavior.SchemaOnly, behaviors.SchemaOnly);
+                behavior = SetFlag(behavior, CommandBehavior.KeyInfo, behaviors.KeyInfo);
+                behavior = SetFlag(behavior, CommandBehavior.SingleRow, behaviors.SingleRow);
+                behavior = SetFlag(behavior, CommandBehavior.SequentialAccess, behaviors.SequentialAccess);
+                behavior = SetFlag(behavior, CommandBehavior.CloseConnection, behaviors.CloseConnection);
+            }
+
+            return behavior;
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using FluentCommander.Core.CommandBuilders;
-using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
+using FluentCommander.Core.Builders;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,19 +10,19 @@ namespace FluentCommander.Scalar
         private readonly IDatabaseCommander _databaseCommander;
 
         public ScalarCommand(IDatabaseCommander databaseCommander)
-            : base(new SqlRequest())
+            : base(new ScalarRequest())
         {
             _databaseCommander = databaseCommander;
         }
 
         public override TResult Execute()
         {
-            return _databaseCommander.ExecuteScalar<TResult>(CommandRequest);
+            return _databaseCommander.ExecuteScalar<TResult>((ScalarRequest)CommandRequest);
         }
 
         public override async Task<TResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await _databaseCommander.ExecuteScalarAsync<TResult>(CommandRequest, cancellationToken);
+            return await _databaseCommander.ExecuteScalarAsync<TResult>((ScalarRequest)CommandRequest, cancellationToken);
         }
     }
 }

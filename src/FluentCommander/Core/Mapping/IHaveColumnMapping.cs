@@ -1,6 +1,6 @@
 ﻿namespace FluentCommander.Core.Mapping
 {
-    public interface IColumnMappingRequest
+    public interface IHaveColumnMapping
     {
         ColumnMapping ColumnMapping { get; set; }
         MappingType MappingType { get; set; }

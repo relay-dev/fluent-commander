@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
 
-namespace FluentCommander.Core.CommandBuilders
+namespace FluentCommander.Core.Builders
 {
-    public abstract class ParameterizedInputCommandBuilder<TBuilder, TResult> : CommandBuilder<TBuilder, TResult> where TBuilder : class
+    public abstract class ParameterizedCommandBuilder<TBuilder, TResult> : CommandBuilder<TBuilder, TResult> where TBuilder : class
     {
         private readonly ParameterizedCommandRequest _commandRequest;
 
-        protected ParameterizedInputCommandBuilder(ParameterizedCommandRequest commandRequest)
+        protected ParameterizedCommandBuilder(ParameterizedCommandRequest commandRequest)
             : base(commandRequest)
         {
             _commandRequest = commandRequest;

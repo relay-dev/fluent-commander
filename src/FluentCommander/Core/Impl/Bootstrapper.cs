@@ -16,10 +16,12 @@ namespace FluentCommander.Core.Impl
         {
             services.AddTransient<DatabaseCommandBuilder>();
             services.AddTransient<BulkCopyCommand>();
+            services.AddTransient(typeof(BulkCopyCommand<>));
             services.AddTransient<PaginationCommand>();
             services.AddTransient(typeof(ScalarCommand<>));
             services.AddTransient<SqlNonQueryCommand>();
             services.AddTransient<SqlQueryCommand>();
+            services.AddTransient(typeof(SqlQueryCommand<>));
             services.AddTransient<StoredProcedureCommand>();
             services.AddTransient(typeof(StoredProcedureCommand<>));
             services.AddTransient<IRequestValidator<BulkCopyRequest>, BulkCopyRequestValidator>();

@@ -27,6 +27,15 @@ namespace FluentCommander
         }
 
         /// <summary>
+        /// Builds a command to bulk copy into the database
+        /// </summary>
+        /// <returns>A bulk copy command builder</returns>
+        public BulkCopyCommandBuilder<TEntity> ForBulkCopy<TEntity>()
+        {
+            return _commandFactory.Create<BulkCopyCommand<TEntity>>();
+        }
+
+        /// <summary>
         /// Builds a command to paginate across a database table
         /// </summary>
         /// <returns>A pagination command builder</returns>
@@ -63,6 +72,16 @@ namespace FluentCommander
         public SqlQueryCommand ForSqlQuery(string sql)
         {
             return _commandFactory.Create<SqlQueryCommand>().Sql(sql);
+        }
+
+        /// <summary>
+        /// Builds a command to execute a query
+        /// </summary>
+        /// <param name="sql">The SQL to execute</param>
+        /// <returns>A SQL command builder</returns>
+        public SqlQueryCommand<TEntity> ForSqlQuery<TEntity>(string sql)
+        {
+            return _commandFactory.Create<SqlQueryCommand<TEntity>>().Sql(sql);
         }
 
         /// <summary>

@@ -156,10 +156,10 @@ private async Task BulkCopyUsingStronglyTypedMap()
     DataTable dataTable = GetDataToInsert();
 
     BulkCopyResult result = await _databaseCommander.BuildCommand()
-        .ForBulkCopy()
+        .ForBulkCopy<SampleEntity>()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .Mapping<SampleEntity>(mapping => mapping.UseMap(entity =>
+        .Mapping(mapping => mapping.UseMap(entity =>
         {
             entity.Property(e => e.SampleInt).MapFrom("Column1");
             entity.Property(e => e.SampleSmallInt).MapFrom("Column2");
@@ -236,13 +236,12 @@ private async Task BulkCopyUsingAllApis()
     DataTable dataTable = GetDataToInsert();
 
     BulkCopyResult result = await _databaseCommander.BuildCommand()
-        .ForBulkCopy()
+        .ForBulkCopy<SampleEntity>()
         .From(dataTable, DataRowState.Added)
         .Into("[dbo].[SampleTable]")
-        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
         .BatchSize(100)
-        .Timeout(TimeSpan.FromSeconds(30))
-        .Mapping<SampleEntity>(mapping => mapping.UsePartialMap(entity =>
+        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
             entity
                 .Property(e => e.SampleVarChar)
@@ -254,6 +253,7 @@ private async Task BulkCopyUsingAllApis()
 
             Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
         }))
+        .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
@@ -348,6 +348,23 @@ private async Task ExecuteStoredProcedureWithReturnParameter()
 }
 ```
 
+#### Behaviors
+
+SqlDataReader behaviors are exposed:
+
+```c#
+public async Task ExecuteStoredProcedureWithBehaviors()
+{
+    StoredProcedureResult result = await _databaseCommander.BuildCommand()
+        .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+        .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
+        .Behaviors(behavior => behavior.SingleResult().KeyInfo())
+        .ExecuteAsync(new CancellationToken());
+
+    DataTable dataTable = result.DataTable;
+}
+```
+
 ### Pagination
 
 There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
@@ -396,7 +413,7 @@ private async Task ExecutePaginationAllSettingsAreUsed()
 }
 ```
 
-### Factories
+### Database Commander Factory
 
 If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
 

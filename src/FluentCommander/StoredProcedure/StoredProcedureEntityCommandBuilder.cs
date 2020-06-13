@@ -1,18 +1,25 @@
-﻿using FluentCommander.Core.CommandBuilders;
+﻿using FluentCommander.Core.Behaviors;
 using FluentCommander.Core.Property;
 using System;
 
 namespace FluentCommander.StoredProcedure
 {
-    public abstract class StoredProcedureCommandBuilder<TEntity> : ParameterizedCommandBuilder<StoredProcedureCommand<TEntity>, StoredProcedureResult<TEntity>>
+    public abstract class StoredProcedureCommandBuilder<TEntity> : StoredProcedureCommandBuilderBase<StoredProcedureCommand<TEntity>, StoredProcedureResult<TEntity>>
     {
         protected Action<PropertyMapBuilder<TEntity>> MappingBuilder;
         protected readonly StoredProcedureRequest CommandRequest;
 
-        protected StoredProcedureCommandBuilder(StoredProcedureRequest commandRequest)
-            : base(commandRequest)
+        protected StoredProcedureCommandBuilder(StoredProcedureRequest request)
+            : base(request)
         {
-            CommandRequest = commandRequest;
+            CommandRequest = request;
+        }
+
+        public StoredProcedureCommandBuilder<TEntity> Behaviors(Func<ReadBehaviorsBuilder, ReadBehaviorsBuilder> options)
+        {
+            options.Invoke(new ReadBehaviorsBuilder(CommandRequest));
+
+            return this;
         }
 
         public StoredProcedureCommand<TEntity> Name(string storedProcedureName)

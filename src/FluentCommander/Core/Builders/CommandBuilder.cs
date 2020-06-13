@@ -3,27 +3,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace FluentCommander.Core.CommandBuilders
+namespace FluentCommander.Core.Builders
 {
     public abstract class CommandBuilder<TBuilder, TResult> : IDatabaseCommand<TResult> where TBuilder : class
     {
-        private readonly DatabaseCommandRequest _commandCommandRequest;
+        private readonly DatabaseCommandRequest _request;
 
-        protected CommandBuilder(DatabaseCommandRequest databaseCommandCommandRequest)
+        protected CommandBuilder(DatabaseCommandRequest request)
         {
-            _commandCommandRequest = databaseCommandCommandRequest;
+            _request = request;
         }
 
         public TBuilder Join(Transaction transaction)
         {
-            _commandCommandRequest.Transaction = transaction;
+            _request.Transaction = transaction;
 
             return this as TBuilder;
         }
 
         public TBuilder Timeout(TimeSpan timeout)
         {
-            _commandCommandRequest.Timeout = timeout;
+            _request.Timeout = timeout;
 
             return this as TBuilder;
         }

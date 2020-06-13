@@ -1,5 +1,7 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
 using FluentCommander.Pagination;
+using FluentCommander.Scalar;
 using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlQuery;
 using FluentCommander.StoredProcedure;
@@ -25,16 +27,16 @@ namespace FluentCommander
 
         public abstract BulkCopyResult BulkCopy(BulkCopyRequest request);
         public abstract Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken);
-        public abstract SqlNonQueryResult ExecuteNonQuery(SqlRequest request);
-        public abstract Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken);
+        public abstract SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request);
+        public abstract Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlNonQueryRequest request, CancellationToken cancellationToken);
         public abstract int ExecuteNonQuery(string sql);
         public abstract Task<int> ExecuteNonQueryAsync(string sql, CancellationToken cancellationToken);
-        public abstract TResult ExecuteScalar<TResult>(SqlRequest request);
-        public abstract Task<TResult> ExecuteScalarAsync<TResult>(SqlRequest request, CancellationToken cancellationToken);
+        public abstract TResult ExecuteScalar<TResult>(ScalarRequest request);
+        public abstract Task<TResult> ExecuteScalarAsync<TResult>(ScalarRequest request, CancellationToken cancellationToken);
         public abstract TResult ExecuteScalar<TResult>(string sql);
         public abstract Task<TResult> ExecuteScalarAsync<TResult>(string sql, CancellationToken cancellationToken);
-        public abstract SqlQueryResult ExecuteSql(SqlRequest request);
-        public abstract Task<SqlQueryResult> ExecuteSqlAsync(SqlRequest request, CancellationToken cancellationToken);
+        public abstract SqlQueryResult ExecuteSql(SqlQueryRequest request);
+        public abstract Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken);
         public abstract DataTable ExecuteSql(string sql);
         public abstract Task<DataTable> ExecuteSqlAsync(string sql, CancellationToken cancellationToken);
         public abstract StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request);

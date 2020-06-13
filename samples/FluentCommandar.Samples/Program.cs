@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using FluentCommander.Samples.Setup;
+﻿using FluentCommander.Samples.Setup;
 using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace FluentCommander.Samples
 {

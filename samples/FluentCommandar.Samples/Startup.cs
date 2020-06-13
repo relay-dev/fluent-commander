@@ -1,10 +1,10 @@
-﻿using System;
-using FluentCommander.Samples.Commands;
+﻿using FluentCommander.Samples.Commands;
 using FluentCommander.Samples.Framework;
 using FluentCommander.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace FluentCommander.Samples
 {
@@ -32,9 +32,9 @@ namespace FluentCommander.Samples
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);
-            serviceCollection.AddTransient<ParameterlessSamples>();
             serviceCollection.AddTransient<BulkCopySamples>();
             serviceCollection.AddTransient<PaginationSamples>();
+            serviceCollection.AddTransient<ParameterlessSamples>();
             serviceCollection.AddTransient<ScalarSamples>();
             serviceCollection.AddTransient<SqlNonQuerySamples>();
             serviceCollection.AddTransient<SqlQuerySamples>();

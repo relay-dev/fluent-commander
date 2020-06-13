@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    internal class SqlServerPaginationCommand : SqlServerCommand, IDatabaseCommand<PaginationRequest, PaginationResult>
+    internal class SqlServerPaginationCommand : SqlServerCommandBase, IDatabaseCommand<PaginationRequest, PaginationResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 

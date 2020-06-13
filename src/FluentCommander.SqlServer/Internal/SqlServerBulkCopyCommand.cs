@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    internal class SqlServerBulkCopyCommand : SqlServerCommand, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
+    internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
 
@@ -81,7 +81,7 @@ namespace FluentCommander.SqlServer.Internal
                 : new SqlBulkCopy(connection.ConnectionString, ToSqlBulkCopyOptions(request));
 
             command.DestinationTableName = request.DestinationTableName;
-
+            
             if (request.BatchSize.HasValue)
             {
                 command.BatchSize = request.BatchSize.Value;
@@ -116,7 +116,7 @@ namespace FluentCommander.SqlServer.Internal
                 {
                     if (e.Abort)
                     {
-                        throw new BulkCopyException("The BulkCopy command was aborted by the client", e.RowsCopied);
+                        throw new BulkCopyException("The BulkCopy command was aborted", e.RowsCopied);
                     }
 
                     request.OnRowsCopied(sender, e);
@@ -198,31 +198,15 @@ namespace FluentCommander.SqlServer.Internal
         {
             SqlBulkCopyOptions options = SqlBulkCopyOptions.Default;
 
-            options = SetFlag(options, SqlBulkCopyOptions.KeepIdentity, request.Options.KeepIdentity);
-            options = SetFlag(options, SqlBulkCopyOptions.CheckConstraints, request.Options.CheckConstraints);
-            options = SetFlag(options, SqlBulkCopyOptions.TableLock, request.Options.TableLock);
-            options = SetFlag(options, SqlBulkCopyOptions.KeepNulls, request.Options.KeepNulls);
-            options = SetFlag(options, SqlBulkCopyOptions.FireTriggers, request.Options.FireTriggers);
-            options = SetFlag(options, SqlBulkCopyOptions.UseInternalTransaction, request.Options.UseInternalTransaction);
-            options = SetFlag(options, SqlBulkCopyOptions.AllowEncryptedValueModifications, request.Options.AllowEncryptedValueModifications);
-
-            return options;
-        }
-
-        private SqlBulkCopyOptions SetFlag(SqlBulkCopyOptions options, SqlBulkCopyOptions option, bool? flag)
-        {
-            if (!flag.HasValue)
+            if (request.Options != null)
             {
-                return options;
-            }
-
-            if (flag.Value)
-            {
-                options |= option;
-            }
-            else
-            {
-                options &= ~option;
+                options = SetFlag(options, SqlBulkCopyOptions.KeepIdentity, request.Options.KeepIdentity);
+                options = SetFlag(options, SqlBulkCopyOptions.CheckConstraints, request.Options.CheckConstraints);
+                options = SetFlag(options, SqlBulkCopyOptions.TableLock, request.Options.TableLock);
+                options = SetFlag(options, SqlBulkCopyOptions.KeepNulls, request.Options.KeepNulls);
+                options = SetFlag(options, SqlBulkCopyOptions.FireTriggers, request.Options.FireTriggers);
+                options = SetFlag(options, SqlBulkCopyOptions.UseInternalTransaction, request.Options.UseInternalTransaction);
+                options = SetFlag(options, SqlBulkCopyOptions.AllowEncryptedValueModifications, request.Options.AllowEncryptedValueModifications);
             }
 
             return options;

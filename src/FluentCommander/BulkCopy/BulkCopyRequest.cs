@@ -7,7 +7,7 @@ using MappingType = FluentCommander.Core.Mapping.MappingType;
 
 namespace FluentCommander.BulkCopy
 {
-    public class BulkCopyRequest : DatabaseCommandRequest, IColumnMappingRequest
+    public class BulkCopyRequest : DatabaseCommandRequest, IHaveColumnMapping
     {
         /// <summary>
         /// Number of rows in each batch. At the end of each batch, the rows in the batch are sent to the server.

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace FluentCommander.SqlServer.Internal
 {
-    public class SqlServerCommand
+    internal abstract class SqlServerCommandBase
     {
         protected SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
         {
@@ -34,6 +34,28 @@ namespace FluentCommander.SqlServer.Internal
             }
 
             return parameter;
+        }
+
+        protected TFlag SetFlag<TFlag>(TFlag allFlags, TFlag flag, bool? isSet) where TFlag : Enum
+        {
+            if (!isSet.HasValue)
+            {
+                return allFlags;
+            }
+
+            int intAllFlags = (int)(object)allFlags;
+            int intFlag = (int)(object)flag;
+
+            if (isSet.Value)
+            {
+                intAllFlags |= intFlag;
+            }
+            else
+            {
+                intAllFlags &= ~intFlag;
+            }
+
+            return (TFlag)(object)intAllFlags;
         }
     }
 }

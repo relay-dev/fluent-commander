@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.BulkCopy
 {
-    public class BulkCopyCommand : BulkCopyCommandBuilder
+    public class BulkCopyCommand<TEntity> : BulkCopyCommandBuilder<TEntity>
     {
         private readonly IDatabaseCommander _databaseCommander;
         private readonly IRequestValidator<BulkCopyRequest> _requestValidator;
@@ -28,7 +28,7 @@ namespace FluentCommander.BulkCopy
         public override BulkCopyResult Execute()
         {
             _requestValidator.Validate(CommandRequest);
-            
+
             if (CommandRequest.MappingType == MappingType.AutoMap || CommandRequest.MappingType == MappingType.PartialMap)
             {
                 _autoMapper.MapDataTableToTable(CommandRequest.DestinationTableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);

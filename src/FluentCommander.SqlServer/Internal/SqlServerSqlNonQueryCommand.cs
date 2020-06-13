@@ -3,6 +3,7 @@ using FluentCommander.SqlQuery;
 using Microsoft.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentCommander.Core;
 
 namespace FluentCommander.SqlServer.Internal
 {

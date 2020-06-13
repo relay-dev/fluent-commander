@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FluentCommander.BulkCopy;
+using FluentCommander.SqlNonQuery;
+using System;
 using System.Data;
-using FluentCommander.BulkCopy;
-using FluentCommander.SqlQuery;
 
 namespace FluentCommander.Oracle.Internal
 {
@@ -14,7 +14,7 @@ namespace FluentCommander.Oracle.Internal
             _bulkCopyRequest = bulkCopyRequest;
         }
 
-        public SqlRequest ToSqlRequest(DataRow dataRow)
+        public SqlNonQueryRequest ToSqlRequest(DataRow dataRow)
         {
             throw new NotImplementedException();
         }

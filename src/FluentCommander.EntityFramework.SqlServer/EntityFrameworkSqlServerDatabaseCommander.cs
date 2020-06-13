@@ -1,5 +1,5 @@
-﻿using FluentCommander.SqlNonQuery;
-using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
+using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlServer;
 using FluentCommander.StoredProcedure;
 using Microsoft.Data.SqlClient;
@@ -26,7 +26,7 @@ namespace FluentCommander.EntityFramework.SqlServer
             _dbContext = dbContext;
         }
 
-        public override SqlNonQueryResult ExecuteNonQuery(SqlRequest request)
+        public override SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request)
         {
             int rowCountAffected;
 
@@ -44,7 +44,7 @@ namespace FluentCommander.EntityFramework.SqlServer
             return new SqlNonQueryResult(rowCountAffected);
         }
 
-        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlRequest request, CancellationToken cancellationToken)
+        public override async Task<SqlNonQueryResult> ExecuteNonQueryAsync(SqlNonQueryRequest request, CancellationToken cancellationToken)
         {
             int rowCountAffected;
 
