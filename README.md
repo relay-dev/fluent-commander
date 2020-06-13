@@ -100,14 +100,17 @@ private async Task BulkCopyUsingPartialMap()
         .ForBulkCopy()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
-        .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+        .Mapping(mapping => mapping.UsePartialMap(new ColumnMapping
         {
-            new ColumnMap
+            ColumnMaps = new List<ColumnMap>
             {
-                Source = "SampleString",
-                Destination = "SampleVarChar"
+                new ColumnMap
+                {
+                    Source = "SampleString",
+                    Destination = "SampleVarChar"
+                }
             }
-        })))
+        }))
         .ExecuteAsync(new CancellationToken());
 
     int rowCountCopied = result.RowCountCopied;
