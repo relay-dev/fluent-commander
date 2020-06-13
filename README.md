@@ -4,7 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/rbnas7sa2tnl5adl/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/fluent-commander/branch/master)
 [![NuGet Release](https://img.shields.io/nuget/v/FluentCommander.svg)](https://www.nuget.org/packages/FluentCommander/)
-[![MyGet(https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=red&label=myget&logoColor=red)
+[![MyGet](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=red&label=myget&logoColor=red)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
 
 A lightweight database command abstraction featuring a fluent API
