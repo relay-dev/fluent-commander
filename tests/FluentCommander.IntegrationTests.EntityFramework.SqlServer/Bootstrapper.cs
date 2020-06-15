@@ -1,10 +1,10 @@
-﻿using FluentCommander.Samples.Setup;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using FluentCommander.Samples.Setup;
 
-namespace FluentCommander.IntegrationTests
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer
 {
     public abstract class Bootstrapper
     {

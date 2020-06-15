@@ -5,7 +5,7 @@ using System.Data;
 using System.Text.Json;
 using Xunit.Abstractions;
 
-namespace FluentCommander.IntegrationTests
+namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer
 {
     public abstract class IntegrationTest<TSUT>
     {
