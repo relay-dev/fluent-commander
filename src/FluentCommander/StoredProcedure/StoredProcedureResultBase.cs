@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace FluentCommander.StoredProcedure
 {
-    public class StoredProcedureResultBase
+    public abstract class StoredProcedureResultBase
     {
         internal readonly List<DatabaseCommandParameter> Parameters;
 
-        public StoredProcedureResultBase(List<DatabaseCommandParameter> parameters)
+        protected StoredProcedureResultBase(List<DatabaseCommandParameter> parameters)
         {
             Parameters = parameters;
         }
@@ -59,7 +59,7 @@ namespace FluentCommander.StoredProcedure
         {
             if (!OutputParameters.ContainsKey(parameterName))
             {
-                throw new Exception($"No Output parameter named {parameterName} was found");
+                throw new InvalidOperationException($"No Output parameter named {parameterName} was found");
             }
 
             return (TResult)OutputParameters[parameterName].Value;
