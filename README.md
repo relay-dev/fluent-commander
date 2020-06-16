@@ -153,29 +153,6 @@ private async Task BulkCopyUsingStronglyTypedMap()
 }
 ```
 
-#### Options
-
-All BulkCopy options are exposed via the Options API:
-
-```c#
-private async Task BulkCopyUsingOptions()
-{
-    DataTable dataTable = GetDataToInsert();
-
-    BulkCopyResult result = await _databaseCommander.BuildCommand()
-        .ForBulkCopy()
-        .From(dataTable)
-        .Into("[dbo].[SampleTable]")
-        .Mapping(mapping => mapping.UseAutoMap())
-        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
-        .ExecuteAsync(new CancellationToken());
-
-    int rowCountCopied = result.RowCountCopied;
-
-    Console.WriteLine("Row count copied: {0}", rowCountCopied);
-}
-```
-
 #### Events
 
 The OnRowsCopied event can be subscribed to:
