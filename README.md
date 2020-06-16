@@ -496,4 +496,4 @@ private async Task ExecuteScalarWithInput()
 
 ### More
 
-There are several other variations not documented here. You can find a Console Application with these samples [here](https://github.com/relay-dev/fluent-commander/tree/dev/samples/FluentCommandar.Samples/Commands).
+There are several other variations not documented here. You can find a Console Application with these samples [here](https://github.com/relay-dev/fluent-commander/tree/master/samples/FluentCommander.Samples/Commands).
