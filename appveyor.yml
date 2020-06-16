@@ -33,7 +33,7 @@ build:
 test_script:
   - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/
 after_test:
- - csmacnz.coveralls --useRelativePaths --multiple --input --opencover "opencover=TestResults/coverage.netcoreapp3.1.opencover.xml"
+ - csmacnz.Coveralls --useRelativePaths --multiple --i "opencover=TestResults/coverage.netcoreapp3.1.opencover.xml"
 artifacts:
 - path: src\FluentCommander\bin\Release\*.nupkg
   name: NuGet
