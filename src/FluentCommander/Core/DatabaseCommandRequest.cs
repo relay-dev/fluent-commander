@@ -10,6 +10,6 @@ namespace FluentCommander.Core
         /// </summary>
         public TimeSpan? Timeout { get; set; }
 
-        public Transaction Transaction { get; set; }
+        public TransactionScope TransactionScope { get; set; }
     }
 }

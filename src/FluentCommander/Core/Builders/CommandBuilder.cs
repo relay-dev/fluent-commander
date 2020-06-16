@@ -14,9 +14,9 @@ namespace FluentCommander.Core.Builders
             _request = request;
         }
 
-        public TBuilder Join(Transaction transaction)
+        public TBuilder Join(SqlTransaction transactionScope)
         {
-            _request.Transaction = transaction;
+            _request.TransactionScope = transactionScope;
 
             return this as TBuilder;
         }

@@ -27,10 +27,17 @@ namespace FluentCommander.SqlServer.Internal
             using SqlConnection connection = _connectionProvider.GetConnection();
 
             using SqlCommand command = GetSqlCommand(connection, request);
+            
+            if (request.Sql.Contains("output INSERTED"))
+            {
+                long resultId = (long)command.ExecuteScalar();
 
-            int numberOfRowsAffected = command.ExecuteNonQuery();
+                return new SqlNonQueryResult(1, resultId);
+            }
 
-            return new SqlNonQueryResult(numberOfRowsAffected);
+            int result = command.ExecuteNonQuery();
+
+            return new SqlNonQueryResult(result);
         }
 
         /// <summary>
@@ -45,9 +52,16 @@ namespace FluentCommander.SqlServer.Internal
 
             await using SqlCommand command = GetSqlCommand(connection, request);
 
-            int numberOfRowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+            if (request.Sql.Contains("output INSERTED"))
+            {
+                long resultId = (long)await command.ExecuteScalarAsync(cancellationToken);
 
-            return new SqlNonQueryResult(numberOfRowsAffected);
+                return new SqlNonQueryResult(1, resultId);
+            }
+
+            int result = await command.ExecuteNonQueryAsync(cancellationToken);
+
+            return new SqlNonQueryResult(result);
         }
     }
 }

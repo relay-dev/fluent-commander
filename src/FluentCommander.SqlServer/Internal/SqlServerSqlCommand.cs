@@ -18,6 +18,11 @@ namespace FluentCommander.SqlServer.Internal
                 command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
+            if (request.TransactionScope != null)
+            {
+                command.Transaction = new SqlTransaction(); request.TransactionScope;
+            }
+
             if (request.Timeout.HasValue)
             {
                 command.CommandTimeout = request.Timeout.Value.Seconds;

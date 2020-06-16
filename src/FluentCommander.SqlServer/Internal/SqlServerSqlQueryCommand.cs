@@ -55,7 +55,7 @@ namespace FluentCommander.SqlServer.Internal
 
             CommandBehavior behavior = ToSqlCommandBehaviors(((SqlQueryRequest)request).ReadBehaviors);
 
-            var reader = await command.ExecuteReaderAsync(behavior, cancellationToken);
+            SqlDataReader reader = await command.ExecuteReaderAsync(behavior, cancellationToken);
 
             dataTable.Load(reader);
 
