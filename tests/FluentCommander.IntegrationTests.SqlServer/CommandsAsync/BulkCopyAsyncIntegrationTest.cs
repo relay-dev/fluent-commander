@@ -24,7 +24,6 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingAutoMapper()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Act
@@ -38,17 +37,15 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingPartialMapper()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
@@ -74,17 +71,15 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingMap()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Alter the DataTable to simulate a source where all column names are different than the destination
@@ -122,10 +117,9 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         [Fact]
@@ -164,7 +158,6 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
             WriteLine(expectedCount);
@@ -174,7 +167,6 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingOptions()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Act
@@ -189,17 +181,15 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingEvents()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Act
@@ -219,17 +209,15 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingAllApis()
         {
             // Arrange
-            int expectedCount = ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]") + RowCount;
             DataTable dataTable = GetDataToInsert();
 
             // Alter the DataTable to simulate a source where the SampleVarChar field is named something different
@@ -258,10 +246,9 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             // Assert
             result.ShouldNotBeNull();
             result.RowCountCopied.ShouldBe(RowCount);
-            ExecuteScalar<int>("SELECT COUNT(1) FROM [dbo].[SampleTable]").ShouldBe(expectedCount);
 
             // Print
-            WriteLine(expectedCount);
+            WriteLine(RowCount);
         }
 
         private DataTable GetDataToInsert()

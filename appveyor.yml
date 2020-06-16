@@ -31,9 +31,9 @@ build:
   publish_nuget_symbols: true
   verbosity: normal
 test_script:
-  - dotnet test FluentCommander.sln --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*"
+  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 after_test:
-  - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.UnitTests\coverage.netcoreapp3.1.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\coverage.netcoreapp3.1.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\coverage.netcoreapp3.1.opencover.xml"
+  - <NUGET_PACKAGE_ROOT>\coveralls.net\0.7.0\tools\csmacnz.Coveralls.exe --opencover -i --useRelativePaths
 artifacts:
 - path: src\FluentCommander\bin\Release\*.nupkg
   name: NuGet
