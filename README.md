@@ -34,22 +34,6 @@ Here's how you can install the SQL Server NuGet Package:
 
 <br />
 
-Here's how you can install the Oracle NuGet Package:
-
-> #### *.NET Core CLI*
-> 
-> ```
-> dotnet add package FluentCommander.Oracle
-> ```
->
-> #### *Package Manager Console*
-> 
-> ```
-> Install-Package FluentCommander.Oracle
-> ```
-
-<br />
-
 ## Samples
 
 ### Bulk Copy
