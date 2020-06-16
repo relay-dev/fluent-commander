@@ -79,7 +79,7 @@ namespace FluentCommander.Samples.Setup
             server.ConnectionContext.ExecuteNonQuery(sql);
         }
 
-        public string Print(DataTable dataTable)
+        public static string Print(DataTable dataTable)
         {
             return DataTableToString(dataTable);
         }
@@ -132,7 +132,7 @@ namespace FluentCommander.Samples.Setup
             return resourceFileContent;
         }
 
-        private string DataTableToString(DataTable dataTable)
+        private static string DataTableToString(DataTable dataTable)
         {
             var printFriendly = new StringBuilder();
             var underline = new StringBuilder();
@@ -158,7 +158,7 @@ namespace FluentCommander.Samples.Setup
             return printFriendly.ToString();
         }
 
-        private Dictionary<int, int> GetMaxStringLengths(DataTable dataTable)
+        private static Dictionary<int, int> GetMaxStringLengths(DataTable dataTable)
         {
             var maxStringLengthPerColumn = new Dictionary<int, int>();
 
@@ -178,7 +178,7 @@ namespace FluentCommander.Samples.Setup
             return maxStringLengthPerColumn;
         }
 
-        private string GetPrintFriendlyRow(DataRow row, Dictionary<int, int> maxStringLengthPerColumn)
+        private static string GetPrintFriendlyRow(DataRow row, Dictionary<int, int> maxStringLengthPerColumn)
         {
             var printFriendly = new StringBuilder();
 
@@ -194,7 +194,7 @@ namespace FluentCommander.Samples.Setup
             return printFriendly + "\n";
         }
 
-        private string GetPrintFriendlyString(string value, int lengthNeeded)
+        private static string GetPrintFriendlyString(string value, int lengthNeeded)
         {
             int spacesNeeded = lengthNeeded - value.Length;
 

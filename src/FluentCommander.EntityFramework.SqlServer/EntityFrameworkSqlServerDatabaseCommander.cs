@@ -1,5 +1,4 @@
-﻿using FluentCommander.Core;
-using FluentCommander.SqlNonQuery;
+﻿using FluentCommander.SqlNonQuery;
 using FluentCommander.SqlServer;
 using FluentCommander.StoredProcedure;
 using Microsoft.Data.SqlClient;

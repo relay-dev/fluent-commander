@@ -26,7 +26,7 @@ namespace FluentCommander.Samples.Commands
 
         protected string Print(DataTable dataTable)
         {
-            return _databaseService.Print(dataTable);
+            return DatabaseService.Print(dataTable);
         }
     }
 }

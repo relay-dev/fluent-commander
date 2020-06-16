@@ -42,7 +42,7 @@ namespace FluentCommander.IntegrationTests.SqlServer
 
         protected virtual void WriteLine(DataTable d)
         {
-            _output.WriteLine(_databaseService.Print(d));
+            _output.WriteLine(DatabaseService.Print(d));
         }
 
         protected virtual void WriteLine(object o)
