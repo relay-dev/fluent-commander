@@ -19,8 +19,9 @@ namespace FluentCommander.EntityFramework.SqlServer
         public EntityFrameworkSqlServerDatabaseCommander(
             DbContext dbContext,
             DatabaseCommandBuilder databaseCommandBuilder,
-            SqlConnectionStringBuilder builder)
-            : base(builder, databaseCommandBuilder)
+            SqlConnectionStringBuilder builder,
+            ISqlServerCommandExecutor commandExecutor)
+            : base(builder, databaseCommandBuilder, commandExecutor)
         {
             _dbContext = dbContext;
         }

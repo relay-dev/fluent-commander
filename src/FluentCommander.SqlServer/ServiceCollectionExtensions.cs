@@ -26,6 +26,7 @@ namespace FluentCommander.SqlServer
             services.AddTransient<SqlServerSqlNonQueryCommand>();
             services.AddTransient<SqlServerSqlQueryCommand>();
             services.AddTransient<SqlServerStoredProcedureCommand>();
+            services.AddTransient<ISqlServerCommandExecutor, SqlServerCommandExecutor>();
 
             var connectionStringCollection = new ConnectionStringCollection(config);
 

@@ -15,13 +15,16 @@ namespace FluentCommander.SqlServer
     public class SqlServerDatabaseCommander : DatabaseCommanderBase
     {
         private readonly SqlConnectionStringBuilder _builder;
+        private readonly ISqlServerCommandExecutor _commandExecutor;
 
         public SqlServerDatabaseCommander(
             SqlConnectionStringBuilder builder,
-            DatabaseCommandBuilder databaseCommandBuilder)
+            DatabaseCommandBuilder databaseCommandBuilder,
+            ISqlServerCommandExecutor commandExecutor)
             : base(databaseCommandBuilder)
         {
             _builder = builder;
+            _commandExecutor = commandExecutor;
         }
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
@@ -76,12 +79,12 @@ namespace FluentCommander.SqlServer
 
         public override SqlQueryResult ExecuteSql(SqlQueryRequest request)
         {
-            return new SqlServerSqlQueryCommand(ConnectionProvider).Execute(request);
+            return new SqlServerSqlQueryCommand(ConnectionProvider, _commandExecutor).Execute(request);
         }
 
         public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerSqlQueryCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerSqlQueryCommand(ConnectionProvider, _commandExecutor).ExecuteAsync(request, cancellationToken);
         }
 
         public override DataTable ExecuteSql(string sql)
@@ -96,12 +99,12 @@ namespace FluentCommander.SqlServer
 
         public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
-            return new SqlServerStoredProcedureCommand(ConnectionProvider).Execute(request);
+            return new SqlServerStoredProcedureCommand(ConnectionProvider, _commandExecutor).Execute(request);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerStoredProcedureCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerStoredProcedureCommand(ConnectionProvider, _commandExecutor).ExecuteAsync(request, cancellationToken);
         }
 
         public override string GetServerName()
@@ -116,12 +119,12 @@ namespace FluentCommander.SqlServer
 
         public override PaginationResult Paginate(PaginationRequest request)
         {
-            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder).Execute(request);
+            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).Execute(request);
         }
 
         public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).ExecuteAsync(request, cancellationToken);
         }
 
         private string SqlSelectServerName => "SELECT @@SERVERNAME";

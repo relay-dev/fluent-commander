@@ -2,18 +2,20 @@
 using FluentCommander.Pagination;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerPaginationCommand : SqlServerCommandBase, IDatabaseCommand<PaginationRequest, PaginationResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlServerPaginationCommand(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder)
+        public SqlServerPaginationCommand(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder, ISqlServerCommandExecutor commandExecutor)
         {
-            _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder);
+            _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor);
         }
 
         /// <summary>

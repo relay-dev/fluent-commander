@@ -3,7 +3,7 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace FluentCommander.UnitTests.BulkCopy
+namespace FluentCommander.UnitTests.FluentCommander.BulkCopy
 {
     public class BulkCopyCommandOptionsBuilderTests : UnitTest
     {

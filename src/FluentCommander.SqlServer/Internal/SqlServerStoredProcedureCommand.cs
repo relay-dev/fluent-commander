@@ -5,18 +5,24 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerStoredProcedureCommand : SqlServerCommandBase, IDatabaseCommand<StoredProcedureRequest, StoredProcedureResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
+        private readonly ISqlServerCommandExecutor _commandExecutor;
 
-        public SqlServerStoredProcedureCommand(ISqlServerConnectionProvider connectionProvider)
+        public SqlServerStoredProcedureCommand(
+            ISqlServerConnectionProvider connectionProvider,
+            ISqlServerCommandExecutor commandExecutor)
         {
             _connectionProvider = connectionProvider;
+            _commandExecutor = commandExecutor;
         }
 
         /// <summary>
@@ -39,9 +45,7 @@ namespace FluentCommander.SqlServer.Internal
                 command.Parameters.AddRange(parameters);
             }
 
-            var dataTable = new DataTable();
-
-            new SqlDataAdapter(command).Fill(dataTable);
+            DataTable dataTable = _commandExecutor.Execute(command);
 
             HandleResult(request, parameters);
 

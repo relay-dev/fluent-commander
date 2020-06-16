@@ -1,10 +1,11 @@
-﻿using FluentCommander.SqlNonQuery;
-using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
+using FluentCommander.SqlNonQuery;
 using Microsoft.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Core;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerSqlNonQueryCommand : SqlServerSqlCommand<SqlNonQueryResult>

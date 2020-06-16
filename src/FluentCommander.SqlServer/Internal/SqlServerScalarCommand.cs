@@ -1,10 +1,11 @@
-﻿using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Core;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerScalarCommand<TResult> : SqlServerSqlCommand<TResult>

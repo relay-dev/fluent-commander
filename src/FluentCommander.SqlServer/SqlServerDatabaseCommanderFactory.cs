@@ -7,13 +7,16 @@ namespace FluentCommander.SqlServer
     {
         private readonly IConnectionStringCollection _connectionStringCollection;
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
+        private readonly ISqlServerCommandExecutor _sqlServerCommandExecutor;
 
         public SqlServerDatabaseCommanderFactory(
             IConnectionStringCollection connectionStringCollection,
-            DatabaseCommandBuilder databaseCommandBuilder)
+            DatabaseCommandBuilder databaseCommandBuilder,
+            ISqlServerCommandExecutor sqlServerCommandExecutor)
         {
             _connectionStringCollection = connectionStringCollection;
             _databaseCommandBuilder = databaseCommandBuilder;
+            _sqlServerCommandExecutor = sqlServerCommandExecutor;
         }
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace FluentCommander.SqlServer
         {
             var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionStringName));
 
-            return new SqlServerDatabaseCommander(builder, _databaseCommandBuilder);
+            return new SqlServerDatabaseCommander(builder, _databaseCommandBuilder, _sqlServerCommandExecutor);
         }
     }
 }

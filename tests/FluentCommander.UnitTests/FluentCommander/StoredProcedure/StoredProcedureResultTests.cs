@@ -1,13 +1,13 @@
-﻿using FluentCommander.StoredProcedure;
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using FluentCommander.StoredProcedure;
+using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace FluentCommander.UnitTests.StoredProcedure
+namespace FluentCommander.UnitTests.FluentCommander.StoredProcedure
 {
     public class StoredProcedureResultTests : UnitTest
     {

@@ -1,20 +1,26 @@
-﻿using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core;
+using FluentCommander.Core.Behaviors;
+using FluentCommander.SqlQuery;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentCommander.Core;
-using FluentCommander.Core.Behaviors;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerSqlQueryCommand : SqlServerSqlCommand<SqlQueryResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
+        private readonly ISqlServerCommandExecutor _commandExecutor;
 
-        public SqlServerSqlQueryCommand(ISqlServerConnectionProvider connectionProvider)
+        public SqlServerSqlQueryCommand(
+            ISqlServerConnectionProvider connectionProvider,
+            ISqlServerCommandExecutor commandExecutor)
         {
             _connectionProvider = connectionProvider;
+            _commandExecutor = commandExecutor;
         }
 
         /// <summary>
@@ -28,9 +34,7 @@ namespace FluentCommander.SqlServer.Internal
 
             using SqlCommand command = GetSqlCommand(connection, request);
 
-            var dataTable = new DataTable();
-            
-            new SqlDataAdapter(command).Fill(dataTable);
+            DataTable dataTable = _commandExecutor.Execute(command);
 
             return new SqlQueryResult(dataTable);
         }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerConnectionProvider : ISqlServerConnectionProvider

@@ -1,4 +1,6 @@
-﻿using FluentCommander.Core;
+﻿using System.Runtime.CompilerServices;
+using FluentCommander.Core;
+using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,15 +11,18 @@ namespace FluentCommander.EntityFramework.SqlServer
         private readonly DbContext _dbContext;
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
         private readonly IConnectionStringCollection _connectionStringCollection;
+        private readonly ISqlServerCommandExecutor _commandExecutor;
 
         public EntityFrameworkSqlServerDatabaseCommanderFactory(
             DbContext dbContext,
             DatabaseCommandBuilder databaseCommandBuilder,
-            IConnectionStringCollection connectionStringCollection)
+            IConnectionStringCollection connectionStringCollection,
+            ISqlServerCommandExecutor commandExecutor)
         {
             _dbContext = dbContext;
             _databaseCommandBuilder = databaseCommandBuilder;
             _connectionStringCollection = connectionStringCollection;
+            _commandExecutor = commandExecutor;
         }
 
         /// <summary>
@@ -29,7 +34,7 @@ namespace FluentCommander.EntityFramework.SqlServer
         {
             var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionStringName));
 
-            return new EntityFrameworkSqlServerDatabaseCommander(_dbContext, _databaseCommandBuilder, builder);
+            return new EntityFrameworkSqlServerDatabaseCommander(_dbContext, _databaseCommandBuilder, builder, _commandExecutor);
         }
     }
 }
