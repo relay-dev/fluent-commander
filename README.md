@@ -8,7 +8,7 @@
 [![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=yellow&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
 
-Fluent Commander is intended to subsidize ORM data access frameworks, which ofteen lack clean API's for tasks such as executing a Bulk Copy operation or calling a Stored Procedure.
+Fluent Commander is intended to subsidize ORM data access frameworks, which often lack a clean API for executing tasks like a Bulk Copy, Bulk Merge or calling a Stored Procedure.
 
 Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as seperate NuGet packages.
 
@@ -122,7 +122,7 @@ private async Task BulkCopyUsingMap()
 
 #### Strongly-typed Mapping
 
-When you have an entity type that reflects the shape of the table you are targeting, you can use it to drive your mappings:
+When you have an entity type that reflects the shape of the table you are targeting, you can use expessions to define the mapping:
 
 ```c#
 private async Task BulkCopyUsingStronglyTypedMap()
@@ -180,6 +180,8 @@ private async Task BulkCopyUsingEvents()
 ```
 
 #### All Options
+
+Several other options are available. The example below sets the batch size, bulk copy options and sets the timeout:
 
 ```c#
 private async Task BulkCopyUsingAllApis()
@@ -343,7 +345,7 @@ private async Task ExecutePaginationUsingMinimalInput()
 
 #### All Options
 
-In this sample, all options are used:
+In this example, all options are used:
 
 ```c#
 private async Task ExecutePaginationAllSettingsAreUsed()
@@ -369,7 +371,7 @@ private async Task ExecutePaginationAllSettingsAreUsed()
 
 ### Database Commander Factory
 
-If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
+If your application needs to connect to multiple databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
 
 ```c#
 using FluentCommander;

@@ -1,5 +1,4 @@
-﻿using FluentCommander.Core.Impl;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace FluentCommander.EntityFramework
@@ -10,7 +9,7 @@ namespace FluentCommander.EntityFramework
         {
             services.AddTransient<DbContextCommandBuilder>();
 
-            return new Bootstrapper().Bootstrap(services);
+            return services.AddDatabaseCommander();
         }
 
         public static IServiceProvider UseEntityFrameworkDatabaseCommander(this IServiceProvider serviceProvider)

@@ -1,4 +1,6 @@
 ﻿using FluentCommander.BulkCopy;
+using FluentCommander.Core;
+using FluentCommander.Core.Impl;
 using FluentCommander.Core.Utility;
 using FluentCommander.Core.Utility.Impl;
 using FluentCommander.Pagination;
@@ -8,11 +10,11 @@ using FluentCommander.SqlQuery;
 using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FluentCommander.Core.Impl
+namespace FluentCommander
 {
-    public class Bootstrapper
+    public static class ServiceCollectionExtensions
     {
-        public IServiceCollection Bootstrap(IServiceCollection services)
+        public static IServiceCollection AddDatabaseCommander(this IServiceCollection services)
         {
             services.AddTransient<DatabaseCommandBuilder>();
             services.AddTransient<BulkCopyCommand>();

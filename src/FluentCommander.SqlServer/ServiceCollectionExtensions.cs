@@ -10,12 +10,10 @@ namespace FluentCommander.SqlServer
     {
         public static IServiceCollection AddSqlServerDatabaseCommander(this IServiceCollection services, IConfiguration config)
         {
-            new Bootstrapper().Bootstrap(services);
-
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
 
-            return services.AddSqlServerDatabaseCommands(config);
+            return services.AddDatabaseCommander().AddSqlServerDatabaseCommands(config);
         }
 
         public static IServiceCollection AddSqlServerDatabaseCommands(this IServiceCollection services, IConfiguration config)

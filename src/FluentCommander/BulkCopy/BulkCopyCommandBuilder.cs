@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.BulkCopy
 {
+    public abstract class BulkCopyCommandBuilder : BulkCopyCommandBuilder<BulkCopyCommandBuilder, BulkCopyResult>
+    {
+        protected BulkCopyCommandBuilder(BulkCopyRequest request)
+            : base(request) { }
+    }
+
     public abstract class BulkCopyCommandBuilder<TBuilder, TResult> : CommandBuilder<TBuilder, TResult> where TBuilder : class
     {
         protected readonly BulkCopyRequest CommandRequest;
@@ -93,11 +99,5 @@ namespace FluentCommander.BulkCopy
 
         public abstract override TResult Execute();
         public abstract override Task<TResult> ExecuteAsync(CancellationToken cancellationToken);
-    }
-
-    public abstract class BulkCopyCommandBuilder : BulkCopyCommandBuilder<BulkCopyCommandBuilder, BulkCopyResult>
-    {
-        protected BulkCopyCommandBuilder(BulkCopyRequest commandRequest)
-            : base(commandRequest) { }
     }
 }
