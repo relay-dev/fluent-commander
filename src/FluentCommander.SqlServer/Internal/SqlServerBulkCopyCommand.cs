@@ -18,10 +18,10 @@ namespace FluentCommander.SqlServer.Internal
         private readonly ISqlServerConnectionProvider _connectionProvider;
         private readonly ILogger<SqlServerBulkCopyCommand> _logger;
 
-        public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider, ILogger<SqlServerBulkCopyCommand> logger)
+        public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider, ILoggerFactory loggerFactory)
         {
             _connectionProvider = connectionProvider;
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger<SqlServerBulkCopyCommand>();
         }
 
         /// <summary>

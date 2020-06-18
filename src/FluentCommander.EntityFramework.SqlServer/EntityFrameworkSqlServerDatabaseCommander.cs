@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {
@@ -20,8 +21,9 @@ namespace FluentCommander.EntityFramework.SqlServer
             DbContext dbContext,
             DatabaseCommandBuilder databaseCommandBuilder,
             SqlConnectionStringBuilder builder,
-            ISqlServerCommandExecutor commandExecutor)
-            : base(builder, databaseCommandBuilder, commandExecutor)
+            ISqlServerCommandExecutor commandExecutor,
+            ILoggerFactory loggerFactory)
+            : base(builder, databaseCommandBuilder, commandExecutor, loggerFactory)
         {
             _dbContext = dbContext;
         }
