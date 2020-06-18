@@ -1,6 +1,7 @@
 ﻿using FluentCommander.BulkCopy;
 using FluentCommander.Core;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -15,10 +16,12 @@ namespace FluentCommander.SqlServer.Internal
     internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
+        private readonly ILogger<SqlServerBulkCopyCommand> _logger;
 
-        public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider)
+        public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider, ILogger<SqlServerBulkCopyCommand> logger)
         {
             _connectionProvider = connectionProvider;
+            _logger = logger;
         }
 
         /// <summary>
@@ -244,7 +247,7 @@ namespace FluentCommander.SqlServer.Internal
             }
             catch (Exception)
             {
-                throw e;
+                _logger.LogError(e, "Failed to parse the bulk copy exception. The exception was rethrown.");
             }
         }
     }
