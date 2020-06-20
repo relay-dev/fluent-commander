@@ -45,7 +45,7 @@ namespace FluentCommander.SqlServer.Internal
                 throw;
             }
 
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return new BulkCopyResult(sqlBulkCopy.RowsCopied);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace FluentCommander.SqlServer.Internal
                 throw;
             }
 
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return new BulkCopyResult(sqlBulkCopy.RowsCopied);
         }
 
         private SqlBulkCopy GetSqlBulkCopy(SqlConnection connection, BulkCopyRequest request)
