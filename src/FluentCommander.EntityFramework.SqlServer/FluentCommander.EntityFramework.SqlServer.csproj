@@ -9,7 +9,7 @@
     <Description>A lightweight database command abstraction featuring a fluent API</Description>
     <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/fluent-commander</PackageProjectUrl>
-    <PackageIconUrl>https://i.imgur.com/o7FT6yK.png</PackageIconUrl>
+    <PackageIcon>https://raw.githubusercontent.com/relay-dev/fluent-commander/master/resources/icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/relay-dev/fluent-commander.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>

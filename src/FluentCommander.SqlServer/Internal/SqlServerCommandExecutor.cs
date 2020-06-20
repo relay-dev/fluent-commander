@@ -2,7 +2,9 @@
 using System.Data;
 using System.Runtime.CompilerServices;
 
+#if DEBUG
 [assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
+#endif
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerCommandExecutor : ISqlServerCommandExecutor

@@ -2,7 +2,6 @@
 using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {
@@ -12,20 +11,17 @@ namespace FluentCommander.EntityFramework.SqlServer
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
         private readonly IConnectionStringCollection _connectionStringCollection;
         private readonly ISqlServerCommandExecutor _commandExecutor;
-        private readonly ILoggerFactory _loggerFactory;
 
         public EntityFrameworkSqlServerDatabaseCommanderFactory(
             DbContext dbContext,
             DatabaseCommandBuilder databaseCommandBuilder,
             IConnectionStringCollection connectionStringCollection,
-            ISqlServerCommandExecutor commandExecutor,
-            ILoggerFactory loggerFactory)
+            ISqlServerCommandExecutor commandExecutor)
         {
             _dbContext = dbContext;
             _databaseCommandBuilder = databaseCommandBuilder;
             _connectionStringCollection = connectionStringCollection;
             _commandExecutor = commandExecutor;
-            _loggerFactory = loggerFactory;
         }
 
         /// <summary>
@@ -37,7 +33,7 @@ namespace FluentCommander.EntityFramework.SqlServer
         {
             var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionStringName));
 
-            return new EntityFrameworkSqlServerDatabaseCommander(_dbContext, _databaseCommandBuilder, builder, _commandExecutor, _loggerFactory);
+            return new EntityFrameworkSqlServerDatabaseCommander(_dbContext, _databaseCommandBuilder, builder, _commandExecutor);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace FluentCommander.SqlServer
         {
             var builder = new SqlConnectionStringBuilder(_connectionStringCollection.Get(connectionStringName));
 
-            return new SqlServerDatabaseCommander(builder, _databaseCommandBuilder, _sqlServerCommandExecutor, _loggerFactory);
+            return new SqlServerDatabaseCommander(builder, _databaseCommandBuilder, _sqlServerCommandExecutor);
         }
     }
 }

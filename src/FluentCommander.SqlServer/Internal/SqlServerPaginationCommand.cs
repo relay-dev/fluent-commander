@@ -5,18 +5,22 @@ using System.Data;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
+#if DEBUG
 [assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
+#endif
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerPaginationCommand : SqlServerCommandBase, IDatabaseCommand<PaginationRequest, PaginationResult>
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlServerPaginationCommand(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder, ISqlServerCommandExecutor commandExecutor, ILoggerFactory loggerFactory)
+        public SqlServerPaginationCommand(
+            SqlConnectionStringBuilder builder,
+            DatabaseCommandBuilder databaseCommandBuilder,
+            ISqlServerCommandExecutor commandExecutor)
         {
-            _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor, loggerFactory);
+            _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor);
         }
 
         /// <summary>

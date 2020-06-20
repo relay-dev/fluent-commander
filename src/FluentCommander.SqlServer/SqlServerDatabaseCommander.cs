@@ -17,28 +17,25 @@ namespace FluentCommander.SqlServer
     {
         private readonly SqlConnectionStringBuilder _builder;
         private readonly ISqlServerCommandExecutor _commandExecutor;
-        private readonly ILoggerFactory _loggerFactory;
 
         public SqlServerDatabaseCommander(
             SqlConnectionStringBuilder builder,
             DatabaseCommandBuilder databaseCommandBuilder,
-            ISqlServerCommandExecutor commandExecutor,
-            ILoggerFactory loggerFactory)
+            ISqlServerCommandExecutor commandExecutor)
             : base(databaseCommandBuilder)
         {
             _builder = builder;
             _commandExecutor = commandExecutor;
-            _loggerFactory = loggerFactory;
         }
 
         public override BulkCopyResult BulkCopy(BulkCopyRequest request)
         {
-            return new SqlServerBulkCopyCommand(ConnectionProvider, _loggerFactory).Execute(request);
+            return new SqlServerBulkCopyCommand(ConnectionProvider).Execute(request);
         }
 
         public override async Task<BulkCopyResult> BulkCopyAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerBulkCopyCommand(ConnectionProvider, _loggerFactory).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerBulkCopyCommand(ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override SqlNonQueryResult ExecuteNonQuery(SqlNonQueryRequest request)
@@ -123,12 +120,12 @@ namespace FluentCommander.SqlServer
 
         public override PaginationResult Paginate(PaginationRequest request)
         {
-            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor, _loggerFactory).Execute(request);
+            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).Execute(request);
         }
 
         public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor, _loggerFactory).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).ExecuteAsync(request, cancellationToken);
         }
 
         private string SqlSelectServerName => "SELECT @@SERVERNAME";
