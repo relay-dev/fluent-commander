@@ -256,6 +256,10 @@ namespace FluentCommander.Samples.Commands
                 {
                     entity.Property(e => e.SampleVarChar).MapFrom("SampleString");
                 }))
+                .OrderHints(hints => hints.Build(entity =>
+                {
+                    entity.Property(e => e.SampleInt).OrderByDescending();
+                }))
                 .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
                 {
                     var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;

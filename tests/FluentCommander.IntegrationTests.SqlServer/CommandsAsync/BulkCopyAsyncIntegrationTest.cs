@@ -255,7 +255,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Mapping(map => map.UsePartialMap(sample =>
+                .Mapping(mapping => mapping.UsePartialMap(sample =>
                 {
                     sample.Property(s => s.SampleVarChar).MapFrom("SampleString");
                 }))
@@ -264,6 +264,10 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                     var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
 
                     WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+                }))
+                .OrderHints(hints => hints.Build(entity =>
+                {
+                    entity.Property(e => e.SampleInt).OrderByDescending();
                 }))
                 .ExecuteAsync(new CancellationToken());
 

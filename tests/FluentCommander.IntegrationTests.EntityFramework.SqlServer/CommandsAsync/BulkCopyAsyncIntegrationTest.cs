@@ -1,6 +1,7 @@
 ﻿using FluentCommander.BulkCopy;
 using FluentCommander.EntityFramework;
 using FluentCommander.IntegrationTests.EntityFramework.SqlServer.Entities;
+using FluentCommander.Samples.Setup.Entities;
 using Microsoft.Data.SqlClient;
 using Shouldly;
 using System;
@@ -208,26 +209,26 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
 
             // Act
             BulkCopyResult result = await SUT.BuildCommand()
-                .ForBulkCopy()
+                .ForBulkCopy<SampleEntity>()
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
                 .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Mapping(map => map.UsePartialMap(new ColumnMapping(new List<ColumnMap>
+                .Mapping(mapping => mapping.UsePartialMap(sample =>
                 {
-                    new ColumnMap
-                    {
-                        Source = "SampleString",
-                        Destination = "SampleVarChar"
-                    }
-                })))
+                    sample.Property(s => s.SampleVarChar).MapFrom("SampleString");
+                }))
                 .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
                 {
                     var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
 
                     WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+                }))
+                .OrderHints(hints => hints.Build(entity =>
+                {
+                    entity.Property(e => e.SampleInt).OrderByDescending();
                 }))
                 .ExecuteAsync(new CancellationToken());
 

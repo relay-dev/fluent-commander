@@ -179,7 +179,7 @@ private async Task BulkCopyUsingEvents()
 }
 ```
 
-#### All Options
+#### All APIs
 
 ```c#
 private async Task BulkCopyUsingAllApis()
@@ -192,12 +192,15 @@ private async Task BulkCopyUsingAllApis()
         .Into("[dbo].[SampleTable]")
         .BatchSize(100)
         .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
-        .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
         .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
             entity
                 .Property(e => e.SampleVarChar)
                 .MapFrom("SampleString");
+        }))
+        .OrderHints(hints => hints.Build(entity =>
+        {
+            entity.Property(e => e.SampleInt).OrderByDescending();
         }))
         .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
         {
