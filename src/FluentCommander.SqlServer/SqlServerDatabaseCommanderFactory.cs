@@ -1,6 +1,5 @@
 ﻿using FluentCommander.Core;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
 
 namespace FluentCommander.SqlServer
 {
@@ -9,18 +8,15 @@ namespace FluentCommander.SqlServer
         private readonly IConnectionStringCollection _connectionStringCollection;
         private readonly DatabaseCommandBuilder _databaseCommandBuilder;
         private readonly ISqlServerCommandExecutor _sqlServerCommandExecutor;
-        private readonly ILoggerFactory _loggerFactory;
 
         public SqlServerDatabaseCommanderFactory(
             IConnectionStringCollection connectionStringCollection,
             DatabaseCommandBuilder databaseCommandBuilder,
-            ISqlServerCommandExecutor sqlServerCommandExecutor,
-            ILoggerFactory loggerFactory)
+            ISqlServerCommandExecutor sqlServerCommandExecutor)
         {
             _connectionStringCollection = connectionStringCollection;
             _databaseCommandBuilder = databaseCommandBuilder;
             _sqlServerCommandExecutor = sqlServerCommandExecutor;
-            _loggerFactory = loggerFactory;
         }
 
         /// <summary>

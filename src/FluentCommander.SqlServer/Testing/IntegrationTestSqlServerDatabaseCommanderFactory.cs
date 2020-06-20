@@ -1,5 +1,4 @@
 ﻿using FluentCommander.Core;
-using Microsoft.Extensions.Logging;
 
 namespace FluentCommander.SqlServer.Testing
 {
@@ -17,8 +16,7 @@ namespace FluentCommander.SqlServer.Testing
         public IntegrationTestSqlServerDatabaseCommanderFactory(
             IConnectionStringCollection connectionStringCollection,
             DatabaseCommandBuilder databaseCommandBuilder,
-            ISqlServerCommandExecutor sqlServerCommandExecutor,
-            ILoggerFactory loggerFactory)
-            : base(connectionStringCollection, databaseCommandBuilder, sqlServerCommandExecutor, loggerFactory) { }
+            ISqlServerCommandExecutor sqlServerCommandExecutor)
+            : base(connectionStringCollection, databaseCommandBuilder, sqlServerCommandExecutor) { }
     }
 }

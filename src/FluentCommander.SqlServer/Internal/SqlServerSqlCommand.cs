@@ -4,9 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if DEBUG
 [assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
-#endif
 namespace FluentCommander.SqlServer.Internal
 {
     internal abstract class SqlServerSqlCommand<TResult> : SqlServerCommandBase, IDatabaseCommand<SqlRequest, TResult>

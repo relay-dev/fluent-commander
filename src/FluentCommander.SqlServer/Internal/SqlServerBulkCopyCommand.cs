@@ -9,9 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if DEBUG
 [assembly: InternalsVisibleTo("FluentCommander.UnitTests")]
-#endif
 namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
