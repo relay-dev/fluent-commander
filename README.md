@@ -192,6 +192,7 @@ private async Task BulkCopyUsingAllApis()
         .Into("[dbo].[SampleTable]")
         .BatchSize(100)
         .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
         .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
             entity

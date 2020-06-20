@@ -147,6 +147,29 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
         }
 
         [Fact]
+        public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingOrderHints()
+        {
+            // Arrange
+            DataTable dataTable = GetDataToInsert();
+
+            // Act
+            BulkCopyResult result = await SUT.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable)
+                .Into("[dbo].[SampleTable]")
+                .Mapping(map => map.UseAutoMap())
+                .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.RowCountCopied.ShouldBe(RowCount);
+
+            // Print
+            WriteLine(RowCount);
+        }
+
+        [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingEvents()
         {
             // Arrange
@@ -189,6 +212,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
                 .Mapping(map => map.UsePartialMap(new ColumnMapping(new List<ColumnMap>
