@@ -1,5 +1,6 @@
 ﻿using FluentCommander.BulkCopy;
 using FluentCommander.Core;
+using FluentCommander.Core.Ordering;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Linq;
@@ -111,6 +112,14 @@ namespace FluentCommander.SqlServer.Internal
                 }
             }
 
+            if (request.ColumnOrdering != null)
+            {
+                foreach (ColumnOrder columnOrder in request.ColumnOrdering.ColumnOrders)
+                {
+                    command.ColumnOrderHints.Add(columnOrder.ColumnName, ToSortOrder(columnOrder.Direction));
+                }
+            }
+
             if (request.OnRowsCopied != null)
             {
                 command.SqlRowsCopied += (sender, e) =>
@@ -211,6 +220,19 @@ namespace FluentCommander.SqlServer.Internal
             }
 
             return options;
+        }
+
+        private SortOrder ToSortOrder(OrderDirection columnOrderDirection)
+        {
+            switch (columnOrderDirection)
+            {
+                case OrderDirection.Ascending:
+                    return SortOrder.Ascending;
+                case OrderDirection.Descending:
+                    return SortOrder.Descending;
+                default:
+                    return SortOrder.Unspecified;
+            }
         }
 
         private void HandleBulkCopyException(Exception e, SqlBulkCopy sqlBulkCopy)

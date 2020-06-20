@@ -1,5 +1,6 @@
 ﻿using FluentCommander.Core;
 using FluentCommander.Core.Mapping;
+using FluentCommander.Core.Ordering;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -7,7 +8,7 @@ using MappingType = FluentCommander.Core.Mapping.MappingType;
 
 namespace FluentCommander.BulkCopy
 {
-    public class BulkCopyRequest : DatabaseCommandRequest, IHaveColumnMapping
+    public class BulkCopyRequest : DatabaseCommandRequest, IHaveColumnMapping, IHaveColumnOrdering
     {
         /// <summary>
         /// Number of rows in each batch. At the end of each batch, the rows in the batch are sent to the server.
@@ -18,6 +19,11 @@ namespace FluentCommander.BulkCopy
         /// Column mappings define the relationships between columns in the data source and columns in the destination.
         /// </summary>
         public ColumnMapping ColumnMapping { get; set; }
+
+        /// <summary>
+        /// Defines the sort order for a column in a Bulk Copy command's destination table, according to the clustered index on the table.
+        /// </summary>
+        public ColumnOrdering ColumnOrdering { get; set; }
 
         /// <summary>
         /// The DataReader to stream the data to be copied
