@@ -35,8 +35,8 @@ test_script:
 after_test:
   - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.UnitTests\TestResults\coverage.opencover.xml"
 artifacts:
-- path: artifacts\*.nupkg
-  name: Packages
+- path: src\*\bin\Release\*.nupkg
+  name: NuGet
 deploy:
 - provider: Environment
   name: NuGet
