@@ -191,7 +191,7 @@ private async Task BulkCopyUsingAllApis()
         .From(dataTable, DataRowState.Added)
         .Into("[dbo].[SampleTable]")
         .BatchSize(100)
-        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
         .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
             entity

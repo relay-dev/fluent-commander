@@ -248,7 +248,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.Commands
                 .ForBulkCopy<SampleEntity>()
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
-                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
                 .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))

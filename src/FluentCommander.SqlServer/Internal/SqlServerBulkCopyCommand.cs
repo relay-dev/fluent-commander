@@ -28,7 +28,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public BulkCopyResult Execute(BulkCopyRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection();
+            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
 
             SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(connection, request);
 

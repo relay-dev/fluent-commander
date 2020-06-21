@@ -251,7 +251,7 @@ namespace FluentCommander.Samples.Commands
                 .Into("[dbo].[SampleTable]")
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
                 .Mapping(mapping => mapping.UsePartialMap(entity =>
                 {
                     entity.Property(e => e.SampleVarChar).MapFrom("SampleString");
