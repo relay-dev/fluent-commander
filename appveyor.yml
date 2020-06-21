@@ -28,7 +28,7 @@ before_build:
 - cmd: dotnet restore
 build:
   publish_nuget: true
-  publish_nuget_symbols: true
+  publish_nuget_symbols: false
   verbosity: normal
 test_script:
   - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/
