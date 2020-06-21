@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FluentCommander.Core.Options;
+using Microsoft.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +16,18 @@ namespace FluentCommander.SqlServer.Internal
             _builder = builder;
         }
 
-        public SqlConnection GetConnection()
+        public SqlConnection GetConnection(CommandOptions options)
         {
             var connection = new SqlConnection(_builder.ConnectionString);
 
-            connection.Open();
+            if (IsOpenConnectionWithRetry(options))
+            {
+                connection.Open(SqlConnectionOverrides.OpenWithoutRetry);
+            }
+            else
+            {
+                connection.Open();
+            }
 
             return connection;
         }
@@ -31,6 +39,16 @@ namespace FluentCommander.SqlServer.Internal
             await connection.OpenAsync(cancellationToken);
 
             return connection;
+        }
+
+        private bool IsOpenConnectionWithRetry(CommandOptions options)
+        {
+            if (options == null)
+            {
+                return false;
+            }
+
+            return options.OpenConnectionWithoutRetry.HasValue && options.OpenConnectionWithoutRetry.Value;
         }
     }
 }

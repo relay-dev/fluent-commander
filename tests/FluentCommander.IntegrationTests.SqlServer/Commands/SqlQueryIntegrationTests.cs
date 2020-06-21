@@ -52,6 +52,25 @@ namespace FluentCommander.IntegrationTests.SqlServer.Commands
         }
 
         [Fact]
+        public void ExecuteSqlQueryCommandAsync_WithOptionsSet_ShouldRespectOptionsSettings()
+        {
+            // Arrange & Act
+            SqlQueryResult result = SUT.BuildCommand()
+                .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
+                .AddInputParameter("SampleTableID", 1)
+                .AddInputParameter("SampleVarChar", "Row 1")
+                .Options(option => option.OpenConnectionWithoutRetry())
+                .Execute();
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.HasData.ShouldBeTrue();
+
+            // Print result
+            WriteLine(result.DataTable);
+        }
+
+        [Fact]
         public void ExecuteSqlQueryCommand_WithProjectionMap_ShouldReturnListOfEntities()
         {
             // Arrange & Act

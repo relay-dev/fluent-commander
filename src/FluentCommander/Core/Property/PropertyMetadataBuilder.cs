@@ -1,4 +1,6 @@
-﻿namespace FluentCommander.Core.Property
+﻿using FluentCommander.Core.Ordering;
+
+namespace FluentCommander.Core.Property
 {
     public class PropertyMetadataBuilder<TEntity>
     {
@@ -26,6 +28,20 @@
         public PropertyMetadataBuilder<TEntity> Ignore()
         {
             _propertyMetadata.IsIgnore = true;
+
+            return this;
+        }
+
+        public PropertyMetadataBuilder<TEntity> OrderBy()
+        {
+            _propertyMetadata.OrderDirection = OrderDirection.Ascending;
+
+            return this;
+        }
+
+        public PropertyMetadataBuilder<TEntity> OrderByDescending()
+        {
+            _propertyMetadata.OrderDirection = OrderDirection.Descending;
 
             return this;
         }

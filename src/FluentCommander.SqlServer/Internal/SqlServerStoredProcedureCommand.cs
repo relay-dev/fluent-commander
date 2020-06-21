@@ -32,7 +32,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public StoredProcedureResult Execute(StoredProcedureRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection();
+            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
 
             SqlCommand command = GetSqlCommand(request, connection);
 
