@@ -1,6 +1,8 @@
-﻿namespace FluentCommander.BulkCopy
+﻿using FluentCommander.Core.Options;
+
+namespace FluentCommander.BulkCopy
 {
-    public class BulkCopyCommandOptions
+    public class BulkCopyCommandOptions : CommandOptions
     {
         /// <summary>
         /// Preserve source identity values. When not specified, identity values are assigned by the destination

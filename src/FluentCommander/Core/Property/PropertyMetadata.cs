@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentCommander.Core.Ordering;
+using System;
 using System.Linq.Expressions;
 
 namespace FluentCommander.Core.Property
@@ -9,5 +10,6 @@ namespace FluentCommander.Core.Property
         public string Name { get; set; }
         public string MapFrom { get; set; }
         public bool IsIgnore { get; set; }
+        public OrderDirection OrderDirection { get; set; }
     }
 }

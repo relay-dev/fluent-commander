@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentCommander.Core.Options;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -17,6 +18,13 @@ namespace FluentCommander.Core.Builders
         public TBuilder Join(Transaction transaction)
         {
             _request.Transaction = transaction;
+
+            return this as TBuilder;
+        }
+
+        public virtual TBuilder Options(Func<CommandOptionsBuilder, CommandOptionsBuilder> options)
+        {
+            options.Invoke(new CommandOptionsBuilder(_request));
 
             return this as TBuilder;
         }

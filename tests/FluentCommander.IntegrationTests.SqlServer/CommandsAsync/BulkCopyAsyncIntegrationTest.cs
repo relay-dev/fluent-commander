@@ -187,6 +187,29 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
         }
 
         [Fact]
+        public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingOrderHints()
+        {
+            // Arrange
+            DataTable dataTable = GetDataToInsert();
+
+            // Act
+            BulkCopyResult result = await SUT.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable)
+                .Into("[dbo].[SampleTable]")
+                .Mapping(map => map.UseAutoMap())
+                .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
+                .ExecuteAsync(new CancellationToken());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.RowCountCopied.ShouldBe(RowCount);
+
+            // Print
+            WriteLine(RowCount);
+        }
+
+        [Fact]
         public async Task ExecuteBulkCopyAsync_ShouldCreateNewRows_WhenUsingEvents()
         {
             // Arrange
@@ -229,9 +252,10 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .From(dataTable, DataRowState.Added)
                 .Into("[dbo].[SampleTable]")
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Mapping(map => map.UsePartialMap(sample =>
+                .Mapping(mapping => mapping.UsePartialMap(sample =>
                 {
                     sample.Property(s => s.SampleVarChar).MapFrom("SampleString");
                 }))
@@ -240,6 +264,10 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                     var sqlRowsCopiedEventArgs = (SqlRowsCopiedEventArgs)e;
 
                     WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
+                }))
+                .OrderHints(hints => hints.Build(entity =>
+                {
+                    entity.Property(e => e.SampleInt).OrderByDescending();
                 }))
                 .ExecuteAsync(new CancellationToken());
 

@@ -1,4 +1,5 @@
-﻿using FluentCommander.SqlServer;
+﻿using FluentCommander.Core.Options;
+using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
@@ -15,9 +16,21 @@ namespace FluentCommander.EntityFramework.SqlServer
             _dbContext = dbContext;
         }
 
-        public SqlConnection GetConnection()
+        public SqlConnection GetConnection(CommandOptions options)
         {
             var connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString);
+
+            if (options != null)
+            {
+                if (options.OpenConnectionWithoutRetry.HasValue && options.OpenConnectionWithoutRetry.Value)
+                {
+                    connection.Open(SqlConnectionOverrides.OpenWithoutRetry);
+                }
+                else
+                {
+                    connection.Open();
+                }
+            }
 
             connection.Open();
 
