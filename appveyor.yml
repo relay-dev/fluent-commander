@@ -31,7 +31,7 @@ build:
   publish_nuget_symbols: false
   verbosity: normal
 test_script:
-  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/
+  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[*Samples]*,[*Tests*]*" /p:CoverletOutput=TestResults/
 after_test:
   - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.UnitTests\TestResults\coverage.opencover.xml"
 artifacts:
