@@ -1,14 +1,14 @@
-<img src="https://i.imgur.com/o7FT6yK.png" alt="Relay" height="150" width="150">
+<img src="https://raw.githubusercontent.com/relay-dev/fluent-commander/master/resources/icon.png" alt="Fluent Commander" height="150" width="150">
 
 # Fluent Commander
 
 [![Build status](https://ci.appveyor.com/api/projects/status/rbnas7sa2tnl5adl/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/fluent-commander/branch/master)
-[![Coverage Status](https://coveralls.io/repos/github/relay-dev/fluent-commander/badge.svg?branch=master)](https://coveralls.io/github/relay-dev/fluent-commander?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/relay-dev/fluent-commander/badge.svg?branch=master&service=github)](https://coveralls.io/github/relay-dev/fluent-commander?branch=master)
 [![NuGet Release](https://img.shields.io/nuget/v/FluentCommander.svg)](https://www.nuget.org/packages/FluentCommander/)
-[![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=yellow&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
+[![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=red&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
 
-Fluent Commander is intended to subsidize ORM data access frameworks, which ofteen lack clean API's for tasks such as executing a Bulk Copy operation or calling a Stored Procedure.
+Fluent Commander is a lightweight library featuring a fluent API for executing asynchronous database commands. It is intended to subsidize ORM data access frameworks, which often lack clean API's for tasks such as executing a Bulk Copy operation or calling a parameterized Stored Procedure.
 
 Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as seperate NuGet packages.
 
@@ -179,7 +179,7 @@ private async Task BulkCopyUsingEvents()
 }
 ```
 
-#### All Options
+#### All APIs
 
 ```c#
 private async Task BulkCopyUsingAllApis()
@@ -191,7 +191,7 @@ private async Task BulkCopyUsingAllApis()
         .From(dataTable, DataRowState.Added)
         .Into("[dbo].[SampleTable]")
         .BatchSize(100)
-        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+        .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
         .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
             entity
@@ -203,6 +203,10 @@ private async Task BulkCopyUsingAllApis()
             var event = (SqlRowsCopiedEventArgs)e;
 
             Console.WriteLine($"Total rows copied: {event.RowsCopied}");
+        }))
+        .OrderHints(hints => hints.Build(entity =>
+        {
+            entity.Property(e => e.SampleInt).OrderByDescending();
         }))
         .Timeout(TimeSpan.FromSeconds(30))
         .ExecuteAsync(new CancellationToken());

@@ -24,7 +24,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override SqlNonQueryResult Execute(SqlRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection();
+            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
 
             using SqlCommand command = GetSqlCommand(connection, request);
             

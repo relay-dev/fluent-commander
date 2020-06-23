@@ -13,7 +13,10 @@ namespace FluentCommander.SqlServer.Internal
     {
         private readonly IDatabaseCommander _databaseCommander;
 
-        public SqlServerPaginationCommand(SqlConnectionStringBuilder builder, DatabaseCommandBuilder databaseCommandBuilder, ISqlServerCommandExecutor commandExecutor)
+        public SqlServerPaginationCommand(
+            SqlConnectionStringBuilder builder,
+            DatabaseCommandBuilder databaseCommandBuilder,
+            ISqlServerCommandExecutor commandExecutor)
         {
             _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor);
         }

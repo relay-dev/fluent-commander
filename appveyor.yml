@@ -28,15 +28,16 @@ before_build:
 - cmd: dotnet restore
 build:
   publish_nuget: true
-  publish_nuget_symbols: true
+  publish_nuget_symbols: false
   verbosity: normal
 test_script:
-  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/
+  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[*Samples*]*" /p:CoverletOutput=TestResults/
 after_test:
   - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.UnitTests\TestResults\coverage.opencover.xml"
 artifacts:
-- path: src\FluentCommander\bin\Release\*.nupkg
+- path: '**\*.nupkg'
   name: NuGet
 deploy:
 - provider: Environment
   name: NuGet
+  skip_symbols: true
