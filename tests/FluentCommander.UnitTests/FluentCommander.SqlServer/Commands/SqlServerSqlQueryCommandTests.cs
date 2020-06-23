@@ -1,4 +1,5 @@
-﻿using FluentCommander.SqlQuery;
+﻿using FluentCommander.Core.Options;
+using FluentCommander.SqlQuery;
 using FluentCommander.SqlServer;
 using FluentCommander.SqlServer.Internal;
 using Microsoft.Data.SqlClient;
@@ -25,7 +26,7 @@ namespace FluentCommander.UnitTests.FluentCommander.SqlServer.Commands
             var commandExecutorMock = AutoMocker.GetMock<ISqlServerCommandExecutor>();
 
             connectionProviderMock
-                .Setup(mock => mock.GetConnection())
+                .Setup(mock => mock.GetConnection(new CommandOptions()))
                 .Returns(new SqlConnection("Server=(local)\\SQL2017;Integrated security=SSPI;"));
 
             commandExecutorMock

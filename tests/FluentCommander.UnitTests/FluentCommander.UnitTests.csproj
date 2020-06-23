@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TestResults\**" />
+    <EmbeddedResource Remove="TestResults\**" />
+    <None Remove="TestResults\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="2.9.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,9 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\samples\FluentCommander.Samples.Setup\FluentCommander.Samples.Setup.csproj" />
     <ProjectReference Include="..\..\samples\FluentCommander.Samples\FluentCommander.Samples.csproj" />
-    <ProjectReference Include="..\..\src\FluentCommander.EntityFramework.SqlServer\FluentCommander.EntityFramework.SqlServer.csproj" />
-    <ProjectReference Include="..\..\src\FluentCommander.EntityFramework\FluentCommander.EntityFramework.csproj" />
-    <ProjectReference Include="..\..\src\FluentCommander.Oracle\FluentCommander.Oracle.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander.SqlServer\FluentCommander.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\FluentCommander\FluentCommander.csproj" />
   </ItemGroup>

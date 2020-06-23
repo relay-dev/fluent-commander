@@ -1,5 +1,6 @@
 ﻿using FluentCommander.Core.Builders;
 using FluentCommander.Core.Mapping;
+using FluentCommander.Core.Ordering;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -93,6 +94,13 @@ namespace FluentCommander.BulkCopy
         public TBuilder Options(Func<BulkCopyCommandOptionsBuilder, BulkCopyCommandOptionsBuilder> options)
         {
             options.Invoke(new BulkCopyCommandOptionsBuilder(CommandRequest));
+
+            return this as TBuilder;
+        }
+
+        public TBuilder OrderHints(Func<ColumnOrderingBuilder, ColumnOrderingBuilder> options)
+        {
+            options.Invoke(new ColumnOrderingBuilder(CommandRequest));
 
             return this as TBuilder;
         }

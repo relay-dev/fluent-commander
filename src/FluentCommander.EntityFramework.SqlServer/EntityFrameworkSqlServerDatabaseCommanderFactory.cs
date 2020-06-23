@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using FluentCommander.Core;
+﻿using FluentCommander.Core;
 using FluentCommander.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

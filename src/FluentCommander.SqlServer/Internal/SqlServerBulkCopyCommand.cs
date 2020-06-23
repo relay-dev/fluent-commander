@@ -1,5 +1,6 @@
 ﻿using FluentCommander.BulkCopy;
 using FluentCommander.Core;
+using FluentCommander.Core.Ordering;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public BulkCopyResult Execute(BulkCopyRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection();
+            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
 
             SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(connection, request);
 
@@ -45,7 +46,7 @@ namespace FluentCommander.SqlServer.Internal
                 throw;
             }
 
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return new BulkCopyResult(sqlBulkCopy.RowsCopied);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace FluentCommander.SqlServer.Internal
                 throw;
             }
 
-            return new BulkCopyResult(request.DataTable.Rows.Count);
+            return new BulkCopyResult(sqlBulkCopy.RowsCopied);
         }
 
         private SqlBulkCopy GetSqlBulkCopy(SqlConnection connection, BulkCopyRequest request)
@@ -109,6 +110,14 @@ namespace FluentCommander.SqlServer.Internal
                 foreach (ColumnMap columnMap in request.ColumnMapping.ColumnMaps)
                 {
                     command.ColumnMappings.Add(columnMap.Source, columnMap.Destination);
+                }
+            }
+
+            if (request.ColumnOrdering != null)
+            {
+                foreach (ColumnOrder columnOrder in request.ColumnOrdering.ColumnOrders)
+                {
+                    command.ColumnOrderHints.Add(columnOrder.ColumnName, ToSortOrder(columnOrder.Direction));
                 }
             }
 
@@ -214,6 +223,19 @@ namespace FluentCommander.SqlServer.Internal
             return options;
         }
 
+        private SortOrder ToSortOrder(OrderDirection columnOrderDirection)
+        {
+            switch (columnOrderDirection)
+            {
+                case OrderDirection.Ascending:
+                    return SortOrder.Ascending;
+                case OrderDirection.Descending:
+                    return SortOrder.Descending;
+                default:
+                    return SortOrder.Unspecified;
+            }
+        }
+
         private void HandleBulkCopyException(Exception e, SqlBulkCopy sqlBulkCopy)
         {
             if (!e.Message.Contains("Received an invalid column length from the bcp client for colid"))
@@ -244,7 +266,7 @@ namespace FluentCommander.SqlServer.Internal
             }
             catch (Exception)
             {
-                throw e;
+                return;
             }
         }
     }

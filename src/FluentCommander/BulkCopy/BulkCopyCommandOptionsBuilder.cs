@@ -1,10 +1,13 @@
-﻿namespace FluentCommander.BulkCopy
+﻿using FluentCommander.Core.Options;
+
+namespace FluentCommander.BulkCopy
 {
-    public class BulkCopyCommandOptionsBuilder
+    public class BulkCopyCommandOptionsBuilder : CommandOptionsBuilder<BulkCopyCommandOptionsBuilder>
     {
         private readonly BulkCopyRequest _request;
 
         public BulkCopyCommandOptionsBuilder(BulkCopyRequest request)
+            : base(request)
         {
             _request = request;
             _request.Options ??= new BulkCopyCommandOptions();
@@ -80,4 +83,10 @@
             return this;
         }
     }
+
+    //public class BulkCopyCommandOptionsBuilder<TBuilder> : CommandOptionsBuilder<TBuilder> where TBuilder : class
+    //{
+    //    public BulkCopyCommandOptionsBuilder(DatabaseCommandRequest request)
+    //        : base(request) { }
+    //}
 }

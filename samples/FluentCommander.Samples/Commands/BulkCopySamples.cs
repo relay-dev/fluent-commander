@@ -188,9 +188,30 @@ namespace FluentCommander.Samples.Commands
         }
 
         /// <notes>
-        /// The OnRowsCopied event can be subscribed to
+        /// BulkCopy order hints are exposed via the OrderHints API
         /// </notes>
         [Sample(Key = "6")]
+        public async Task BulkCopyUsingOrderHints()
+        {
+            DataTable dataTable = GetDataToInsert();
+
+            BulkCopyResult result = await _databaseCommander.BuildCommand()
+                .ForBulkCopy()
+                .From(dataTable)
+                .Into("[dbo].[SampleTable]")
+                .Mapping(mapping => mapping.UseAutoMap())
+                .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
+                .ExecuteAsync(new CancellationToken());
+
+            int rowCountCopied = result.RowCountCopied;
+
+            Console.WriteLine("Row count copied: {0}", rowCountCopied);
+        }
+
+        /// <notes>
+        /// The OnRowsCopied event can be subscribed to
+        /// </notes>
+        [Sample(Key = "7")]
         public async Task BulkCopyUsingEvents()
         {
             DataTable dataTable = GetDataToInsert();
@@ -216,7 +237,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// All APIs
         /// </notes>
-        [Sample(Key = "7")]
+        [Sample(Key = "8")]
         public async Task BulkCopyUsingAllApis()
         {
             DataTable dataTable = GetDataToInsert();
@@ -230,10 +251,14 @@ namespace FluentCommander.Samples.Commands
                 .Into("[dbo].[SampleTable]")
                 .BatchSize(100)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
+                .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
                 .Mapping(mapping => mapping.UsePartialMap(entity =>
                 {
                     entity.Property(e => e.SampleVarChar).MapFrom("SampleString");
+                }))
+                .OrderHints(hints => hints.Build(entity =>
+                {
+                    entity.Property(e => e.SampleInt).OrderByDescending();
                 }))
                 .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
                 {
