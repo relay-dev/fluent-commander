@@ -8,7 +8,7 @@
 [![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=red&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
 
-Fluent Commander is a lightweight library featuring a fluent API for executing asynchronous database commands. It is intended to subsidize ORM data access frameworks, which often lack clean API's for tasks such as executing a Bulk Copy operation or calling a parameterized Stored Procedure.
+Fluent Commander is a lightweight library featuring a fluent API for executing asynchronous database commands. It is intended to subsidize ORM data access frameworks, which often lack clean API's for tasks such as executing a Bulk Copy operation, a Bulk Merge or calling a parameterized Stored Procedure.
 
 Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as seperate NuGet packages.
 
