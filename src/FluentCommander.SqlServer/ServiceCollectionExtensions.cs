@@ -1,6 +1,5 @@
 ﻿using FluentCommander.Core.Impl;
 using FluentCommander.SqlServer.Internal;
-using FluentCommander.SqlServer.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +27,6 @@ namespace FluentCommander.SqlServer
             services.AddTransient<SqlServerSqlQueryCommand>();
             services.AddTransient<SqlServerStoredProcedureCommand>();
             services.AddTransient<ISqlServerCommandExecutor, SqlServerCommandExecutor>();
-            services.AddTransient<IntegrationTestSqlServerDatabaseCommanderFactory>();
 
             var connectionStringCollection = new ConnectionStringCollection(config);
 

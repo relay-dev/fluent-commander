@@ -16,6 +16,7 @@ namespace FluentCommander.SqlServer.Internal
     internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
     {
         private readonly ISqlServerConnectionProvider _connectionProvider;
+
         public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider)
         {
             _connectionProvider = connectionProvider;
