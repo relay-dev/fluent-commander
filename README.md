@@ -3,7 +3,7 @@
 # Fluent Commander
 
 [![Build status](https://ci.appveyor.com/api/projects/status/rbnas7sa2tnl5adl/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/fluent-commander/branch/master)
-[![Coverage Status](https://coveralls.io/repos/github/relay-dev/fluent-commander/badge.svg?branch=master)](https://coveralls.io/github/relay-dev/fluent-commander?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/relay-dev/fluent-commander/badge.svg?branch=master&service=github)](https://coveralls.io/github/relay-dev/fluent-commander?branch=master)
 [![NuGet Release](https://img.shields.io/nuget/v/FluentCommander.svg)](https://www.nuget.org/packages/FluentCommander/)
 [![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=yellow&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
