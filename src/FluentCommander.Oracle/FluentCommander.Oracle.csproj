@@ -6,7 +6,7 @@
     <Authors>Scott Ferguson</Authors>
     <Company>Relay Technologies</Company>
     <Product>Fluent Commander</Product>
-    <Description>A lightweight database command abstraction featuring a fluent API</Description>
+    <Description>Fluent API for executing asynchronous database commands</Description>
     <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/fluent-commander</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/relay-dev/fluent-commander/master/resources/icon.png</PackageIconUrl>
