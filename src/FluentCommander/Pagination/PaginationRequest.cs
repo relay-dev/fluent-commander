@@ -43,7 +43,7 @@ namespace FluentCommander.Pagination
         /// <returns>The where clause</returns>
         public string GetWhereClause()
         {
-            return string.IsNullOrEmpty(Conditions) ? string.Empty : $"AND {Conditions}";
+            return string.IsNullOrEmpty(Conditions) ? string.Empty : $"AND ({Conditions})";
         }
 
         /// <summary>
