@@ -1,6 +1,6 @@
-﻿using System;
-using System.Transactions;
-using FluentCommander.Core.Options;
+﻿using FluentCommander.Core.Options;
+using System;
+using System.Data;
 
 namespace FluentCommander.Core
 {
@@ -12,10 +12,13 @@ namespace FluentCommander.Core
         public CommandOptions Options { get; set; }
 
         /// <summary>
-        /// Number of seconds for the operation to complete before it times out
+        /// The amount of time to wait for the operation to complete
         /// </summary>
         public TimeSpan? Timeout { get; set; }
 
-        public TransactionScope TransactionScope { get; set; }
+        /// <summary>
+        /// The transaction to join when executing the command
+        /// </summary>
+        public IDbTransaction Transaction { get; set; }
     }
 }

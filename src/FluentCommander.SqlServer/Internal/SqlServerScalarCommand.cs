@@ -10,12 +10,8 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerScalarCommand<TResult> : SqlServerSqlCommand<TResult>
     {
-        private readonly ISqlServerConnectionProvider _connectionProvider;
-
         public SqlServerScalarCommand(ISqlServerConnectionProvider connectionProvider)
-        {
-            _connectionProvider = connectionProvider;
-        }
+            : base(connectionProvider) { }
 
         /// <summary>
         /// Executes the command
@@ -24,9 +20,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override TResult Execute(SqlRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
+            using SqlConnection connection = ConnectionProvider.GetConnection(request.Options);
 
-            using SqlCommand command = GetSqlCommand(connection, request);
+            using SqlCommand command = GetSqlCommand(request, connection);
 
             object result = command.ExecuteScalar();
 
@@ -43,9 +39,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override async Task<TResult> ExecuteAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);
+            await using SqlConnection connection = await ConnectionProvider.GetConnectionAsync(cancellationToken);
 
-            await using SqlCommand command = GetSqlCommand(connection, request);
+            await using SqlCommand command = GetSqlCommand(request, connection);
 
             object result = await command.ExecuteScalarAsync(cancellationToken);
 

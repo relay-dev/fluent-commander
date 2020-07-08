@@ -12,14 +12,13 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerSqlQueryCommand : SqlServerSqlCommand<SqlQueryResult>
     {
-        private readonly ISqlServerConnectionProvider _connectionProvider;
         private readonly ISqlServerCommandExecutor _commandExecutor;
 
         public SqlServerSqlQueryCommand(
-            ISqlServerConnectionProvider connectionProvider,
-            ISqlServerCommandExecutor commandExecutor)
+            ISqlServerCommandExecutor commandExecutor,
+            ISqlServerConnectionProvider connectionProvider)
+            : base(connectionProvider)
         {
-            _connectionProvider = connectionProvider;
             _commandExecutor = commandExecutor;
         }
 
@@ -30,9 +29,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override SqlQueryResult Execute(SqlRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
+            using SqlConnection connection = GetSqlConnection(request);
 
-            using SqlCommand command = GetSqlCommand(connection, request);
+            using SqlCommand command = GetSqlCommand(request, connection);
 
             DataTable dataTable = _commandExecutor.Execute(command);
 
@@ -47,9 +46,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override async Task<SqlQueryResult> ExecuteAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);
+            await using SqlConnection connection = await GetSqlConnectionAsync(request, cancellationToken);
 
-            await using SqlCommand command = GetSqlCommand(connection, request);
+            await using SqlCommand command = GetSqlCommand(request, connection);
 
             var dataTable = new DataTable();
 

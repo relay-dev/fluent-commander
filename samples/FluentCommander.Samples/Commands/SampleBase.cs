@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentCommander.Samples.Setup;
+using Microsoft.Extensions.Configuration;
 using Sampler.ConsoleApplication;
 using System.Data;
-using FluentCommander.Samples.Setup;
 
 namespace FluentCommander.Samples.Commands
 {

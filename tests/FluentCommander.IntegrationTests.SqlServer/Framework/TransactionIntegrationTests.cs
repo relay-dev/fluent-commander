@@ -1,10 +1,8 @@
-﻿using Shouldly;
+﻿using FluentCommander.SqlNonQuery;
+using Shouldly;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
-using FluentCommander.SqlNonQuery;
-using Microsoft.Data.SqlClient;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -20,7 +18,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.Framework
         public async Task ExecuteSqlNonQueryCommandAsync_InsertDeleteWithInputParameters_ShouldInsertDeleteToTheDatabase()
         {
             // Arrange
-            string sampleVarChar = "Temporary TransactionScope Row";
+            string sampleVarChar = $"Temporary Transaction Row - {Guid.NewGuid()}";
             CancellationToken cancellationToken = new CancellationToken();
 
             // Act
@@ -33,19 +31,23 @@ namespace FluentCommander.IntegrationTests.SqlServer.Framework
                 .AddInputParameter("CreatedDate", Timestamp)
                 .ExecuteAsync(cancellationToken);
 
+            long sampleTableId = ExecuteScalar<long>($"SELECT [SampleTableID] FROM [dbo].[SampleTable] WHERE [SampleVarChar] = '{sampleVarChar}'");
+
             try
             {
-                using var transaction = new SqlTransaction(null);
+                using var transaction = ResolveService<IDatabaseCommanderTransactionFactory>().Create();
 
                 await SUT.BuildCommand()
-                    .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleVarChar] = 'Temporary TransactionScope Row: Version 2' WHERE [SampleTableID] = @SampleTableID")
-                    .AddInputParameter("SampleTableID", insertResult.Id)
+                    .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleVarChar] = @SampleVarChar WHERE [SampleTableID] = @SampleTableID")
+                    .AddInputParameter("SampleTableID", sampleTableId)
+                    .AddInputParameter("SampleVarChar", sampleVarChar + "(Version 2)")
                     .Join(transaction)
                     .ExecuteAsync(cancellationToken);
 
                 await SUT.BuildCommand()
-                    .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleVarChar] = 'Temporary TransactionScope Row: Version 3' WHERE [SampleTableID] = @SampleTableID")
-                    .AddInputParameter("SampleTableID", insertResult.Id)
+                    .ForSqlNonQuery("UPDATE [dbo].[SampleTable] SET [SampleVarChar] = @SampleVarChar WHERE [SampleTableID] = @SampleTableID")
+                    .AddInputParameter("SampleTableID", sampleTableId)
+                    .AddInputParameter("SampleVarChar", sampleVarChar + "(Version 3)")
                     .Join(transaction)
                     .ExecuteAsync(cancellationToken);
 
@@ -57,14 +59,13 @@ namespace FluentCommander.IntegrationTests.SqlServer.Framework
                     throw;
             }
 
-            string result = ExecuteScalar<string>($"SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = '{insertResult.Id}'");
+            string result = ExecuteScalar<string>($"SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = {sampleTableId}");
 
             // Assert
             insertResult.ShouldNotBeNull();
             insertResult.RowCountAffected.ShouldBe(1);
-            insertResult.Id.ShouldBeGreaterThan(0);
             result.ShouldNotBeNull();
-            result.ShouldBe("Temporary TransactionScope Row");
+            result.ShouldBe("Temporary Transaction Row");
         }
 
         private string InsertSql =>

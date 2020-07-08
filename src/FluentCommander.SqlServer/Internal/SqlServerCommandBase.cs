@@ -1,13 +1,43 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FluentCommander.Core;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FluentCommander.SqlServer.Internal
 {
     internal abstract class SqlServerCommandBase
     {
+        protected readonly ISqlServerConnectionProvider ConnectionProvider;
+
+        protected SqlServerCommandBase(ISqlServerConnectionProvider connectionProvider)
+        {
+            ConnectionProvider = connectionProvider;
+        }
+
+        protected SqlConnection GetSqlConnection(DatabaseCommandRequest request)
+        {
+            if (request.Transaction != null)
+            {
+                return request.Transaction.Connection as SqlConnection;
+            }
+
+            return ConnectionProvider.GetConnection(request.Options);
+        }
+
+        protected async Task<SqlConnection> GetSqlConnectionAsync(DatabaseCommandRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Transaction != null)
+            {
+                return request.Transaction.Connection as SqlConnection;
+            }
+
+            return await ConnectionProvider.GetConnectionAsync(cancellationToken);
+        }
+
         protected SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
         {
             return databaseCommandParameters?.Select(ToSqlParameter).ToArray();

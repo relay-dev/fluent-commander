@@ -15,12 +15,8 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerBulkCopyCommand : SqlServerCommandBase, IDatabaseCommand<BulkCopyRequest, BulkCopyResult>
     {
-        private readonly ISqlServerConnectionProvider _connectionProvider;
-
         public SqlServerBulkCopyCommand(ISqlServerConnectionProvider connectionProvider)
-        {
-            _connectionProvider = connectionProvider;
-        }
+            : base(connectionProvider) { }
 
         /// <summary>
         /// Executes the command
@@ -29,9 +25,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public BulkCopyResult Execute(BulkCopyRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
+            using SqlConnection connection = GetSqlConnection(request);
 
-            SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(connection, request);
+            SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(request, connection);
 
             Action bulkCopy = ResolveBulkCopyOverload(request, sqlBulkCopy);
 
@@ -57,9 +53,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public async Task<BulkCopyResult> ExecuteAsync(BulkCopyRequest request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);
+            await using SqlConnection connection = await GetSqlConnectionAsync(request, cancellationToken);
 
-            SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(connection, request);
+            SqlBulkCopy sqlBulkCopy = GetSqlBulkCopy(request, connection);
 
             Func<Task> bulkCopy = ResolveBulkCopyAsyncOverload(request, sqlBulkCopy, cancellationToken);
 
@@ -77,11 +73,23 @@ namespace FluentCommander.SqlServer.Internal
             return new BulkCopyResult(sqlBulkCopy.RowsCopied);
         }
 
-        private SqlBulkCopy GetSqlBulkCopy(SqlConnection connection, BulkCopyRequest request)
+        private SqlBulkCopy GetSqlBulkCopy(BulkCopyRequest request, SqlConnection connection)
         {
-            var command = request.Options == null
-                ? new SqlBulkCopy(connection)
-                : new SqlBulkCopy(connection.ConnectionString, ToSqlBulkCopyOptions(request));
+            SqlBulkCopy command;
+
+            if (request.Transaction != null && request.Transaction is SqlTransaction sqlTransaction)
+            {
+                command = new SqlBulkCopy(connection, ToSqlBulkCopyOptions(request), sqlTransaction);
+
+            }
+            else if (request.Options != null)
+            {
+                command = new SqlBulkCopy(connection.ConnectionString, ToSqlBulkCopyOptions(request));
+            }
+            else
+            {
+                command = new SqlBulkCopy(connection);
+            }
 
             command.DestinationTableName = request.DestinationTableName;
             

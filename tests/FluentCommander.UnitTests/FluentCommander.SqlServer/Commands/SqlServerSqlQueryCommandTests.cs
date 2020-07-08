@@ -33,7 +33,7 @@ namespace FluentCommander.UnitTests.FluentCommander.SqlServer.Commands
                 .Setup(mock => mock.Execute(It.IsAny<SqlCommand>()))
                 .Returns(new DataTable());
 
-            var cut = new SqlServerSqlQueryCommand(connectionProviderMock.Object, commandExecutorMock.Object);
+            var cut = new SqlServerSqlQueryCommand(commandExecutorMock.Object, connectionProviderMock.Object);
 
             // Act
             SqlQueryResult output = cut.Execute(input);

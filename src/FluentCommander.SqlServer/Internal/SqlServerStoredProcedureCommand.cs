@@ -14,14 +14,13 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerStoredProcedureCommand : SqlServerCommandBase, IDatabaseCommand<StoredProcedureRequest, StoredProcedureResult>
     {
-        private readonly ISqlServerConnectionProvider _connectionProvider;
         private readonly ISqlServerCommandExecutor _commandExecutor;
 
         public SqlServerStoredProcedureCommand(
-            ISqlServerConnectionProvider connectionProvider,
-            ISqlServerCommandExecutor commandExecutor)
+            ISqlServerCommandExecutor commandExecutor,
+            ISqlServerConnectionProvider connectionProvider)
+            : base(connectionProvider)
         {
-            _connectionProvider = connectionProvider;
             _commandExecutor = commandExecutor;
         }
 
@@ -32,7 +31,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public StoredProcedureResult Execute(StoredProcedureRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
+            using SqlConnection connection = GetSqlConnection(request);
 
             SqlCommand command = GetSqlCommand(request, connection);
 
@@ -60,7 +59,7 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public async Task<StoredProcedureResult> ExecuteAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);
+            await using SqlConnection connection = await GetSqlConnectionAsync(request, cancellationToken);
 
             SqlCommand command = GetSqlCommand(request, connection);
 
@@ -96,6 +95,11 @@ namespace FluentCommander.SqlServer.Internal
             if (request.Timeout.HasValue)
             {
                 command.CommandTimeout = request.Timeout.Value.Seconds;
+            }
+
+            if (request.Transaction != null && request.Transaction is SqlTransaction sqlTransaction)
+            {
+                command.Transaction = sqlTransaction;
             }
 
             return command;

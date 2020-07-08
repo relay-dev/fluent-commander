@@ -13,6 +13,7 @@ namespace FluentCommander.SqlServer
             new Bootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
+            services.AddScoped<IDatabaseCommanderTransactionFactory, SqlServerDatabaseCommanderTransactionFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
 
             return services.AddSqlServerDatabaseCommands(config);

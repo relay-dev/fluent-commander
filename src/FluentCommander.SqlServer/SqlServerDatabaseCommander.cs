@@ -9,7 +9,6 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace FluentCommander.SqlServer
 {
@@ -80,12 +79,12 @@ namespace FluentCommander.SqlServer
 
         public override SqlQueryResult ExecuteSql(SqlQueryRequest request)
         {
-            return new SqlServerSqlQueryCommand(ConnectionProvider, _commandExecutor).Execute(request);
+            return new SqlServerSqlQueryCommand(_commandExecutor, ConnectionProvider).Execute(request);
         }
 
         public override async Task<SqlQueryResult> ExecuteSqlAsync(SqlQueryRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerSqlQueryCommand(ConnectionProvider, _commandExecutor).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerSqlQueryCommand(_commandExecutor, ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override DataTable ExecuteSql(string sql)
@@ -100,12 +99,12 @@ namespace FluentCommander.SqlServer
 
         public override StoredProcedureResult ExecuteStoredProcedure(StoredProcedureRequest request)
         {
-            return new SqlServerStoredProcedureCommand(ConnectionProvider, _commandExecutor).Execute(request);
+            return new SqlServerStoredProcedureCommand(_commandExecutor, ConnectionProvider).Execute(request);
         }
 
         public override async Task<StoredProcedureResult> ExecuteStoredProcedureAsync(StoredProcedureRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerStoredProcedureCommand(ConnectionProvider, _commandExecutor).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerStoredProcedureCommand(_commandExecutor, ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         public override string GetServerName()
@@ -120,12 +119,12 @@ namespace FluentCommander.SqlServer
 
         public override PaginationResult Paginate(PaginationRequest request)
         {
-            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).Execute(request);
+            return new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor, ConnectionProvider).Execute(request);
         }
 
         public override async Task<PaginationResult> PaginateAsync(PaginationRequest request, CancellationToken cancellationToken)
         {
-            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor).ExecuteAsync(request, cancellationToken);
+            return await new SqlServerPaginationCommand(_builder, DatabaseCommandBuilder, _commandExecutor, ConnectionProvider).ExecuteAsync(request, cancellationToken);
         }
 
         private string SqlSelectServerName => "SELECT @@SERVERNAME";

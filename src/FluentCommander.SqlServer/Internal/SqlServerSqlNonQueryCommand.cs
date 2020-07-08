@@ -10,12 +10,8 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerSqlNonQueryCommand : SqlServerSqlCommand<SqlNonQueryResult>
     {
-        private readonly ISqlServerConnectionProvider _connectionProvider;
-
         public SqlServerSqlNonQueryCommand(ISqlServerConnectionProvider connectionProvider)
-        {
-            _connectionProvider = connectionProvider;
-        }
+            : base(connectionProvider) { }
 
         /// <summary>
         /// Executes the command
@@ -24,16 +20,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override SqlNonQueryResult Execute(SqlRequest request)
         {
-            using SqlConnection connection = _connectionProvider.GetConnection(request.Options);
+            using SqlConnection connection = GetSqlConnection(request);
 
-            using SqlCommand command = GetSqlCommand(connection, request);
-            
-            if (request.Sql.Contains("output INSERTED"))
-            {
-                long resultId = (long)command.ExecuteScalar();
-
-                return new SqlNonQueryResult(1, resultId);
-            }
+            using SqlCommand command = GetSqlCommand(request, connection);
 
             int result = command.ExecuteNonQuery();
 
@@ -48,16 +37,9 @@ namespace FluentCommander.SqlServer.Internal
         /// <returns>The result of the command</returns>
         public override async Task<SqlNonQueryResult> ExecuteAsync(SqlRequest request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = await _connectionProvider.GetConnectionAsync(cancellationToken);
+            await using SqlConnection connection = await GetSqlConnectionAsync(request, cancellationToken);
 
-            await using SqlCommand command = GetSqlCommand(connection, request);
-
-            if (request.Sql.Contains("output INSERTED"))
-            {
-                long resultId = (long)await command.ExecuteScalarAsync(cancellationToken);
-
-                return new SqlNonQueryResult(1, resultId);
-            }
+            await using SqlCommand command = GetSqlCommand(request, connection);
 
             int result = await command.ExecuteNonQueryAsync(cancellationToken);
 

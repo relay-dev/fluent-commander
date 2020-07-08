@@ -16,7 +16,9 @@ namespace FluentCommander.SqlServer.Internal
         public SqlServerPaginationCommand(
             SqlConnectionStringBuilder builder,
             DatabaseCommandBuilder databaseCommandBuilder,
-            ISqlServerCommandExecutor commandExecutor)
+            ISqlServerCommandExecutor commandExecutor,
+            ISqlServerConnectionProvider connectionProvider)
+            : base(connectionProvider)
         {
             _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor);
         }

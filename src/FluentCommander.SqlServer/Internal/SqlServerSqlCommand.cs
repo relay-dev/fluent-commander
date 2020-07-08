@@ -9,7 +9,10 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal abstract class SqlServerSqlCommand<TResult> : SqlServerCommandBase, IDatabaseCommand<SqlRequest, TResult>
     {
-        protected SqlCommand GetSqlCommand(SqlConnection connection, SqlRequest request)
+        protected SqlServerSqlCommand(ISqlServerConnectionProvider connectionProvider)
+            : base(connectionProvider) { }
+
+        protected SqlCommand GetSqlCommand(SqlRequest request, SqlConnection connection)
         {
             using var command = new SqlCommand(request.Sql, connection);
 
@@ -18,14 +21,14 @@ namespace FluentCommander.SqlServer.Internal
                 command.Parameters.AddRange(ToSqlParameters(request.Parameters));
             }
 
-            if (request.TransactionScope != null)
-            {
-                command.Transaction = new SqlTransaction(); request.TransactionScope;
-            }
-
             if (request.Timeout.HasValue)
             {
                 command.CommandTimeout = request.Timeout.Value.Seconds;
+            }
+
+            if (request.Transaction != null && request.Transaction is SqlTransaction sqlTransaction)
+            {
+                command.Transaction = sqlTransaction;
             }
 
             return command;

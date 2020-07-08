@@ -1,8 +1,8 @@
 ﻿using FluentCommander.Core.Options;
 using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace FluentCommander.Core.Builders
 {
@@ -15,9 +15,9 @@ namespace FluentCommander.Core.Builders
             _request = request;
         }
 
-        public TBuilder Join(SqlTransaction transactionScope)
+        public TBuilder Join(IDbTransaction transaction)
         {
-            _request.TransactionScope = transactionScope;
+            _request.Transaction = transaction;
 
             return this as TBuilder;
         }
