@@ -44,15 +44,15 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.Commands
             // Assert
             result.ShouldNotBeNull();
             result.HasData.ShouldBeTrue();
-            result.Result.ShouldNotBeNull();
-            result.Result.Count.ShouldBeGreaterThan(0);
-            result.Result.First().SampleTableId.ShouldBeGreaterThan(0);
-            result.Result.First().SampleDateTime.ShouldNotBe(DateTime.MinValue);
-            result.Result.First().SampleUniqueIdentifier.ShouldNotBe(Guid.Empty);
-            result.Result.First().SampleVarChar.ShouldNotBeNullOrEmpty("SampleVarChar");
+            result.Data.ShouldNotBeNull();
+            result.Data.Count.ShouldBeGreaterThan(0);
+            result.Data.First().SampleTableId.ShouldBeGreaterThan(0);
+            result.Data.First().SampleDateTime.ShouldNotBe(DateTime.MinValue);
+            result.Data.First().SampleUniqueIdentifier.ShouldNotBe(Guid.Empty);
+            result.Data.First().SampleVarChar.ShouldNotBeNullOrEmpty("SampleVarChar");
 
             // Print result
-            WriteLine(result.Result);
+            WriteLine(result.Data);
         }
     }
 }

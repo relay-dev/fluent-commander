@@ -12,20 +12,20 @@ namespace FluentCommander.SqlQuery
 
     public class SqlQueryResult<TEntity>
     {
-        public SqlQueryResult(List<TEntity> result)
+        public SqlQueryResult(List<TEntity> data)
         {
-            Result = result;
+            Data = data;
         }
 
         /// <summary>
         /// The count of all records returned
         /// </summary>
-        public int Count => Result?.Count ?? 0;
+        public int Count => Data?.Count ?? 0;
 
         /// <summary>
         /// The records returned for this iteration of the pager
         /// </summary>
-        public List<TEntity> Result { get; }
+        public List<TEntity> Data { get; }
 
         /// <summary>
         /// Indicates whether or not the DataTable has data in it

@@ -29,21 +29,21 @@ namespace FluentCommander.StoredProcedure
 
     public class StoredProcedureResult<TEntity> : StoredProcedureResultBase
     {
-        public StoredProcedureResult(List<TEntity> result, List<DatabaseCommandParameter> parameters)
+        public StoredProcedureResult(List<TEntity> data, List<DatabaseCommandParameter> parameters)
             : base(parameters)
         {
-            Result = result;
+            Data = data;
         }
 
         /// <summary>
         /// The count of all records returned
         /// </summary>
-        public int Count => Result?.Count ?? 0;
+        public int Count => Data?.Count ?? 0;
 
         /// <summary>
         /// The records returned for this iteration of the pager
         /// </summary>
-        public List<TEntity> Result { get; }
+        public List<TEntity> Data { get; }
 
         /// <summary>
         /// Indicates whether or not the DataTable has data in it

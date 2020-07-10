@@ -3,7 +3,7 @@
 namespace FluentCommander.Pagination
 {
     /// <summary>
-    /// Allows you to set all input parameters needed to paginate a view
+    /// Allows you to set all input parameters needed to paginate a table or view
     /// </summary>
     public class PaginationRequest : DatabaseCommandRequest
     {
@@ -13,17 +13,17 @@ namespace FluentCommander.Pagination
         public string TableName { get; set; }
 
         /// <summary>
-        /// Optional: Allows you to limit the columns returned from the view. When not set, the default behavior is to return all columns in the view
+        /// Limits the columns returned from the table or view. When not set, the default behavior is to return all columns
         /// </summary>
         public string Columns { get; set; }
 
         /// <summary>
-        /// Optional: Allows you to filter the result returned from the view. When not set, the default behavior is to not apply any filter to the view
+        /// Filters to be applied as a where clause to the pagination query. When not set, the default behavior is to not apply any filter
         /// </summary>
         public string Conditions { get; set; }
 
         /// <summary>
-        /// Optional: Allows you to order the result returned from the view. When not set, the default behavior is to order by the first column in the view
+        /// Orders the result returned from the table or view. When not set, the default behavior is to order by the first column
         /// </summary>
         public string OrderBy { get; set; }
 

@@ -35,7 +35,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Result: {0}", result);
+            Console.WriteLine("Data: {0}", result);
         }
 
         /// <notes>
@@ -50,7 +50,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar)
                 .ExecuteAsync(new CancellationToken());
 
-            Console.WriteLine("Result: {0}", result);
+            Console.WriteLine("Data: {0}", result);
         }
     }
 }

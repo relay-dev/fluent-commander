@@ -1,5 +1,4 @@
-﻿using FluentCommander.Core;
-using FluentCommander.Core.Property;
+﻿using FluentCommander.Core.Property;
 using FluentCommander.Core.Utility.Impl;
 using System.Collections.Generic;
 using System.Data;
@@ -47,9 +46,7 @@ namespace FluentCommander.SqlQuery
 
             MappingBuilder(options);
 
-            List<TEntity> result = ReflectionUtility.DataTableToList(dataTable, options);
-
-            return result;
+            return ReflectionUtility.DataTableToList(dataTable, options);
         }
     }
 }

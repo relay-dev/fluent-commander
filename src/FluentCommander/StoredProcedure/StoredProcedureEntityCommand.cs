@@ -22,9 +22,9 @@ namespace FluentCommander.StoredProcedure
             StoredProcedureResult storedProcedureResult =
                 _databaseCommander.ExecuteStoredProcedure(CommandRequest);
 
-            List<TEntity> result = MapToEntities(storedProcedureResult.DataTable);
+            List<TEntity> data = MapToEntities(storedProcedureResult.DataTable);
 
-            return new StoredProcedureResult<TEntity>(result, storedProcedureResult.Parameters);
+            return new StoredProcedureResult<TEntity>(data, storedProcedureResult.Parameters);
         }
 
         public override async Task<StoredProcedureResult<TEntity>> ExecuteAsync(CancellationToken cancellationToken)
@@ -32,9 +32,9 @@ namespace FluentCommander.StoredProcedure
             StoredProcedureResult storedProcedureResult = await 
                 _databaseCommander.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
 
-            List<TEntity> result = MapToEntities(storedProcedureResult.DataTable);
+            List<TEntity> data = MapToEntities(storedProcedureResult.DataTable);
 
-            return new StoredProcedureResult<TEntity>(result, storedProcedureResult.Parameters);
+            return new StoredProcedureResult<TEntity>(data, storedProcedureResult.Parameters);
         }
 
         private List<TEntity> MapToEntities(DataTable dataTable)
@@ -43,9 +43,7 @@ namespace FluentCommander.StoredProcedure
 
             MappingBuilder(options);
 
-            List<TEntity> result = ReflectionUtility.DataTableToList(dataTable, options);
-
-            return result;
+            return ReflectionUtility.DataTableToList(dataTable, options);
         }
     }
 }

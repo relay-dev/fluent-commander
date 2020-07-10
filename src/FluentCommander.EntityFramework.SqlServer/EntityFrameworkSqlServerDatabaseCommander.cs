@@ -74,18 +74,18 @@ namespace FluentCommander.EntityFramework.SqlServer
 
         public StoredProcedureResult<TEntity> ExecuteStoredProcedure<TEntity>(StoredProcedureRequest request) where TEntity : class
         {
-            List<TEntity> result;
+            List<TEntity> data;
             SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
             if (parameters == null)
             {
-                result = _dbContext.Set<TEntity>().FromSqlRaw(request.StoredProcedureName).ToList();
+                data = _dbContext.Set<TEntity>().FromSqlRaw(request.StoredProcedureName).ToList();
             }
             else
             {
                 string sqlCommand = $"{request.StoredProcedureName} {string.Join(", ", parameters.Select(p => $"@{p.ParameterName}"))}";
 
-                result = _dbContext.Set<TEntity>().FromSqlRaw(sqlCommand, parameters).ToList();
+                data = _dbContext.Set<TEntity>().FromSqlRaw(sqlCommand, parameters).ToList();
 
                 foreach (DatabaseCommandParameter parameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
@@ -93,23 +93,23 @@ namespace FluentCommander.EntityFramework.SqlServer
                 }
             }
 
-            return new StoredProcedureResult<TEntity>(result, request.Parameters);
+            return new StoredProcedureResult<TEntity>(data, request.Parameters);
         }
 
         public async Task<StoredProcedureResult<TEntity>> ExecuteStoredProcedureAsync<TEntity>(StoredProcedureRequest request, CancellationToken cancellationToken) where TEntity : class
         {
-            List<TEntity> result;
+            List<TEntity> data;
             SqlParameter[] parameters = ToSqlParameters(request.Parameters);
 
             if (parameters == null)
             {
-                result = await _dbContext.Set<TEntity>().FromSqlRaw(request.StoredProcedureName).ToListAsync(cancellationToken);
+                data = await _dbContext.Set<TEntity>().FromSqlRaw(request.StoredProcedureName).ToListAsync(cancellationToken);
             }
             else
             {
                 string sqlCommand = $"{request.StoredProcedureName} {string.Join(", ", parameters.Select(p => $"@{p.ParameterName}"))}";
 
-                result = await _dbContext.Set<TEntity>().FromSqlRaw(sqlCommand, parameters).ToListAsync(cancellationToken);
+                data = await _dbContext.Set<TEntity>().FromSqlRaw(sqlCommand, parameters).ToListAsync(cancellationToken);
 
                 foreach (DatabaseCommandParameter parameter in request.Parameters.Where(dp => dp.Direction == ParameterDirection.Output || dp.Direction == ParameterDirection.InputOutput || dp.Direction == ParameterDirection.ReturnValue))
                 {
@@ -117,7 +117,7 @@ namespace FluentCommander.EntityFramework.SqlServer
                 }
             }
 
-            return new StoredProcedureResult<TEntity>(result, request.Parameters);
+            return new StoredProcedureResult<TEntity>(data, request.Parameters);
         }
 
         private SqlParameter[] ToSqlParameters(List<DatabaseCommandParameter> databaseCommandParameters)
