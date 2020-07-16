@@ -20,7 +20,7 @@ namespace FluentCommander.SqlServer.Internal
         {
             var connection = new SqlConnection(_builder.ConnectionString);
 
-            if (IsOpenConnectionWithRetry(options))
+            if (IsOpenConnectionWithoutRetry(options))
             {
                 connection.Open(SqlConnectionOverrides.OpenWithoutRetry);
             }
@@ -41,7 +41,7 @@ namespace FluentCommander.SqlServer.Internal
             return connection;
         }
 
-        private bool IsOpenConnectionWithRetry(CommandOptions options)
+        private bool IsOpenConnectionWithoutRetry(CommandOptions options)
         {
             if (options == null)
             {
