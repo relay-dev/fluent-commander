@@ -12,6 +12,11 @@ namespace FluentCommander.Core.Utility.Impl
     {
         public static List<TEntity> DataTableToList<TEntity>(DataTable dataTable, PropertyMapBuilder<TEntity> builder)
         {
+            if (dataTable.Rows.Count == 0)
+            {
+                return new List<TEntity>();
+            }
+
             var targetList = dataTable.AsEnumerable().Select(dataRow =>
             {
                 TEntity entity = Activator.CreateInstance<TEntity>();
