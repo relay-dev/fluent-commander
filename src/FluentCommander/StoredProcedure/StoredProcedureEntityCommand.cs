@@ -39,6 +39,11 @@ namespace FluentCommander.StoredProcedure
 
         private List<TEntity> MapToEntities(DataTable dataTable)
         {
+            if (dataTable.Rows.Count == 0)
+            {
+                return new List<TEntity>();
+            }
+
             var options = new PropertyMapBuilder<TEntity>();
 
             MappingBuilder(options);
