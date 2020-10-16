@@ -1,6 +1,6 @@
-﻿using FluentCommander.Pagination;
+﻿using Consolater;
+using FluentCommander.Pagination;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
@@ -11,8 +11,8 @@ namespace FluentCommander.Samples.Commands
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL pagination query
     /// </notes>
-    [SampleFixture]
-    public class PaginationSamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class PaginationSamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -27,7 +27,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Several defaults are specified so the only input required is the target
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecutePaginationUsingMinimalInput()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()
@@ -49,7 +49,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Specific columns can be specified for selecting
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecutePaginationSelectingColumns()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()
@@ -72,7 +72,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Filters can be applied
         /// </notes>
-        [Sample(Key = "3")]
+        [ConsoleAppSelection(Key = "3")]
         public async Task ExecutePaginationFilteringRows()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()
@@ -95,7 +95,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Ordering can be applied to rows
         /// </notes>
-        [Sample(Key = "4")]
+        [ConsoleAppSelection(Key = "4")]
         public async Task ExecutePaginationOrderingRows()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()
@@ -118,7 +118,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Ordering can be applied to rows
         /// </notes>
-        [Sample(Key = "5")]
+        [ConsoleAppSelection(Key = "5")]
         public async Task ExecutePaginationSettingPageSize()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()
@@ -141,7 +141,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// In this sample, all options are used
         /// </notes>
-        [Sample(Key = "6")]
+        [ConsoleAppSelection(Key = "6")]
         public async Task ExecutePaginationAllSettingsAreUsed()
         {
             PaginationResult result = await _databaseCommander.BuildCommand()

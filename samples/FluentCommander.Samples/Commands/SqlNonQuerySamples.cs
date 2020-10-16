@@ -1,6 +1,6 @@
-﻿using FluentCommander.SqlNonQuery;
+﻿using Consolater;
+using FluentCommander.SqlNonQuery;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,8 +10,8 @@ namespace FluentCommander.Samples.Commands
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE
     /// </notes>
-    [SampleFixture]
-    public class SqlNonQuerySamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class SqlNonQuerySamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -26,7 +26,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// SQL Update statements can also be parameterized for the database to cache the execution plan and prevent against injection
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteParameterizedUpdateSql()
         {
             Guid newGuid = Guid.NewGuid();
@@ -49,7 +49,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// SQL Insert and Delete statements can also be parameterized for the database to cache the execution plan and prevent against injection
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteParameterizedInsertDeleteSql()
         {
             string sampleVarChar = "Temporary Row";

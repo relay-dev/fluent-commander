@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
+﻿using Consolater;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
 using System.Threading;
@@ -10,8 +10,8 @@ namespace FluentCommander.Samples.Commands
     /// <notes>
     /// This sample class demonstrates how to build command for a scalar SQL statement
     /// </notes>
-    [SampleFixture]
-    public class ScalarSamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class ScalarSamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -26,7 +26,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// SQL Scalar queries can be parameterized
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteScalarWithInput()
         {
             bool result = await _databaseCommander.BuildCommand()
@@ -41,7 +41,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// If the default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteScalarWithInputSpecifyingType()
         {
             DateTime result = await _databaseCommander.BuildCommand()

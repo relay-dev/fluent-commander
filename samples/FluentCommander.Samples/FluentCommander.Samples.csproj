@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Consolater" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
     <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="160.2004021.0" />
-    <PackageReference Include="Sampler.ConsoleApplication" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>

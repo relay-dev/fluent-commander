@@ -1,15 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
-using System.Data;
+﻿using Consolater;
 using FluentCommander.Samples.Setup;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace FluentCommander.Samples.Commands
 {
-    public abstract class SampleBase : SampleAsync
+    public abstract class ConsoleAppBase : ConsoleAppAsync
     {
         private readonly DatabaseService _databaseService;
 
-        protected SampleBase(IConfiguration config)
+        protected ConsoleAppBase(IConfiguration config)
         {
             _databaseService = new DatabaseService(config);
         }

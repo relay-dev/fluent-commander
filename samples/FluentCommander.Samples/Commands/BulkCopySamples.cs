@@ -1,8 +1,8 @@
-﻿using FluentCommander.BulkCopy;
+﻿using Consolater;
+using FluentCommander.BulkCopy;
 using FluentCommander.Samples.Setup.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,8 +15,8 @@ namespace FluentCommander.Samples.Commands
     /// The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable
     /// When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server)
     /// </notes>
-    [SampleFixture]
-    public class BulkCopySamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class BulkCopySamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -32,7 +32,7 @@ namespace FluentCommander.Samples.Commands
         /// This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Utility.AutoMapper class
         /// This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task BulkCopyUsingAutoMapping()
         {
             DataTable dataTable = GetDataToInsert();
@@ -53,7 +53,7 @@ namespace FluentCommander.Samples.Commands
         /// This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match
         /// This works well when you want to use the auto-mapping feature, but you need to specify some additional details
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task BulkCopyUsingPartialMap()
         {
             DataTable dataTable = GetDataToInsert();
@@ -85,7 +85,7 @@ namespace FluentCommander.Samples.Commands
         /// This variation relies on you to specify mappings where you know the column names do not match
         /// This works well when you have a significant mismatch between the column names of the source and the destination
         /// </notes>
-        [Sample(Key = "3")]
+        [ConsoleAppSelection(Key = "3")]
         public async Task BulkCopyUsingMap()
         {
             DataTable dataTable = GetDataToInsert();
@@ -130,7 +130,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// When you have an entity type that reflects the shape of the table, you can use it to drive your mappings
         /// </notes>
-        [Sample(Key = "4")]
+        [ConsoleAppSelection(Key = "4")]
         public async Task BulkCopyUsingStronglyTypedMap()
         {
             DataTable dataTable = GetDataToInsert();
@@ -169,7 +169,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// All BulkCopy options are exposed via the Options API
         /// </notes>
-        [Sample(Key = "5")]
+        [ConsoleAppSelection(Key = "5")]
         public async Task BulkCopyUsingOptions()
         {
             DataTable dataTable = GetDataToInsert();
@@ -190,7 +190,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// BulkCopy order hints are exposed via the OrderHints API
         /// </notes>
-        [Sample(Key = "6")]
+        [ConsoleAppSelection(Key = "6")]
         public async Task BulkCopyUsingOrderHints()
         {
             DataTable dataTable = GetDataToInsert();
@@ -211,7 +211,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// The OnRowsCopied event can be subscribed to
         /// </notes>
-        [Sample(Key = "7")]
+        [ConsoleAppSelection(Key = "7")]
         public async Task BulkCopyUsingEvents()
         {
             DataTable dataTable = GetDataToInsert();
@@ -237,7 +237,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// All APIs
         /// </notes>
-        [Sample(Key = "8")]
+        [ConsoleAppSelection(Key = "8")]
         public async Task BulkCopyUsingAllApis()
         {
             DataTable dataTable = GetDataToInsert();
@@ -290,7 +290,7 @@ namespace FluentCommander.Samples.Commands
                 dataRow["SampleDateTime"] = DateTime.UtcNow;
                 dataRow["SampleUniqueIdentifier"] = Guid.NewGuid();
                 dataRow["SampleVarChar"] = $"Row {i + 4}";
-                dataRow["CreatedBy"] = GetType().Assembly.FullName;
+                dataRow["CreatedBy"] = this.GetType().Assembly.FullName;
                 dataRow["CreatedDate"] = DateTime.UtcNow;
 
                 dataTable.Rows.Add(dataRow);

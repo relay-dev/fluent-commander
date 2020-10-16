@@ -1,6 +1,6 @@
-﻿using FluentCommander.Samples.Setup;
+﻿using Consolater;
+using FluentCommander.Samples.Setup;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace FluentCommander.Samples
                 Setup(config);
 
                 // Run the program
-                await new SampleProgram(serviceProvider).Run();
+                await new ConsoleAppProgram(serviceProvider).Run();
             }
             catch (Exception e)
             {

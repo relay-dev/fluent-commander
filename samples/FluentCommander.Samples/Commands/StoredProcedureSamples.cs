@@ -1,6 +1,6 @@
-﻿using FluentCommander.StoredProcedure;
+﻿using Consolater;
+using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
@@ -12,8 +12,8 @@ namespace FluentCommander.Samples.Commands
     /// This Sample class demonstrates how to build a stored procedure command using various combinations of input, output and return parameters
     /// To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files
     /// </notes>
-    [SampleFixture]
-    public class StoredProcedureSamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class StoredProcedureSamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -28,7 +28,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -57,7 +57,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteStoredProcedureWithOutput()
         {
             string outputParameterName = "SampleOutputInt";
@@ -76,7 +76,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with more complex signatures can be called. This stored procedure has input, output and it returns a DataTable with the result
         /// </notes>
-        [Sample(Key = "3")]
+        [ConsoleAppSelection(Key = "3")]
         public async Task ExecuteStoredProcedureWithInputMultipleOutputAndTableResult()
         {
             string outputParameterName1 = "SampleOutputInt";
@@ -106,7 +106,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        [Sample(Key = "4")]
+        [ConsoleAppSelection(Key = "4")]
         public async Task ExecuteStoredProcedureWithInputOutputParameter()
         {
             string inputOutputParameterName = "SampleInputOutputInt";
@@ -125,7 +125,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters
         /// </notes>
-        [Sample(Key = "5")]
+        [ConsoleAppSelection(Key = "5")]
         public async Task ExecuteStoredProcedureWithInputOutputParameterSpecifyingType()
         {
             string inputOutputParameterName = "SampleInputOutputVarChar";
@@ -144,7 +144,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter():
         /// </notes>
-        [Sample(Key = "6")]
+        [ConsoleAppSelection(Key = "6")]
         public async Task ExecuteStoredProcedureWithReturnParameter()
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -161,7 +161,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with both Output parameters and a Return can be called from the command builder
         /// </notes>
-        [Sample(Key = "7")]
+        [ConsoleAppSelection(Key = "7")]
         public async Task ExecuteStoredProcedureWithInputOutputAndReturn()
         {
             string outputParameterName = "SampleOutputBigInt";
@@ -183,7 +183,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Stored Procedures with optional parameters can be called
         /// </notes>
-        [Sample(Key = "8")]
+        [ConsoleAppSelection(Key = "8")]
         public async Task ExecuteStoredProcedureWithOptionalInputParameter()
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -201,7 +201,7 @@ namespace FluentCommander.Samples.Commands
         /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
         /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
-        [Sample(Key = "9")]
+        [ConsoleAppSelection(Key = "9")]
         public async Task ExecuteStoredProcedureWithInputSpecifyingType()
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
@@ -221,7 +221,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// SqlDataReader behaviors are exposed
         /// </notes>
-        [Sample(Key = "10")]
+        [ConsoleAppSelection(Key = "10")]
         public async Task ExecuteStoredProcedureWithBehaviors()
         {
             StoredProcedureResult result = await _databaseCommander.BuildCommand()

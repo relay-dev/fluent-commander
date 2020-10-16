@@ -1,6 +1,6 @@
-﻿using FluentCommander.SqlQuery;
+﻿using Consolater;
+using FluentCommander.SqlQuery;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
@@ -11,8 +11,8 @@ namespace FluentCommander.Samples.Commands
     /// <notes>
     /// This sample class demonstrates how to build command for a SQL statement
     /// </notes>
-    [SampleFixture]
-    public class SqlQuerySamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class SqlQuerySamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -28,7 +28,7 @@ namespace FluentCommander.Samples.Commands
         /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
         /// Databases will cache the execution plan and prevent against SQL injection when you paramaterize your queries like this
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteSqlWithInput()
         {
             SqlQueryResult result = await _databaseCommander.BuildCommand()
@@ -50,7 +50,7 @@ namespace FluentCommander.Samples.Commands
         /// Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value
         /// If that default behavior does not meet your needs, you can specify the database type of your input parameter using this variation of AddInputParameter()
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteSqlWithInputSpecifyingType()
         {
             SqlQueryResult result = await _databaseCommander.BuildCommand()

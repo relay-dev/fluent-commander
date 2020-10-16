@@ -1,6 +1,6 @@
-﻿using FluentCommander.StoredProcedure;
+﻿using Consolater;
+using FluentCommander.StoredProcedure;
 using Microsoft.Extensions.Configuration;
-using Sampler.ConsoleApplication;
 using System;
 using System.Data;
 using System.Threading;
@@ -12,8 +12,8 @@ namespace FluentCommander.Samples.Commands
     /// Basic commands exist directly on the IDatabaseCommander so that you're not required to build a full command if you don't need one
     /// More complex commands that require parameters and return values should not use this strategy
     /// </notes>
-    [SampleFixture]
-    public class ParameterlessSamples : SampleBase
+    [ConsoleAppMenuItem]
+    public class ParameterlessSamples : ConsoleAppBase
     {
         private readonly IDatabaseCommander _databaseCommander;
 
@@ -28,7 +28,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Any SQL query can be executed with the result being returned as a DataTable
         /// </notes>
-        [Sample(Key = "1")]
+        [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteSql()
         {
             DataTable dataTable = await _databaseCommander
@@ -40,7 +40,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Any SQL query that returns exactly 1 row and 1 column can be executed as a scalar and cast to the return type
         /// </notes>
-        [Sample(Key = "2")]
+        [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteScalar()
         {
             string sampleVarChar = await _databaseCommander
@@ -64,7 +64,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// UPDATE and DELETE statements can be issued
         /// </notes>
-        [Sample(Key = "3")]
+        [ConsoleAppSelection(Key = "3")]
         public async Task ExecuteNonQuery()
         {
             int rowCountAffected = await _databaseCommander
@@ -76,7 +76,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// Simple stored procedures can be called
         /// </notes>
-        [Sample(Key = "4")]
+        [ConsoleAppSelection(Key = "4")]
         public async Task ExecuteStoredProcedure()
         {
             // Stored procedure with no input or output
@@ -93,7 +93,7 @@ namespace FluentCommander.Samples.Commands
         /// <notes>
         /// The server name can be easily obtained
         /// </notes>
-        [Sample(Key = "5")]
+        [ConsoleAppSelection(Key = "5")]
         public async Task GetServerName()
         {
             string serverName = await _databaseCommander.GetServerNameAsync(new CancellationToken());
