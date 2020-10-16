@@ -12,7 +12,7 @@ namespace FluentCommander.Samples.Commands
     /// This sample class demonstrates how to build command for a SQL pagination query
     /// </notes>
     [ConsoleAppMenuItem]
-    public class PaginationSamples : ConsoleAppBase
+    public class PaginationSamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

@@ -12,7 +12,7 @@ namespace FluentCommander.Samples.Commands
     /// This sample class demonstrates how to build command for a SQL statement
     /// </notes>
     [ConsoleAppMenuItem]
-    public class SqlQuerySamples : ConsoleAppBase
+    public class SqlQuerySamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

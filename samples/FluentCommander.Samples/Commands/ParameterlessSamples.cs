@@ -13,7 +13,7 @@ namespace FluentCommander.Samples.Commands
     /// More complex commands that require parameters and return values should not use this strategy
     /// </notes>
     [ConsoleAppMenuItem]
-    public class ParameterlessSamples : ConsoleAppBase
+    public class ParameterlessSamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

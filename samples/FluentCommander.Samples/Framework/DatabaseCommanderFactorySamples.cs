@@ -12,7 +12,7 @@ namespace FluentCommander.Samples.Framework
     /// Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create()
     /// </summary>
     [ConsoleAppMenuItem]
-    public class DatabaseCommanderFactorySamples : ConsoleAppBase
+    public class DatabaseCommanderFactorySamples : Sample
     {
         private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
 

@@ -11,7 +11,7 @@ namespace FluentCommander.Samples.Commands
     /// This sample class demonstrates how to build command for a scalar SQL statement
     /// </notes>
     [ConsoleAppMenuItem]
-    public class ScalarSamples : ConsoleAppBase
+    public class ScalarSamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

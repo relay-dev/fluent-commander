@@ -13,7 +13,7 @@ namespace FluentCommander.Samples.Commands
     /// To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files
     /// </notes>
     [ConsoleAppMenuItem]
-    public class StoredProcedureSamples : ConsoleAppBase
+    public class StoredProcedureSamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

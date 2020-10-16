@@ -16,7 +16,7 @@ namespace FluentCommander.Samples.Commands
     /// When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server)
     /// </notes>
     [ConsoleAppMenuItem]
-    public class BulkCopySamples : ConsoleAppBase
+    public class BulkCopySamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

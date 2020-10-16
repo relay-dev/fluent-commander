@@ -11,7 +11,7 @@ namespace FluentCommander.Samples.Commands
     /// This sample class demonstrates how to build command for a SQL non-query, such as an INSERT, UPDATE or DELETE
     /// </notes>
     [ConsoleAppMenuItem]
-    public class SqlNonQuerySamples : ConsoleAppBase
+    public class SqlNonQuerySamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
 

@@ -5,11 +5,11 @@ using System.Data;
 
 namespace FluentCommander.Samples.Commands
 {
-    public abstract class ConsoleAppBase : ConsoleAppAsync
+    public abstract class Sample : ConsoleAppAsync
     {
         private readonly DatabaseService _databaseService;
 
-        protected ConsoleAppBase(IConfiguration config)
+        protected Sample(IConfiguration config)
         {
             _databaseService = new DatabaseService(config);
         }
