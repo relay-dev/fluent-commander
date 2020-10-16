@@ -34,6 +34,7 @@ namespace FluentCommander.Samples
                 Console.Clear();
                 Console.WriteLine("Encountered unhandled exception:");
                 Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
             finally
             {
