@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/relay-dev/fluent-commander/master/resources/icon.png" alt="Fluent Commander" height="150" width="150">
+<img src="https://raw.githubusercontent.com/relay-dev/fluent-commander/master/resources/icon.png" alt="Fluent Commander" height="100" width="100">
 
 # Fluent Commander
 
@@ -8,31 +8,55 @@
 [![MyGet](https://img.shields.io/myget/relay-dev/v/FluentCommander?color=red&label=myget)](https://www.myget.org/feed/relay-dev/package/nuget/FluentCommander)
 [![License](https://img.shields.io/github/license/relay-dev/fluent-commander.svg)](https://github.com/relay-dev/fluent-commander/blob/master/LICENSE)
 
-Fluent Commander is a lightweight library for executing asynchronous database commands with a fluent API. It is intended to subsidize ORM data access frameworks, which often lack clean API's for tasks such as executing a Bulk Copy operation or calling a parameterized Stored Procedure.
+## Introduction
 
-Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as seperate NuGet packages.
+Fluent Commander is a lightweight library for executing asynchronous database commands with a fluent API. It is intended to subsidize ORM data access frameworks, which often lack clean APIs for tasks such as executing a Bulk Copy operation or calling a parameterized Stored Procedure.
 
-<br />
+Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as separate NuGet packages.## Getting Started
 
-## Installing Fluent Commander
+<a name="installation"></a>
 
-Here's how you can install the SQL Server NuGet Package:
+### Installation
 
-> #### *.NET Core CLI*
-> 
-> ```
-> dotnet add package FluentCommander.SqlServer
-> ```
->
-> #### *Package Manager Console*
-> 
-> ```
-> Install-Package FluentCommander.SqlServer
-> ```
+Follow the instructions below to install this NuGet package into your project:
 
-<br />
+#### .NET Core CLI
 
-## Samples
+```sh
+dotnet add package FluentCommander.SqlServer
+```
+
+#### Package Manager Console
+
+```sh
+Install-Package FluentCommander.SqlServer
+```
+
+### Latest releases
+
+Latest releases and package version history can be found on [NuGet](https://www.nuget.org/packages/FluentCommander.SqlServer/).
+
+## Build and Test
+
+Follow the instructions below to build and test this project:
+
+### Build
+
+#### .NET Core CLI
+
+```sh
+dotnet build
+```
+
+### Test
+
+#### .NET Core CLI
+
+```sh
+dotnet test
+```
+
+## Usage
 
 ### Bulk Copy
 
@@ -497,7 +521,11 @@ private async Task ExecuteScalarWithInput()
 }
 ```
 
-
 ### More
 
 There are several other variations not documented here. You can find a Console Application with these samples [here](https://github.com/relay-dev/fluent-commander/tree/master/samples/FluentCommander.Samples/Commands).
+
+## Contribute
+
+When contributing to this repository, please first discuss the change you wish to make via issue,
+email, or any other method with the owners of this repository before making a change.
