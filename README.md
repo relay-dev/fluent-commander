@@ -12,7 +12,9 @@
 
 Fluent Commander is a lightweight library for executing asynchronous database commands with a fluent API. It is intended to subsidize ORM data access frameworks, which often lack clean APIs for tasks such as executing a Bulk Copy operation or calling a parameterized Stored Procedure.
 
-Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as separate NuGet packages.## Getting Started
+Fluent Commander is built using .NET Standard and currently has SQL Server and Oracle implementations as separate NuGet packages.
+
+## Getting Started
 
 <a name="installation"></a>
 
