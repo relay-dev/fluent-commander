@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FluentCommander.Core.Impl
 {
-    public class Bootstrapper
+    public class CommanderBootstrapper
     {
         public IServiceCollection Bootstrap(IServiceCollection services)
         {

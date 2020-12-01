@@ -7,9 +7,9 @@ namespace FluentCommander.Oracle
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDatabaseCommander(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration config)
         {
-            new Bootstrapper().Bootstrap(services);
+            new CommanderBootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
 

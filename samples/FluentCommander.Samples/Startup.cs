@@ -27,8 +27,8 @@ namespace FluentCommander.Samples
                     builder.AddConsole();
                 });
 
-            // Add the DatabaseCommander framework
-            serviceCollection.AddSqlServerDatabaseCommander(_configuration);
+            // Add the FluentCommander framework
+            serviceCollection.AddFluentCommander(_configuration);
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);

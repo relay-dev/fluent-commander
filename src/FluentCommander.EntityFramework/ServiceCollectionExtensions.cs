@@ -8,9 +8,11 @@ namespace FluentCommander.EntityFramework
     {
         public static IServiceCollection AddEntityFrameworkDatabaseCommander(this IServiceCollection services)
         {
+            new CommanderBootstrapper().Bootstrap(services);
+
             services.AddTransient<DbContextCommandBuilder>();
 
-            return new Bootstrapper().Bootstrap(services);
+            return services;
         }
 
         public static IServiceProvider UseEntityFrameworkDatabaseCommander(this IServiceProvider serviceProvider)

@@ -8,8 +8,8 @@ namespace FluentCommander.IntegrationTests.SqlServer
     {
         public override void AddDatabaseCommander(ServiceCollection serviceCollection, IConfiguration config)
         {
-            // Add the DatabaseCommander framework
-            serviceCollection.AddSqlServerDatabaseCommander(config);
+            // Add the FluentCommander framework
+            serviceCollection.AddFluentCommander(config);
         }
     }
 }
