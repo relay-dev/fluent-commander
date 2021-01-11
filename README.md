@@ -44,15 +44,11 @@ Follow the instructions below to build and test this project:
 
 ### Build
 
-#### .NET Core CLI
-
 ```sh
 dotnet build
 ```
 
 ### Test
-
-#### .NET Core CLI
 
 ```sh
 dotnet test
@@ -69,7 +65,7 @@ The Bulk Copy function is supported if you want to insert a batch of records at 
 This variation automatically maps between the source and destination. The details of this implementation can be found in the FluentCommander.Utility.AutoMapper class. This works well in circumstances where you control the source and can easily ensure the DataTable column names match the column names on the database table:
 
 ```c#
-private async Task BulkCopyUsingAutoMapping()
+private async Task BulkCopyUsingAutoMapping(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -78,7 +74,7 @@ private async Task BulkCopyUsingAutoMapping()
         .From(dataTable)
         .Into("[dbo].[SampleTable]")
         .Mapping(mapping => mapping.UseAutoMap())
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 }
@@ -89,7 +85,7 @@ private async Task BulkCopyUsingAutoMapping()
 This variation automatically maps between the source and destination, but also allows you to specify mappings where you know the column names do not match. This works well when you want to use the auto-mapping feature, but you need to specify some additional details:
 
 ```c#
-private async Task BulkCopyUsingPartialMap()
+private async Task BulkCopyUsingPartialMap(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -108,7 +104,7 @@ private async Task BulkCopyUsingPartialMap()
                 }
             }
         }))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 }
@@ -119,7 +115,7 @@ private async Task BulkCopyUsingPartialMap()
 This variation relies on you to specify mappings where you know the column names do not match. This works well when you have a significant mismatch between the column names of the source and the destination:
 
 ```c#
-private async Task BulkCopyUsingMap()
+private async Task BulkCopyUsingMap(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -140,7 +136,7 @@ private async Task BulkCopyUsingMap()
                 new ColumnMap("Column7", "SampleVarChar"),
             }
         }))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 }
@@ -151,7 +147,7 @@ private async Task BulkCopyUsingMap()
 When you have an entity type that reflects the shape of the table you are targeting, you can use it to drive your mappings:
 
 ```c#
-private async Task BulkCopyUsingStronglyTypedMap()
+private async Task BulkCopyUsingStronglyTypedMap(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -169,7 +165,7 @@ private async Task BulkCopyUsingStronglyTypedMap()
             entity.Property(e => e.SampleFloat).MapFrom("Column6");
             entity.Property(e => e.SampleVarChar).MapFrom("Column7");
         }))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 
@@ -182,7 +178,7 @@ private async Task BulkCopyUsingStronglyTypedMap()
 The OnRowsCopied event can be subscribed to:
 
 ```c#
-private async Task BulkCopyUsingEvents()
+private async Task BulkCopyUsingEvents(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -197,7 +193,7 @@ private async Task BulkCopyUsingEvents()
 
             Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
         }))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 
@@ -208,7 +204,7 @@ private async Task BulkCopyUsingEvents()
 #### All APIs
 
 ```c#
-private async Task BulkCopyUsingAllApis()
+private async Task BulkCopyUsingAllApis(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -235,14 +231,13 @@ private async Task BulkCopyUsingAllApis()
             entity.Property(e => e.SampleInt).OrderByDescending();
         }))
         .Timeout(TimeSpan.FromSeconds(30))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountCopied = result.RowCountCopied;
 
     Console.WriteLine("Row count copied: {0}", rowCountCopied);
 }
 ```
-
 
 ### Stored Procedures
 
@@ -253,7 +248,7 @@ This demonstrates how to build a stored procedure command using various combinat
 Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object:
 
 ```c#
-private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
+private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
@@ -267,7 +262,7 @@ private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
         .AddInputParameter("SampleDateTime", DateTime.Now)
         .AddInputParameter("SampleUniqueIdentifier", Guid.NewGuid())
         .AddInputParameter("SampleVarChar", "Row 1")
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int count = result.Count;
     bool hasData = result.HasData;
@@ -280,7 +275,7 @@ private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult()
 Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-private async Task ExecuteStoredProcedureWithOutput()
+private async Task ExecuteStoredProcedureWithOutput(CancellationToken cancellationToken)
 {
     string outputParameterName = "SampleOutputInt";
     
@@ -288,7 +283,7 @@ private async Task ExecuteStoredProcedureWithOutput()
         .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
         .AddInputParameter("SampleTableID", 1)
         .AddOutputParameter(outputParameterName, DbType.Int32)
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int outputParameter = result.GetOutputParameter<int>(outputParameterName);
 }
@@ -299,7 +294,7 @@ private async Task ExecuteStoredProcedureWithOutput()
 Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-private async Task ExecuteStoredProcedureWithInputOutputParameter()
+private async Task ExecuteStoredProcedureWithInputOutputParameter(CancellationToken cancellationToken)
 {
     string inputOutputParameterName = "SampleInputOutputInt";
 
@@ -307,7 +302,7 @@ private async Task ExecuteStoredProcedureWithInputOutputParameter()
         .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
         .AddInputParameter("SampleTableID", 1)
         .AddInputOutputParameter(inputOutputParameterName, 1)
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int inputOutputParameter = result.GetOutputParameter<int>(inputOutputParameterName);
 }
@@ -318,13 +313,13 @@ private async Task ExecuteStoredProcedureWithInputOutputParameter()
 If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter<T>():
 
 ```c#
-private async Task ExecuteStoredProcedureWithReturnParameter()
+private async Task ExecuteStoredProcedureWithReturnParameter(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
         .AddInputParameter("SampleTableID", 1)
         .WithReturnParameter()
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int returnParameter = result.GetReturnParameter<int>();
 }
@@ -335,18 +330,17 @@ private async Task ExecuteStoredProcedureWithReturnParameter()
 SqlDataReader behaviors are exposed:
 
 ```c#
-public async Task ExecuteStoredProcedureWithBehaviors()
+public async Task ExecuteStoredProcedureWithBehaviors(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
         .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
         .Behaviors(behavior => behavior.SingleResult().KeyInfo())
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     DataTable dataTable = result.DataTable;
 }
 ```
-
 
 ### Pagination
 
@@ -357,12 +351,12 @@ There are some cases where running pagination queries returned as a DataTable is
 Several defaults are specified so the only input required is the target:
 
 ```c#
-private async Task ExecutePaginationUsingMinimalInput()
+private async Task ExecutePaginationUsingMinimalInput(CancellationToken cancellationToken)
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
         .From("[dbo].[SampleTable]")
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int count = result.Count;
     int totalCount = result.TotalCount;
@@ -376,7 +370,7 @@ private async Task ExecutePaginationUsingMinimalInput()
 In this sample, all options are used:
 
 ```c#
-private async Task ExecutePaginationAllSettingsAreUsed()
+private async Task ExecutePaginationAllSettingsAreUsed(CancellationToken cancellationToken)
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
@@ -387,7 +381,7 @@ private async Task ExecutePaginationAllSettingsAreUsed()
         .PageSize(25)
         .PageNumber(2)
         .Timeout(TimeSpan.FromSeconds(30))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int count = result.Count;
     int totalCount = result.TotalCount;
@@ -418,13 +412,13 @@ namespace Samples
             _databaseCommanderFactory = databaseCommanderFactory;
         }
         
-        public async Task DatabaseCommanderFactoryWorksWithAlternateConnectionStrings()
+        public async Task DatabaseCommanderFactoryWorksWithAlternateConnectionStrings(CancellationToken cancellationToken)
         {
-            //Creates an instance of an IDatabaseCommander connected to a data source using the connection string named AlternateConnectionString
+            // Creates an instance of an IDatabaseCommander connected to a data source using the connection string named AlternateConnectionString
             IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnectionString");
 
             // Verify the connection by running the GetServerName() command
-            string serverName = await databaseCommander.GetServerNameAsync(new CancellationToken());
+            string serverName = await databaseCommander.GetServerNameAsync(cancellationToken);
 
             Console.WriteLine("Connected to: {0}", serverName);
         }
@@ -432,24 +426,23 @@ namespace Samples
 }
 ```
 
-
 ### Other
 
 There are several other commands available on the API that are often unneeded if you're using an ORM. These miscellaneous commands are available if you should find that you need them
 
 #### SQL Query (Parameterized)
 
-Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value. Databases will cache the execution plan and prevent against SQL injection when you paramaterize your queries like this:
+Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value. Databases will cache the execution plan and prevent against SQL injection when you parameterize your queries like this:
 
 ```c#
-private async Task ExecuteSqlWithInput()
+private async Task ExecuteSqlWithInput(CancellationToken cancellationToken)
 {
     SqlQueryResult result = await _databaseCommander.BuildCommand()
         .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
         .AddInputParameter("SampleTableID", 1)
         .AddInputParameter("SampleVarChar", "Row 1")
         .Timeout(TimeSpan.FromSeconds(30))
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int count = result.Count;
     bool hasData = result.HasData;
@@ -462,7 +455,7 @@ private async Task ExecuteSqlWithInput()
 SQL Insert and Delete statements can also be parameterized:
 
 ```c#
-private async Task ExecuteParameterizedInsertDeleteSql()
+private async Task ExecuteParameterizedInsertDeleteSql(CancellationToken cancellationToken)
 {
     string sampleVarChar = "Temporary Row";
     string createdBy = "FluentCommander";
@@ -496,12 +489,12 @@ VALUES
         .AddInputParameter("SampleVarChar", sampleVarChar)
         .AddInputParameter("CreatedBy", createdBy)
         .AddInputParameter("CreatedDate", createdDate)
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     SqlNonQueryResult deleteResult = await _databaseCommander.BuildCommand()
         .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
         .AddInputParameter("SampleVarChar", sampleVarChar)
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 
     int rowCountAffectedFromInsert = insertResult.RowCountAffected;
     int rowCountAffectedFromDelete = deleteResult.RowCountAffected;
@@ -513,13 +506,13 @@ VALUES
 SQL Scalar queries can also be parameterized:
 
 ```c#
-private async Task ExecuteScalarWithInput()
+private async Task ExecuteScalarWithInput(CancellationToken cancellationToken)
 {
     bool result = await _databaseCommander.BuildCommand()
         .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
         .AddInputParameter("SampleTableID", 1)
         .AddInputParameter("SampleVarChar", "Row 1")
-        .ExecuteAsync(new CancellationToken());
+        .ExecuteAsync(cancellationToken);
 }
 ```
 
@@ -529,5 +522,4 @@ There are several other variations not documented here. You can find a Console A
 
 ## Contribute
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change.
+When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
