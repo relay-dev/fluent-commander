@@ -21,8 +21,6 @@ namespace FluentCommander.Core.Utility.Impl
             List<string> databaseColumnNames = emptyDataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName).ToList();
             List<string> fileColumnNames = dataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName).ToList();
 
-            columnMapping ??= new ColumnMapping();
-
             // Ensure proper casing of source columns
             foreach (string fileColumnName in fileColumnNames)
             {
