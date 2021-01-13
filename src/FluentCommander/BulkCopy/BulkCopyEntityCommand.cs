@@ -31,6 +31,8 @@ namespace FluentCommander.BulkCopy
 
             if (CommandRequest.MappingType == MappingType.AutoMap || CommandRequest.MappingType == MappingType.PartialMap)
             {
+                CommandRequest.ColumnMapping ??= new ColumnMapping();
+
                 _autoMapper.MapDataTableToTable(CommandRequest.DestinationTableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
 
@@ -46,6 +48,8 @@ namespace FluentCommander.BulkCopy
 
             if (CommandRequest.MappingType == MappingType.AutoMap || CommandRequest.MappingType == MappingType.PartialMap)
             {
+                CommandRequest.ColumnMapping ??= new ColumnMapping();
+
                 _autoMapper.MapDataTableToTable(CommandRequest.DestinationTableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
 
