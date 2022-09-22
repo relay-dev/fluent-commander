@@ -8,13 +8,13 @@ namespace FluentCommander.Oracle
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration configuration)
         {
             new CommanderBootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
 
-            var connectionStringCollection = new ConnectionStringCollection(config);
+            var connectionStringCollection = new ConnectionStringCollection(configuration);
 
             if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
             {
@@ -35,7 +35,7 @@ namespace FluentCommander.Oracle
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
 
-            if (string.IsNullOrWhiteSpace(optionsSet.ConnectionString))
+            if (string.IsNullOrWhiteSpace(optionsSet.ConnectionString) && optionsSet.Configuration != null)
             {
                 var connectionStringCollection = new ConnectionStringCollection(optionsSet.Configuration);
 

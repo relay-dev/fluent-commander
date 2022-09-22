@@ -1,14 +1,13 @@
 ﻿using FluentCommander.Core.Impl;
 using FluentCommander.SqlServer.Internal;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FluentCommander.SqlServer.Bootstrap
 {
     public class SqlServerCommanderBootstrapper
     {
-        public IServiceCollection Bootstrap(IServiceCollection services, IConfiguration configuration, string connectionString = null)
+        public IServiceCollection Bootstrap(IServiceCollection services, SqlServerCommanderOptions options)
         {
             new CommanderBootstrapper().Bootstrap(services);
 
@@ -20,19 +19,19 @@ namespace FluentCommander.SqlServer.Bootstrap
             services.AddTransient<SqlServerStoredProcedureCommand>();
             services.AddTransient<ISqlServerCommandExecutor, SqlServerCommandExecutor>();
 
-            if (string.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(options.ConnectionString) && options.Configuration != null)
             {
-                var connectionStringCollection = new ConnectionStringCollection(configuration);
+                var connectionStringCollection = new ConnectionStringCollection(options.Configuration);
 
                 if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
                 {
-                    connectionString = connectionStringCollection.Get("DefaultConnection");
+                    options.ConnectionString = connectionStringCollection.Get("DefaultConnection");
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(connectionString))
+            if (!string.IsNullOrWhiteSpace(options.ConnectionString))
             {
-                services.AddSingleton(new SqlConnectionStringBuilder(connectionString));
+                services.AddSingleton(new SqlConnectionStringBuilder(options.ConnectionString));
                 services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
             }
 

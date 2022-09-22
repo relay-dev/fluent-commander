@@ -10,7 +10,12 @@ namespace FluentCommander.SqlServer
     {
         public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration configuration)
         {
-            new SqlServerCommanderBootstrapper().Bootstrap(services, configuration);
+            var options = new SqlServerCommanderOptions
+            {
+                Configuration = configuration
+            };
+
+            new SqlServerCommanderBootstrapper().Bootstrap(services, options);
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
@@ -24,7 +29,7 @@ namespace FluentCommander.SqlServer
 
             options.Invoke(optionsSet);
 
-            new SqlServerCommanderBootstrapper().Bootstrap(services, optionsSet.Configuration, optionsSet.ConnectionString);
+            new SqlServerCommanderBootstrapper().Bootstrap(services, optionsSet);
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
