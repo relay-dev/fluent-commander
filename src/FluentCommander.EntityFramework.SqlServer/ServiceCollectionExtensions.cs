@@ -10,7 +10,12 @@ namespace FluentCommander.EntityFramework.SqlServer
     {
         public static IServiceCollection AddEntityFrameworkSqlServerDatabaseCommander(this IServiceCollection services, IConfiguration configuration)
         {
-            new SqlServerCommanderBootstrapper().Bootstrap(services, configuration);
+            var options = new SqlServerCommanderOptions
+            {
+                Configuration = configuration
+            };
+
+            new SqlServerCommanderBootstrapper().Bootstrap(services, options);
 
             services.AddTransient<IDatabaseCommander, EntityFrameworkSqlServerDatabaseCommander>();
             services.AddTransient<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
