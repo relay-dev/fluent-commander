@@ -1,7 +1,7 @@
 version: 1.0.{build}
 environment:
-  ASPNETCORE_ENVIRONMENT: appveyor
-  COVERALLS_REPO_TOKEN:
+#  ASPNETCORE_ENVIRONMENT: appveyor
+#  COVERALLS_REPO_TOKEN:
     secure: Aib0dt/M2yLE5OAyHD33ENZU7MbUhDdGpVf/WDd+ECgOV7TEBrPN3tiMfqZrvCAj
 pull_requests:
   do_not_increment_build_number: true
@@ -18,8 +18,8 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
-install:
-  - dotnet tool install --global coveralls.net
+#install:
+#  - dotnet tool install --global coveralls.net
 services:
   - mssql2017
 nuget:
@@ -30,10 +30,10 @@ build:
   publish_nuget: true
   publish_nuget_symbols: false
   verbosity: normal
-test_script:
-  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[*Samples*]*" /p:CoverletOutput=TestResults/
-after_test:
-  - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.UnitTests\TestResults\coverage.opencover.xml"
+#test_script:
+#  - dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[*Samples*]*" /p:CoverletOutput=TestResults/
+#after_test:
+#  - csmacnz.coveralls --useRelativePaths --multiple --input "opencover=tests\FluentCommander.IntegrationTests.EntityFramework.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.IntegrationTests.SqlServer\TestResults\coverage.opencover.xml;opencover=tests\FluentCommander.UnitTests\TestResults\coverage.opencover.xml"
 artifacts:
 - path: '**\*.nupkg'
   name: NuGet
