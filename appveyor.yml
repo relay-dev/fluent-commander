@@ -20,8 +20,8 @@ dotnet_csproj:
   informational_version: '{version}'
 #install:
 #  - dotnet tool install --global coveralls.net
-services:
-  - mssql2017
+#services:
+#  - mssql2017
 nuget:
   disable_publish_on_pr: false
 before_build:
