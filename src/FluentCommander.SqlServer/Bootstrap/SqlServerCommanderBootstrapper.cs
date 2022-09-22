@@ -8,7 +8,7 @@ namespace FluentCommander.SqlServer.Bootstrap
 {
     public class SqlServerCommanderBootstrapper
     {
-        public IServiceCollection Bootstrap(IServiceCollection services, IConfiguration configuration)
+        public IServiceCollection Bootstrap(IServiceCollection services, IConfiguration configuration, string connectionString = null)
         {
             new CommanderBootstrapper().Bootstrap(services);
 
@@ -20,11 +20,19 @@ namespace FluentCommander.SqlServer.Bootstrap
             services.AddTransient<SqlServerStoredProcedureCommand>();
             services.AddTransient<ISqlServerCommandExecutor, SqlServerCommandExecutor>();
 
-            var connectionStringCollection = new ConnectionStringCollection(configuration);
-
-            if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
-                services.AddSingleton(new SqlConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
+                var connectionStringCollection = new ConnectionStringCollection(configuration);
+
+                if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
+                {
+                    connectionString = connectionStringCollection.Get("DefaultConnection");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                services.AddSingleton(new SqlConnectionStringBuilder(connectionString));
                 services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
             }
 

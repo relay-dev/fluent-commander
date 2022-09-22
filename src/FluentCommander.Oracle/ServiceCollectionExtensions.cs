@@ -7,17 +7,25 @@ namespace FluentCommander.Oracle
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddFluentCommander(this IServiceCollection services, IConfiguration configuration, string connectionString = null)
         {
             new CommanderBootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
 
-            var connectionStringCollection = new ConnectionStringCollection(config);
-
-            if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
-                services.AddSingleton(new OracleConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
+                var connectionStringCollection = new ConnectionStringCollection(configuration);
+
+                if (connectionStringCollection.ConnectionStringNames.Contains("DefaultConnection"))
+                {
+                    connectionString = connectionStringCollection.Get("DefaultConnection");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                services.AddSingleton(new OracleConnectionStringBuilder(connectionString));
                 services.AddTransient<IDatabaseCommander, OracleDatabaseCommander>();
             }
 
