@@ -10,7 +10,7 @@
     <Description>Fluent API for executing asynchronous database commands</Description>
     <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/fluent-commander</PackageProjectUrl>
-    <PackageIconUrl>https://imgur.com/a/7riGSIe</PackageIconUrl>
+    <PackageIcon>https://i.imgur.com/BndTxxV.png</PackageIcon>
     <RepositoryUrl>https://github.com/relay-dev/fluent-commander.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
