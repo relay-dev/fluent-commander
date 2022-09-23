@@ -20,7 +20,7 @@ Fluent Commander is built using .NET Standard and currently has SQL Server and O
 
 ### 1. Install the package
 
-Using the .NET Core CLI, execute the following command to install the SQL Server NuGet package into your project:
+Using the .NET Core CLI, execute the following command to install the SQL Server NuGet package into your project
 
 ```sh
 dotnet add package FluentCommander.SqlServer
@@ -31,12 +31,17 @@ dotnet add package FluentCommander.SqlServer
 Configure your application to use Fluent Commander
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+using FluentCommander.SqlServer;
+
+public class Startup
 {
-    services.AddFluentCommander(options =>
+    public void ConfigureServices(IServiceCollection services)
     {
-        options.ConnectionString = "Data Source=localhost\\SQLEXPRESS;Database=DatabaseCommander;Integrated Security=SSPI;";
-    });
+        services.AddFluentCommander(options =>
+        {
+            options.ConnectionString = "YOUR CONNECTION STRING";
+        });
+    }
 }
 ```
 
@@ -45,6 +50,8 @@ public void ConfigureServices(IServiceCollection services)
 Now you can create a class that takes in an IDatabaseCommander
 
 ```csharp
+using FluentCommander;
+
 public class Foo
 {
     private readonly IDatabaseCommander _databaseCommander;
@@ -76,6 +83,8 @@ If you'd like to use the IDatabaseCommanderFactory to switch the database connec
 ```
 
 ```csharp
+using FluentCommander;
+
 public class Foo
 {
     private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
@@ -85,7 +94,7 @@ public class Foo
         _databaseCommanderFactory = databaseCommanderFactory;
     }
 
-    public void Bar()
+    public async Task Bar(CancellationToken cancellationToken)
     {
         IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnection");
         string serverName = await databaseCommander.GetServerNameAsync(cancellationToken);
