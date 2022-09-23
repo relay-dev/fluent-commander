@@ -33,6 +33,7 @@ namespace FluentCommander.SqlServer.Bootstrap
             {
                 services.AddSingleton(new SqlConnectionStringBuilder(options.ConnectionString));
                 services.AddTransient<IDatabaseCommander, SqlServerDatabaseCommander>();
+                services.AddTransient<IDatabaseRequestHandler, SqlServerDatabaseRequestHandler>();
             }
 
             return services;

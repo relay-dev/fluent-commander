@@ -9,18 +9,18 @@ namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureCommand<TEntity> : StoredProcedureCommandBuilder<TEntity>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public StoredProcedureCommand(IDatabaseCommander databaseCommander)
+        public StoredProcedureCommand(IDatabaseRequestHandler databaseRequestHandler)
             : base(new StoredProcedureRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         public override StoredProcedureResult<TEntity> Execute()
         {
             StoredProcedureResult storedProcedureResult =
-                _databaseCommander.ExecuteStoredProcedure(CommandRequest);
+                _databaseRequestHandler.ExecuteStoredProcedure(CommandRequest);
 
             List<TEntity> data = MapToEntities(storedProcedureResult.DataTable);
 
@@ -30,7 +30,7 @@ namespace FluentCommander.StoredProcedure
         public override async Task<StoredProcedureResult<TEntity>> ExecuteAsync(CancellationToken cancellationToken)
         {
             StoredProcedureResult storedProcedureResult = await 
-                _databaseCommander.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
+                _databaseRequestHandler.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
 
             List<TEntity> data = MapToEntities(storedProcedureResult.DataTable);
 

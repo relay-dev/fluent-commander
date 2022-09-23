@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace FluentCommander.EntityFramework.SqlServer
 {
-    public class EntityFrameworkSqlServerDatabaseCommander : SqlServerDatabaseCommander, IDatabaseEntityCommander
+    public class EntityFrameworkSqlServerDatabaseRequestHandler : SqlServerDatabaseRequestHandler, IDatabaseEntityRequestHandler
     {
         private readonly DbContext _dbContext;
 
-        public EntityFrameworkSqlServerDatabaseCommander(
+        public EntityFrameworkSqlServerDatabaseRequestHandler(
             DbContext dbContext,
             DatabaseCommandBuilder databaseCommandBuilder,
             SqlConnectionStringBuilder builder,

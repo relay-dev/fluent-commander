@@ -8,17 +8,17 @@ namespace FluentCommander.BulkCopy
 {
     public class BulkCopyCommand<TEntity> : BulkCopyCommandBuilder<TEntity>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
         private readonly IRequestValidator<BulkCopyRequest> _requestValidator;
         private readonly IAutoMapper _autoMapper;
 
         public BulkCopyCommand(
-            IDatabaseCommander databaseCommander,
+            IDatabaseRequestHandler databaseRequestHandler,
             IRequestValidator<BulkCopyRequest> requestValidator,
             IAutoMapper autoMapper)
             : base(new BulkCopyRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
             _requestValidator = requestValidator;
             _autoMapper = autoMapper;
         }
@@ -36,7 +36,7 @@ namespace FluentCommander.BulkCopy
                 _autoMapper.MapDataTableToTable(CommandRequest.DestinationTableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
 
-            return _databaseCommander.BulkCopy(CommandRequest);
+            return _databaseRequestHandler.BulkCopy(CommandRequest);
         }
 
         /// <summary>Executes the command asynchronously</summary>
@@ -53,7 +53,7 @@ namespace FluentCommander.BulkCopy
                 _autoMapper.MapDataTableToTable(CommandRequest.DestinationTableName, CommandRequest.DataTable, CommandRequest.ColumnMapping);
             }
 
-            return await _databaseCommander.BulkCopyAsync(CommandRequest, cancellationToken);
+            return await _databaseRequestHandler.BulkCopyAsync(CommandRequest, cancellationToken);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace FluentCommander.Samples
                 });
 
             // Add the FluentCommander framework
-            serviceCollection.AddFluentCommander(_configuration);
+            serviceCollection.AddFluentCommander(options => options.ConnectionString = "Data Source=localhost\\SQLEXPRESS;Database=DatabaseCommander;Integrated Security=SSPI;");
 
             // Add other services needed to run the application
             serviceCollection.AddSingleton(_configuration);

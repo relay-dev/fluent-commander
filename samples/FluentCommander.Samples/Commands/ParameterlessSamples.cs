@@ -16,13 +16,16 @@ namespace FluentCommander.Samples.Commands
     public class ParameterlessSamples : Sample
     {
         private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
         public ParameterlessSamples(
             IDatabaseCommander databaseCommander,
+            IDatabaseRequestHandler databaseRequestHandler,
             IConfiguration config)
             : base(config)
         {
             _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         /// <notes>
@@ -31,7 +34,7 @@ namespace FluentCommander.Samples.Commands
         [ConsoleAppSelection(Key = "1")]
         public async Task ExecuteSql()
         {
-            DataTable dataTable = await _databaseCommander
+            DataTable dataTable = await _databaseRequestHandler
                 .ExecuteSqlAsync("SELECT * FROM [dbo].[SampleTable]", new CancellationToken());
 
             Console.WriteLine(Print(dataTable));
@@ -43,16 +46,16 @@ namespace FluentCommander.Samples.Commands
         [ConsoleAppSelection(Key = "2")]
         public async Task ExecuteScalar()
         {
-            string sampleVarChar = await _databaseCommander
+            string sampleVarChar = await _databaseRequestHandler
                 .ExecuteScalarAsync<string>("SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            int sampleInt = await _databaseCommander
+            int sampleInt = await _databaseRequestHandler
                 .ExecuteScalarAsync<int>("SELECT [SampleInt] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            DateTime sampleDateTime = await _databaseCommander
+            DateTime sampleDateTime = await _databaseRequestHandler
                 .ExecuteScalarAsync<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
-            Guid sampleUniqueIdentifier = await _databaseCommander
+            Guid sampleUniqueIdentifier = await _databaseRequestHandler
                 .ExecuteScalarAsync<Guid>("SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
 
             Console.WriteLine($"SampleVarChar = '{sampleVarChar}'");
@@ -67,7 +70,7 @@ namespace FluentCommander.Samples.Commands
         [ConsoleAppSelection(Key = "3")]
         public async Task ExecuteNonQuery()
         {
-            int rowCountAffected = await _databaseCommander
+            int rowCountAffected = await _databaseRequestHandler
                 .ExecuteNonQueryAsync($"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{Guid.NewGuid()}' WHERE [SampleTableID] = 1", new CancellationToken());
 
             Console.WriteLine("Row count affected: {0}", rowCountAffected);
@@ -80,11 +83,11 @@ namespace FluentCommander.Samples.Commands
         public async Task ExecuteStoredProcedure()
         {
             // Stored procedure with no input or output
-            await _databaseCommander
+            await _databaseRequestHandler
                 .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_NoResult]"), new CancellationToken());
 
             // Stored procedure with no input with a DataTable as output
-            StoredProcedureResult result = await _databaseCommander
+            StoredProcedureResult result = await _databaseRequestHandler
                 .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]"), new CancellationToken());
 
             Console.WriteLine(Print(result.DataTable));

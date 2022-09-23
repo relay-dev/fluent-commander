@@ -13,6 +13,7 @@ namespace FluentCommander.Oracle
             new CommanderBootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
+            services.AddScoped<IDatabaseRequestHandlerFactory, OracleDatabaseRequestHandlerFactory>();
 
             var connectionStringCollection = new ConnectionStringCollection(configuration);
 
@@ -20,6 +21,7 @@ namespace FluentCommander.Oracle
             {
                 services.AddSingleton(new OracleConnectionStringBuilder(connectionStringCollection.Get("DefaultConnection")));
                 services.AddTransient<IDatabaseCommander, OracleDatabaseCommander>();
+                services.AddTransient<IDatabaseRequestHandler, OracleDatabaseRequestHandler>();
             }
 
             return services;
@@ -34,6 +36,7 @@ namespace FluentCommander.Oracle
             new CommanderBootstrapper().Bootstrap(services);
 
             services.AddScoped<IDatabaseCommanderFactory, OracleDatabaseCommanderFactory>();
+            services.AddScoped<IDatabaseRequestHandlerFactory, OracleDatabaseRequestHandlerFactory>();
 
             if (string.IsNullOrWhiteSpace(optionsSet.ConnectionString) && optionsSet.Configuration != null)
             {
@@ -49,6 +52,7 @@ namespace FluentCommander.Oracle
             {
                 services.AddSingleton(new OracleConnectionStringBuilder(optionsSet.ConnectionString));
                 services.AddTransient<IDatabaseCommander, OracleDatabaseCommander>();
+                services.AddTransient<IDatabaseRequestHandler, OracleDatabaseRequestHandler>();
             }
 
             return services;

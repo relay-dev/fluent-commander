@@ -7,16 +7,16 @@ namespace FluentCommander.Core.Utility.Impl
 {
     internal class AutoMapper : IAutoMapper
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public AutoMapper(IDatabaseCommander databaseCommander)
+        public AutoMapper(IDatabaseRequestHandler databaseRequestHandler)
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         public void MapDataTableToTable(string tableName, DataTable dataTable, ColumnMapping columnMapping)
         {
-            DataTable emptyDataTable = _databaseCommander.ExecuteSql($"SELECT * FROM {tableName} WHERE 1 = 0");
+            DataTable emptyDataTable = _databaseRequestHandler.ExecuteSql($"SELECT * FROM {tableName} WHERE 1 = 0");
 
             List<string> databaseColumnNames = emptyDataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName).ToList();
             List<string> fileColumnNames = dataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName).ToList();

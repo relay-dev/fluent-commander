@@ -18,40 +18,80 @@ Fluent Commander is built using .NET Standard and currently has SQL Server and O
 
 <a name="installation"></a>
 
-### Installation
+### 1. Install the package
 
-Follow the instructions below to install this NuGet package into your project:
-
-#### .NET Core CLI
+Using the .NET Core CLI, execute the following command to install the SQL Server NuGet package into your project:
 
 ```sh
 dotnet add package FluentCommander.SqlServer
 ```
 
-#### Package Manager Console
+### 2. Startup.cs
 
-```sh
-Install-Package FluentCommander.SqlServer
+Configure your application to use Fluent Commander
+
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddFluentCommander(options =>
+    {
+        options.ConnectionString = "Data Source=localhost\\SQLEXPRESS;Database=DatabaseCommander;Integrated Security=SSPI;";
+    });
+}
 ```
 
-### Latest releases
+### 3. Inject the service
 
-Latest releases and package version history can be found on [NuGet](https://www.nuget.org/packages/FluentCommander.SqlServer/).
+Now you can create a class that takes in an IDatabaseCommander
 
-## Build and Test
+```csharp
+public class Foo
+{
+    private readonly IDatabaseCommander _databaseCommander;
 
-Follow the instructions below to build and test this project:
+    public Foo(IDatabaseCommander databaseCommander)
+    {
+        _databaseCommander = databaseCommander;
+    }
 
-### Build
-
-```sh
-dotnet build
+    public void Bar()
+    {
+        string serverName = _databaseCommander.GetServerName();
+        Console.WriteLine($"Connected to: {serverName}");
+    }
+}
 ```
 
-### Test
+### 4. Optional configuration setup
 
-```sh
-dotnet test
+If you'd like to use the IDatabaseCommanderFactory to switch the database connection on an IDatabaseCommander instance, be sure to put your connection strings in the ConnectionStrings section. You can reference them by name in your code.
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=localhost\\SQLEXPRESS;Database=DatabaseCommander;Integrated Security=SSPI;",
+    "AlternateConnection": "Data Source=localhost\\SQLEXPRESS;Database=AlternateDatabase;Integrated Security=SSPI;"
+  }
+}
+```
+
+```csharp
+public class Foo
+{
+    private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
+
+    public Foo(IDatabaseCommanderFactory databaseCommanderFactory)
+    {
+        _databaseCommanderFactory = databaseCommanderFactory;
+    }
+
+    public void Bar()
+    {
+        IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnection");
+        string serverName = await databaseCommander.GetServerNameAsync(cancellationToken);
+        Console.WriteLine($"Connected to: {serverName}");
+    }
+}
 ```
 
 ## Usage
@@ -387,42 +427,6 @@ private async Task ExecutePaginationAllSettingsAreUsed(CancellationToken cancell
     int totalCount = result.TotalCount;
     bool hasData = result.HasData;
     DataTable dataTable = result.DataTable;
-}
-```
-
-
-### Database Commander Factory
-
-If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
-
-```c#
-using FluentCommander;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Samples
-{
-    public class DatabaseCommanderFactorySample
-    {
-        private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
-
-        public DatabaseCommanderFactorySample(IDatabaseCommanderFactory databaseCommanderFactory)
-        {
-            _databaseCommanderFactory = databaseCommanderFactory;
-        }
-        
-        public async Task DatabaseCommanderFactoryWorksWithAlternateConnectionStrings(CancellationToken cancellationToken)
-        {
-            // Creates an instance of an IDatabaseCommander connected to a data source using the connection string named AlternateConnectionString
-            IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnectionString");
-
-            // Verify the connection by running the GetServerName() command
-            string serverName = await databaseCommander.GetServerNameAsync(cancellationToken);
-
-            Console.WriteLine("Connected to: {0}", serverName);
-        }
-    }
 }
 ```
 

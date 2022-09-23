@@ -18,6 +18,7 @@ namespace FluentCommander.SqlServer
             new SqlServerCommanderBootstrapper().Bootstrap(services, options);
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
+            services.AddScoped<IDatabaseRequestHandlerFactory, SqlServerDatabaseRequestHandlerFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
 
             return services;
@@ -32,6 +33,7 @@ namespace FluentCommander.SqlServer
             new SqlServerCommanderBootstrapper().Bootstrap(services, optionsSet);
 
             services.AddScoped<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
+            services.AddScoped<IDatabaseRequestHandlerFactory, SqlServerDatabaseRequestHandlerFactory>();
             services.AddTransient<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
 
             return services;

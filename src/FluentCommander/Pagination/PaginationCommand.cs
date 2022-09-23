@@ -6,15 +6,15 @@ namespace FluentCommander.Pagination
 {
     public class PaginationCommand : PaginationCommandBuilder
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
         private readonly IRequestValidator<PaginationRequest> _requestValidator;
 
         public PaginationCommand(
-            IDatabaseCommander databaseCommander,
+            IDatabaseRequestHandler databaseRequestHandler,
             IRequestValidator<PaginationRequest> requestValidator)
             : base(new PaginationRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
             _requestValidator = requestValidator;
         }
 
@@ -22,14 +22,14 @@ namespace FluentCommander.Pagination
         {
             _requestValidator.Validate(CommandRequest);
 
-            return _databaseCommander.Paginate(CommandRequest);
+            return _databaseRequestHandler.Paginate(CommandRequest);
         }
 
         public override async Task<PaginationResult> ExecuteAsync(CancellationToken cancellationToken)
         {
             _requestValidator.Validate(CommandRequest);
 
-            return await _databaseCommander.PaginateAsync(CommandRequest, cancellationToken);
+            return await _databaseRequestHandler.PaginateAsync(CommandRequest, cancellationToken);
         }
     }
 }

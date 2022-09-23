@@ -16,11 +16,9 @@ namespace FluentCommander.EntityFramework.SqlServer
             };
 
             new SqlServerCommanderBootstrapper().Bootstrap(services, options);
-
-            services.AddTransient<IDatabaseCommander, EntityFrameworkSqlServerDatabaseCommander>();
+            
             services.AddTransient<IDatabaseCommanderFactory, SqlServerDatabaseCommanderFactory>();
             services.AddTransient<ISqlServerConnectionProvider, EntityFrameworkConnectionProvider>();
-            services.AddScoped<IDatabaseEntityCommanderFactory, EntityFrameworkSqlServerDatabaseCommanderFactory>();
 
             return services.AddEntityFrameworkDatabaseCommander();
         }

@@ -8,12 +8,12 @@ namespace FluentCommander.SqlQuery
 {
     public class SqlQueryCommand : ParameterizedSqlCommandBuilder<SqlQueryCommand, SqlQueryResult>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public SqlQueryCommand(IDatabaseCommander databaseCommander)
+        public SqlQueryCommand(IDatabaseRequestHandler databaseRequestHandler)
             : base(new SqlQueryRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         public SqlQueryCommand Behaviors(Func<ReadBehaviorsBuilder, ReadBehaviorsBuilder> options)
@@ -27,7 +27,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override SqlQueryResult Execute()
         {
-            return _databaseCommander.ExecuteSql((SqlQueryRequest)CommandRequest);
+            return _databaseRequestHandler.ExecuteSql((SqlQueryRequest)CommandRequest);
         }
 
         /// <summary>Executes the command asynchronously</summary>
@@ -35,7 +35,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override async Task<SqlQueryResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await _databaseCommander.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
+            return await _databaseRequestHandler.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
         }
     }
 }

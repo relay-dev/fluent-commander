@@ -7,22 +7,22 @@ namespace FluentCommander.Scalar
 {
     public class ScalarCommand<TResult> : ParameterizedSqlCommandBuilder<ScalarCommand<TResult>, TResult>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public ScalarCommand(IDatabaseCommander databaseCommander)
+        public ScalarCommand(IDatabaseRequestHandler databaseRequestHandler)
             : base(new ScalarRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         public override TResult Execute()
         {
-            return _databaseCommander.ExecuteScalar<TResult>((ScalarRequest)CommandRequest);
+            return _databaseRequestHandler.ExecuteScalar<TResult>((ScalarRequest)CommandRequest);
         }
 
         public override async Task<TResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await _databaseCommander.ExecuteScalarAsync<TResult>((ScalarRequest)CommandRequest, cancellationToken);
+            return await _databaseRequestHandler.ExecuteScalarAsync<TResult>((ScalarRequest)CommandRequest, cancellationToken);
         }
     }
 }

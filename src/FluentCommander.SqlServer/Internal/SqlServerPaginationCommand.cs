@@ -11,14 +11,14 @@ namespace FluentCommander.SqlServer.Internal
 {
     internal class SqlServerPaginationCommand : SqlServerCommandBase, IDatabaseCommand<PaginationRequest, PaginationResult>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
         public SqlServerPaginationCommand(
             SqlConnectionStringBuilder builder,
             DatabaseCommandBuilder databaseCommandBuilder,
             ISqlServerCommandExecutor commandExecutor)
         {
-            _databaseCommander = new SqlServerDatabaseCommander(builder, databaseCommandBuilder, commandExecutor);
+            _databaseRequestHandler = new SqlServerDatabaseRequestHandler(builder, databaseCommandBuilder, commandExecutor);
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace FluentCommander.SqlServer.Internal
             string sqlPagination = GetPaginationSql(request);
             string sqlPaginationCount = GetSqlRequestCount(request);
 
-            DataTable dataTable = _databaseCommander.ExecuteSql(sqlPagination);
+            DataTable dataTable = _databaseRequestHandler.ExecuteSql(sqlPagination);
 
-            int totalCount = _databaseCommander.ExecuteScalar<int>(sqlPaginationCount);
+            int totalCount = _databaseRequestHandler.ExecuteScalar<int>(sqlPaginationCount);
 
             return new PaginationResult(dataTable, totalCount);
         }
@@ -50,8 +50,8 @@ namespace FluentCommander.SqlServer.Internal
             string sqlPaginationCount = GetSqlRequestCount(request);
 
             // These 2 database commands can be executed in parallel
-            Task<DataTable> getDataTask = _databaseCommander.ExecuteSqlAsync(sqlPagination, cancellationToken);
-            Task<int> getCountTask = _databaseCommander.ExecuteScalarAsync<int>(sqlPaginationCount, cancellationToken);
+            Task<DataTable> getDataTask = _databaseRequestHandler.ExecuteSqlAsync(sqlPagination, cancellationToken);
+            Task<int> getCountTask = _databaseRequestHandler.ExecuteScalarAsync<int>(sqlPaginationCount, cancellationToken);
 
             await Task.WhenAll(getDataTask, getCountTask);
 

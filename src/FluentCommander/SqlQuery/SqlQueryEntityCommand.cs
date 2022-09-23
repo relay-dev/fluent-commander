@@ -9,19 +9,19 @@ namespace FluentCommander.SqlQuery
 {
     public class SqlQueryCommand<TEntity> : SqlQueryCommandBuilder<TEntity>
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public SqlQueryCommand(IDatabaseCommander databaseCommander)
+        public SqlQueryCommand(IDatabaseRequestHandler databaseRequestHandler)
             : base(new SqlQueryRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         /// <summary>Executes the command</summary>
         /// <returns>The result of the command</returns>
         public override SqlQueryResult<TEntity> Execute()
         {
-            SqlQueryResult result = _databaseCommander.ExecuteSql((SqlQueryRequest)CommandRequest);
+            SqlQueryResult result = _databaseRequestHandler.ExecuteSql((SqlQueryRequest)CommandRequest);
 
             List<TEntity> entities = MapToEntities(result.DataTable);
 
@@ -33,7 +33,7 @@ namespace FluentCommander.SqlQuery
         /// <returns>The result of the command</returns>
         public override async Task<SqlQueryResult<TEntity>> ExecuteAsync(CancellationToken cancellationToken)
         {
-            SqlQueryResult result = await _databaseCommander.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
+            SqlQueryResult result = await _databaseRequestHandler.ExecuteSqlAsync((SqlQueryRequest)CommandRequest, cancellationToken);
 
             List<TEntity> entities = MapToEntities(result.DataTable);
 

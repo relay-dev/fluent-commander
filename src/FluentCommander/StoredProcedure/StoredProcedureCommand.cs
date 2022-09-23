@@ -5,22 +5,22 @@ namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureCommand : StoredProcedureCommandBuilder
     {
-        private readonly IDatabaseCommander _databaseCommander;
+        private readonly IDatabaseRequestHandler _databaseRequestHandler;
 
-        public StoredProcedureCommand(IDatabaseCommander databaseCommander)
+        public StoredProcedureCommand(IDatabaseRequestHandler databaseRequestHandler)
             : base(new StoredProcedureRequest())
         {
-            _databaseCommander = databaseCommander;
+            _databaseRequestHandler = databaseRequestHandler;
         }
 
         public override StoredProcedureResult Execute()
         {
-            return _databaseCommander.ExecuteStoredProcedure(CommandRequest);
+            return _databaseRequestHandler.ExecuteStoredProcedure(CommandRequest);
         }
 
         public override async Task<StoredProcedureResult> ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await _databaseCommander.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
+            return await _databaseRequestHandler.ExecuteStoredProcedureAsync(CommandRequest, cancellationToken);
         }
     }
 }
