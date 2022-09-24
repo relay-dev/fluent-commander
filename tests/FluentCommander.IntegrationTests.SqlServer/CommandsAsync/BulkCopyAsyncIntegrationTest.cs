@@ -32,7 +32,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .Mapping(opt => opt.UseAutoMap())
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -66,7 +66,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .Mapping(opt => opt.UsePartialMap(columnMapping))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -112,7 +112,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .Mapping(opt => opt.UseMap(columnMapping))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -153,7 +153,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                     sample.Property(s => s.SampleFloat).MapFrom("Column6");
                     sample.Property(s => s.SampleVarChar).MapFrom("Column7");
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -176,7 +176,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .Into("[dbo].[SampleTable]")
                 .Mapping(map => map.UseAutoMap())
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -199,7 +199,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .Into("[dbo].[SampleTable]")
                 .Mapping(map => map.UseAutoMap())
                 .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -227,7 +227,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
 
                     WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -269,7 +269,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 {
                     entity.Property(e => e.SampleInt).OrderByDescending();
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();

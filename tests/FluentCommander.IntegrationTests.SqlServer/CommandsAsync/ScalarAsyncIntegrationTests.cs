@@ -21,7 +21,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBe(DateTime.MinValue);

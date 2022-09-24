@@ -43,7 +43,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleDateTime", DateTime.Now)
                 .AddInputParameter("SampleUniqueIdentifier", Guid.NewGuid())
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             bool hasData = result.HasData;
@@ -66,7 +66,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName, SqlDbType.Int)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int outputParameter = result.GetOutputParameter<int>(outputParameterName);
 
@@ -88,7 +88,7 @@ namespace FluentCommander.Samples.Commands
                 .AddOutputParameter(outputParameterName1, SqlDbType.Int)
                 .AddOutputParameter(outputParameterName2, SqlDbType.VarChar, 1000)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int outputParameter1 = result.GetOutputParameter<int>(outputParameterName1);
             string outputParameter2 = result.GetOutputParameter<string>(outputParameterName2);
@@ -115,7 +115,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(inputOutputParameterName, 1)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int inputOutputParameter = result.GetOutputParameter<int>(inputOutputParameterName);
 
@@ -134,7 +134,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(inputOutputParameterName, 1, SqlDbType.VarChar, 50)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             string inputOutputParameter = result.GetOutputParameter<string>(inputOutputParameterName);
 
@@ -151,7 +151,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int returnParameter = result.GetReturnParameter<int>();
 
@@ -171,7 +171,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleTableID", 0)
                 .AddInputOutputParameter(outputParameterName, 2)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int outputParameter = result.GetOutputParameter<int>(outputParameterName);
             int returnParameter = result.GetReturnParameter<int>();
@@ -190,7 +190,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int returnParameter = result.GetReturnParameter<int>();
 
@@ -207,7 +207,7 @@ namespace FluentCommander.Samples.Commands
             StoredProcedureResult result = await _databaseCommander.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             bool hasData = result.HasData;
@@ -228,7 +228,7 @@ namespace FluentCommander.Samples.Commands
                 .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
                 .Behaviors(behavior => behavior.SingleResult().KeyInfo())
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             bool hasData = result.HasData;

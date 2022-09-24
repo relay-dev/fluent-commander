@@ -23,7 +23,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
             PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -43,7 +43,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -64,7 +64,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -85,7 +85,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -110,7 +110,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(pageSize)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -139,7 +139,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .OrderBy("1")
                 .PageSize(pageSize)
                 .PageNumber(pageNumber)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();

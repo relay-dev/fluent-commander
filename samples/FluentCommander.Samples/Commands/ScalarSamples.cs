@@ -33,7 +33,7 @@ namespace FluentCommander.Samples.Commands
                 .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             Console.WriteLine("Data: {0}", result);
         }
@@ -48,7 +48,7 @@ namespace FluentCommander.Samples.Commands
                 .ForScalar<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1, SqlDbType.Int)
                 .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             Console.WriteLine("Data: {0}", result);
         }

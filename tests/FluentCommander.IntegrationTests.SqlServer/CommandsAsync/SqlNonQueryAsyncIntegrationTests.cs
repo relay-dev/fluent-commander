@@ -29,7 +29,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .AddInputParameter("NewGuid", newGuid)
                 .AddInputParameter("ModifiedBy", TestUsername)
                 .AddInputParameter("ModifiedDate", Timestamp)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -77,14 +77,14 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .AddInputParameter("SampleVarChar", sampleVarChar)
                 .AddInputParameter("CreatedBy", TestUsername)
                 .AddInputParameter("CreatedDate", Timestamp)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             ExecuteScalar<int>($"SELECT COUNT(1) FROM [dbo].[SampleTable] WHERE [SampleVarChar] = '{sampleVarChar}'").ShouldBe(1);
 
             SqlNonQueryResult deleteResult = await SUT.BuildCommand()
                 .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleVarChar", sampleVarChar)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             insertResult.ShouldNotBeNull();

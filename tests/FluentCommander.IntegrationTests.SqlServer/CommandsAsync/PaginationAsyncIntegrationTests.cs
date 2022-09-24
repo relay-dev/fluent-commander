@@ -21,7 +21,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             PaginationResult result = await SUT.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -41,7 +41,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -62,7 +62,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -83,7 +83,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -108,7 +108,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(pageSize)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -137,7 +137,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .OrderBy("1")
                 .PageSize(pageSize)
                 .PageNumber(pageNumber)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();

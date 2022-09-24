@@ -39,7 +39,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("NewGuid", newGuid)
                 .AddInputParameter("ModifiedBy", modifiedBy)
                 .AddInputParameter("ModifiedDate", modifiedDate)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountAffected = result.RowCountAffected;
 
@@ -84,12 +84,12 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleVarChar", sampleVarChar)
                 .AddInputParameter("CreatedBy", createdBy)
                 .AddInputParameter("CreatedDate", createdDate)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             SqlNonQueryResult deleteResult = await _databaseCommander.BuildCommand()
                 .ForSqlNonQuery("DELETE FROM [dbo].[SampleTable] WHERE [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleVarChar", sampleVarChar)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountAffectedFromInsert = insertResult.RowCountAffected;
             int rowCountAffectedFromDelete = deleteResult.RowCountAffected;

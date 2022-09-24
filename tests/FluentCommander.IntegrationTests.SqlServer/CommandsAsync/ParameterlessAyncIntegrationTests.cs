@@ -22,7 +22,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             string sql = "SELECT * FROM [dbo].[SampleTable]";
 
             // Act
-            DataTable dataTable = await SUT.ExecuteSqlAsync(sql, new CancellationToken());
+            DataTable dataTable = await SUT.ExecuteSqlAsync(sql, new CancellationTokenSource().Token);
 
             // Assert
             dataTable.ShouldNotBeNull();
@@ -39,7 +39,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             string sql = "SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1";
 
             // Act
-            string sampleVarChar = await SUT.ExecuteScalarAsync<string>(sql, new CancellationToken());
+            string sampleVarChar = await SUT.ExecuteScalarAsync<string>(sql, new CancellationTokenSource().Token);
 
             // Assert
             sampleVarChar.ShouldNotBeNullOrEmpty();
@@ -56,7 +56,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             string sql = $"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{newGuid}' WHERE [SampleTableID] = 1";
 
             // Act
-            int rowCountAffected = await SUT.ExecuteNonQueryAsync(sql, new CancellationToken());
+            int rowCountAffected = await SUT.ExecuteNonQueryAsync(sql, new CancellationTokenSource().Token);
 
             // Assert
             rowCountAffected.ShouldBe(1);
@@ -73,7 +73,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
             var storedProcedureRequest = new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]");
 
             // Act
-            StoredProcedureResult result = await SUT.ExecuteStoredProcedureAsync(storedProcedureRequest, new CancellationToken());
+            StoredProcedureResult result = await SUT.ExecuteStoredProcedureAsync(storedProcedureRequest, new CancellationTokenSource().Token);
 
             // Assert
             result.DataTable.ShouldNotBeNull();
@@ -87,7 +87,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
         public async Task GetServerNameAsync_ShouldReturnServerName_WhenConnectedCorrectly()
         {
             // Arrange & Act
-            string serverName = await SUT.GetServerNameAsync(new CancellationToken());
+            string serverName = await SUT.GetServerNameAsync(new CancellationTokenSource().Token);
 
             // Assert
             serverName.ShouldNotBeNullOrEmpty();

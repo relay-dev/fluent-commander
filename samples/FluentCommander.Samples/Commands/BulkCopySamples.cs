@@ -42,7 +42,7 @@ namespace FluentCommander.Samples.Commands
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .Mapping(mapping => mapping.UseAutoMap())
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -74,7 +74,7 @@ namespace FluentCommander.Samples.Commands
                         Destination = "SampleVarChar"
                     }
                 })))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -120,7 +120,7 @@ namespace FluentCommander.Samples.Commands
                 .From(dataTable)
                 .Into("[dbo].[SampleTable]")
                 .Mapping(mapping => mapping.UseMap(columnMapping))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -159,7 +159,7 @@ namespace FluentCommander.Samples.Commands
                     entity.Property(e => e.SampleFloat).MapFrom("Column6");
                     entity.Property(e => e.SampleVarChar).MapFrom("Column7");
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -180,7 +180,7 @@ namespace FluentCommander.Samples.Commands
                 .Into("[dbo].[SampleTable]")
                 .Mapping(mapping => mapping.UseAutoMap())
                 .Options(options => options.KeepNulls().CheckConstraints().TableLock(false))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -201,7 +201,7 @@ namespace FluentCommander.Samples.Commands
                 .Into("[dbo].[SampleTable]")
                 .Mapping(mapping => mapping.UseAutoMap())
                 .OrderHints(hints => hints.OrderBy("SampleInt").OrderByDescending("SampleSmallInt"))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -227,7 +227,7 @@ namespace FluentCommander.Samples.Commands
 
                     Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 
@@ -266,7 +266,7 @@ namespace FluentCommander.Samples.Commands
 
                     Console.WriteLine($"Total rows copied: {sqlRowsCopiedEventArgs.RowsCopied}");
                 }))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int rowCountCopied = result.RowCountCopied;
 

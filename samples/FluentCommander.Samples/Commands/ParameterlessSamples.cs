@@ -35,7 +35,7 @@ namespace FluentCommander.Samples.Commands
         public async Task ExecuteSql()
         {
             DataTable dataTable = await _databaseRequestHandler
-                .ExecuteSqlAsync("SELECT * FROM [dbo].[SampleTable]", new CancellationToken());
+                .ExecuteSqlAsync("SELECT * FROM [dbo].[SampleTable]", new CancellationTokenSource().Token);
 
             Console.WriteLine(Print(dataTable));
         }
@@ -47,16 +47,16 @@ namespace FluentCommander.Samples.Commands
         public async Task ExecuteScalar()
         {
             string sampleVarChar = await _databaseRequestHandler
-                .ExecuteScalarAsync<string>("SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
+                .ExecuteScalarAsync<string>("SELECT [SampleVarChar] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationTokenSource().Token);
 
             int sampleInt = await _databaseRequestHandler
-                .ExecuteScalarAsync<int>("SELECT [SampleInt] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
+                .ExecuteScalarAsync<int>("SELECT [SampleInt] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationTokenSource().Token);
 
             DateTime sampleDateTime = await _databaseRequestHandler
-                .ExecuteScalarAsync<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
+                .ExecuteScalarAsync<DateTime>("SELECT [SampleDateTime] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationTokenSource().Token);
 
             Guid sampleUniqueIdentifier = await _databaseRequestHandler
-                .ExecuteScalarAsync<Guid>("SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationToken());
+                .ExecuteScalarAsync<Guid>("SELECT [SampleUniqueIdentifier] FROM [dbo].[SampleTable] WHERE [SampleTableID] = 1", new CancellationTokenSource().Token);
 
             Console.WriteLine($"SampleVarChar = '{sampleVarChar}'");
             Console.WriteLine($"SampleInt = '{sampleInt}'", sampleInt);
@@ -71,7 +71,7 @@ namespace FluentCommander.Samples.Commands
         public async Task ExecuteNonQuery()
         {
             int rowCountAffected = await _databaseRequestHandler
-                .ExecuteNonQueryAsync($"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{Guid.NewGuid()}' WHERE [SampleTableID] = 1", new CancellationToken());
+                .ExecuteNonQueryAsync($"UPDATE [dbo].[SampleTable] SET [SampleUniqueIdentifier] = '{Guid.NewGuid()}' WHERE [SampleTableID] = 1", new CancellationTokenSource().Token);
 
             Console.WriteLine("Row count affected: {0}", rowCountAffected);
         }
@@ -84,11 +84,11 @@ namespace FluentCommander.Samples.Commands
         {
             // Stored procedure with no input or output
             await _databaseRequestHandler
-                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_NoResult]"), new CancellationToken());
+                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_NoResult]"), new CancellationTokenSource().Token);
 
             // Stored procedure with no input with a DataTable as output
             StoredProcedureResult result = await _databaseRequestHandler
-                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]"), new CancellationToken());
+                .ExecuteStoredProcedureAsync(new StoredProcedureRequest("[dbo].[usp_NoInput_NoOutput_TableResult]"), new CancellationTokenSource().Token);
 
             Console.WriteLine(Print(result.DataTable));
         }
@@ -99,7 +99,7 @@ namespace FluentCommander.Samples.Commands
         [ConsoleAppSelection(Key = "5")]
         public async Task GetServerName()
         {
-            string serverName = await _databaseCommander.GetServerNameAsync(new CancellationToken());
+            string serverName = await _databaseCommander.GetServerNameAsync(new CancellationTokenSource().Token);
 
             Console.WriteLine(serverName);
         }

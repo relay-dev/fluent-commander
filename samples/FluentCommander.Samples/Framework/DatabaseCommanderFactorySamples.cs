@@ -32,7 +32,7 @@ namespace FluentCommander.Samples.Framework
         {
             IDatabaseCommander databaseCommander = _databaseCommanderFactory.Create("AlternateConnectionString");
 
-            string serverName = await databaseCommander.GetServerNameAsync(new CancellationToken());
+            string serverName = await databaseCommander.GetServerNameAsync(new CancellationTokenSource().Token);
 
             Console.WriteLine("Connected to: {0}", serverName);
         }

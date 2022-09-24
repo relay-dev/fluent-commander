@@ -33,7 +33,7 @@ namespace FluentCommander.Samples.Commands
             PaginationResult result = await _databaseCommander.BuildCommand()
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;
@@ -56,7 +56,7 @@ namespace FluentCommander.Samples.Commands
                 .ForPagination()
                 .Select("[SampleInt]")
                 .From("[dbo].[SampleTable]")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;
@@ -79,7 +79,7 @@ namespace FluentCommander.Samples.Commands
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .Where("[SampleTableID] = 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;
@@ -102,7 +102,7 @@ namespace FluentCommander.Samples.Commands
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .OrderBy("[SampleTableID] DESC")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;
@@ -125,7 +125,7 @@ namespace FluentCommander.Samples.Commands
                 .ForPagination()
                 .From("[dbo].[SampleTable]")
                 .PageSize(10)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;
@@ -153,7 +153,7 @@ namespace FluentCommander.Samples.Commands
                 .PageSize(25)
                 .PageNumber(2)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             int totalCount = result.TotalCount;

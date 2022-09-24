@@ -24,7 +24,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -43,7 +43,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
                 .Behaviors(behavior => behavior.SingleResult().KeyInfo())
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -78,7 +78,7 @@ namespace FluentCommander.IntegrationTests.SqlServer.CommandsAsync
                     sample.Property(s => s.ModifiedBy).MapFrom("ModifiedBy");
                     sample.Property(s => s.ModifiedDate).MapFrom("ModifiedDate");
                 })
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();

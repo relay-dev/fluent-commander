@@ -33,7 +33,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .AddInputParameter("SampleDateTime", DateTime.Now)
                 .AddInputParameter("SampleUniqueIdentifier", Guid.NewGuid())
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -54,7 +54,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntOutput_NoResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName, SqlDbType.Int)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -77,7 +77,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .AddInputParameter("SampleTableID", 1)
                 .AddOutputParameter(outputParameterName1, SqlDbType.Int)
                 .AddOutputParameter(outputParameterName2, SqlDbType.VarChar, 1000)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -103,7 +103,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(outputParameterName, inputValue)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -128,7 +128,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_IntInputOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(outputParameterName, inputValue)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -152,7 +152,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_BigIntInput_VarCharOutput_TableResult]")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputOutputParameter(outputParameterName, 1, SqlDbType.VarChar, 50)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -171,7 +171,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
             StoredProcedureResult result = await SUT.BuildCommand()
                 .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
                 .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar, 1000)
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -189,7 +189,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -212,7 +212,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .AddInputParameter("SampleTableID", 0)
                 .AddInputOutputParameter(outputParameterName, inputValue)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -233,7 +233,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();
@@ -251,7 +251,7 @@ namespace FluentCommander.IntegrationTests.EntityFramework.SqlServer.CommandsAsy
                 .ForStoredProcedure("[dbo].[usp_OptionalInput_NoOutput_ReturnInt]")
                 .AddInputParameter("SampleTableID", 1, SqlDbType.BigInt)
                 .WithReturnParameter()
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
             result.ShouldNotBeNull();

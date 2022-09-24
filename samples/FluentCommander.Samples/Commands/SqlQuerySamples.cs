@@ -35,7 +35,7 @@ namespace FluentCommander.Samples.Commands
                 .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
                 .AddInputParameter("SampleTableID", 1)
                 .AddInputParameter("SampleVarChar", "Row 1")
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             bool hasData = result.HasData;
@@ -58,7 +58,7 @@ namespace FluentCommander.Samples.Commands
                 .AddInputParameter("SampleTableID", 1, SqlDbType.Int)
                 .AddInputParameter("SampleVarChar", "Row 1", SqlDbType.VarChar)
                 .Timeout(TimeSpan.FromSeconds(30))
-                .ExecuteAsync(new CancellationToken());
+                .ExecuteAsync(new CancellationTokenSource().Token);
 
             int count = result.Count;
             bool hasData = result.HasData;
