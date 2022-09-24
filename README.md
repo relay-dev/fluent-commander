@@ -39,10 +39,7 @@ namespace Samples
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddFluentCommander(options =>
-            {
-                options.ConnectionString = "YOUR CONNECTION STRING";
-            });
+            services.AddFluentCommander(options => options.UseSqlServer("YOUR CONNECTION STRING"));
         }
     }
 }
@@ -544,7 +541,7 @@ namespace Samples
                 options.Configuration = Configuration;
 
                 // Optional: only needed is you don't have a connection string named 'DefaultConnection' in your configuration
-                options.ConnectionString = "YOUR CONNECTION STRING";
+                options.UseSqlServer("YOUR CONNECTION STRING");
             });
         }
     }
