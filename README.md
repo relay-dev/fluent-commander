@@ -26,9 +26,9 @@ Using the .NET Core CLI, execute the following command to install the SQL Server
 dotnet add package FluentCommander.SqlServer
 ```
 
-### 2. Startup.cs
+### 2. Configure in Startup.cs
 
-Configure your application to use FluentCommander
+Configure your application to use FluentCommander in Startup.cs
 
 ```csharp
 using FluentCommander.SqlServer;
@@ -507,7 +507,7 @@ private async Task ExecuteScalarWithInput(CancellationToken cancellationToken)
 
 If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
 
-Put your connection strings in the ConnectionStrings section of your configuration:
+Put your connection strings in the ConnectionStrings section of your configuration
 
 ```json
 {
@@ -518,7 +518,7 @@ Put your connection strings in the ConnectionStrings section of your configurati
 }
 ```
 
-Configure your application to use FluentCommander with the IDatabaseCommanderFactory:
+Configure your application to use FluentCommander with the IDatabaseCommanderFactory
 
 ```csharp
 using FluentCommander.SqlServer;
@@ -551,7 +551,7 @@ namespace Samples
 }
 ```
 
-Now you can use the IDatabaseCommanderFactory:
+Now you can use the IDatabaseCommanderFactory
 
 ```c#
 using FluentCommander;
