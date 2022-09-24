@@ -221,7 +221,7 @@ private async Task BulkCopyUsingEvents(CancellationToken cancellationToken)
 }
 ```
 
-#### All APIs
+#### All Options
 
 ```c#
 private async Task BulkCopyUsingAllApis(CancellationToken cancellationToken)
