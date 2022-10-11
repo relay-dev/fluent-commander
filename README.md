@@ -649,7 +649,7 @@ namespace Samples
         public async Task TestDatabaseCommanderDependency()
         {
             // Arrange
-            DataTable mockData = GetMockData();
+            DataTable mockData = new DataTable(); // Setup your mock data however you like
             Mock<IDatabaseCommander> databaseCommanderMock = CreateDatabaseCommanderMock(mockData);
 
             // Act
@@ -679,12 +679,6 @@ namespace Samples
                 .Returns(databaseCommandBuilderMock.Object);
 
             return databaseCommanderMock;
-        }
-
-        private DataTable GetMockData()
-        {
-            // Setup your mock data
-            return new DataTable();
         }
     }
 }
