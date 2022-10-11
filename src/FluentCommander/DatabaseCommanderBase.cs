@@ -16,7 +16,7 @@ namespace FluentCommander
         /// Initiates a database command
         /// </summary>
         /// <returns>A builder object that defines which command should be run</returns>
-        public DatabaseCommandBuilder BuildCommand()
+        public IDatabaseCommandBuilder BuildCommand()
         {
             return DatabaseCommandBuilder;
         }

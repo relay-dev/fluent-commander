@@ -8,7 +8,7 @@ using FluentCommander.StoredProcedure;
 
 namespace FluentCommander
 {
-    public class DatabaseCommandBuilder
+    public class DatabaseCommandBuilder : IDatabaseCommandBuilder
     {
         private readonly IDatabaseCommandFactory _commandFactory;
 

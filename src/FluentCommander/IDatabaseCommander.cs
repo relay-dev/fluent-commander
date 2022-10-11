@@ -12,7 +12,7 @@ namespace FluentCommander
         /// Initiates a database command
         /// </summary>
         /// <returns>A builder object that defines which command should be run</returns>
-        DatabaseCommandBuilder BuildCommand();
+        IDatabaseCommandBuilder BuildCommand();
 
         /// <summary>
         /// Gets the server name this <see cref="IDatabaseCommander"/> instance is connected to
