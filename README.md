@@ -680,6 +680,11 @@ namespace Samples
 
             return databaseCommanderMock;
         }
+
+        private DataTable GetMockData()
+        {
+            return new DataTable();
+        }
     }
 }
 ```
