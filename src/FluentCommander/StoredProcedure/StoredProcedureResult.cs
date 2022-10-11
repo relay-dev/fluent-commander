@@ -5,6 +5,12 @@ namespace FluentCommander.StoredProcedure
 {
     public class StoredProcedureResult : StoredProcedureResultBase
     {
+        public StoredProcedureResult(DataTable dataTable)
+            : base(null)
+        {
+            DataTable = dataTable;
+        }
+
         public StoredProcedureResult(DataTable dataTable, List<DatabaseCommandParameter> parameters)
             : base(parameters)
         {

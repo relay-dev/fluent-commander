@@ -76,6 +76,15 @@ That's it. You can now use the IDatabaseCommander's BuildCommand() API to build 
 
 ## Usage
 
+- [Bulk Copy](#bulk-copy)
+- [Stored Procedures](#stored-procedures)
+- [Pagination](#pagination)
+- [SQL Query (Parameterized)](#sql-query)
+- [SQL Non-Query (Parameterized)](#sql-non-query)
+- [SQL Scalar Query (Parameterized)](#sql-scalar-query)
+
+<a name="bulk-copy"></a>
+
 ### Bulk Copy
 
 The Bulk Copy function is supported if you want to insert a batch of records at once from a DataTable. When Bulk Copying, SQL Server requires a mapping between source (the DataTable you want to persist) and the destination (the database on the server).
@@ -259,6 +268,8 @@ private async Task BulkCopyUsingAllOptions(CancellationToken cancellationToken)
 }
 ```
 
+<a name="stored-procedures"></a>
+
 ### Stored Procedures
 
 This demonstrates how to build a stored procedure command using various combinations of Input, Output and Return parameters. To see the bodies of these Stored Procedures, navigate to the Resources folder and review the setup-*.sql files.
@@ -268,7 +279,7 @@ This demonstrates how to build a stored procedure command using various combinat
 Stored Procedures can be called with various input parameter types. This stored procedure has output, which is found on the result object:
 
 ```c#
-private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult(CancellationToken cancellationToken)
+private async Task StoredProcedureWithAllInputTypesAndTableResult(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
@@ -295,7 +306,7 @@ private async Task ExecuteStoredProcedureWithAllInputTypesAndTableResult(Cancell
 Stored Procedures with output parameters need to call AddOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-private async Task ExecuteStoredProcedureWithOutput(CancellationToken cancellationToken)
+private async Task StoredProcedureWithOutput(CancellationToken cancellationToken)
 {
     string outputParameterName = "SampleOutputInt";
     
@@ -314,7 +325,7 @@ private async Task ExecuteStoredProcedureWithOutput(CancellationToken cancellati
 Stored Procedures with InputOutput parameters need to call AddInputOutputParameter(), and retrieve the output from result.OutputParameters:
 
 ```c#
-private async Task ExecuteStoredProcedureWithInputOutputParameter(CancellationToken cancellationToken)
+private async Task StoredProcedureWithInputOutputParameter(CancellationToken cancellationToken)
 {
     string inputOutputParameterName = "SampleInputOutputInt";
 
@@ -333,7 +344,7 @@ private async Task ExecuteStoredProcedureWithInputOutputParameter(CancellationTo
 If a Stored Procedures has a Return parameter, the command should call .WithReturnParameter() and the result has the following method that can retrieve the return parameter: result.GetReturnParameter<T>():
 
 ```c#
-private async Task ExecuteStoredProcedureWithReturnParameter(CancellationToken cancellationToken)
+private async Task StoredProcedureWithReturnParameter(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_NoInput_NoOutput_ReturnInt]")
@@ -350,7 +361,7 @@ private async Task ExecuteStoredProcedureWithReturnParameter(CancellationToken c
 SqlDataReader behaviors are exposed:
 
 ```c#
-public async Task ExecuteStoredProcedureWithBehaviors(CancellationToken cancellationToken)
+public async Task StoredProcedureWithBehaviors(CancellationToken cancellationToken)
 {
     StoredProcedureResult result = await _databaseCommander.BuildCommand()
         .ForStoredProcedure("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
@@ -367,7 +378,7 @@ public async Task ExecuteStoredProcedureWithBehaviors(CancellationToken cancella
 The DataTable returned from the database can be parsed and projected into a concrete type if you'd rather return something strongly-typed:
 
 ```c#
-public async Task ExecuteStoredProcedureWithProjection(CancellationToken cancellationToken)
+public async Task StoredProcedureWithProjection(CancellationToken cancellationToken)
 {
     StoredProcedureResult<SampleEntity> result = await SUT.BuildCommand()
         .ForStoredProcedure<SampleEntity>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
@@ -395,6 +406,8 @@ public async Task ExecuteStoredProcedureWithProjection(CancellationToken cancell
 }
 ```
 
+<a name="pagination"></a>
+
 ### Pagination
 
 There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
@@ -404,7 +417,7 @@ There are some cases where running pagination queries returned as a DataTable is
 Several defaults are specified so the only input required is the target:
 
 ```c#
-private async Task ExecutePaginationUsingMinimalInput(CancellationToken cancellationToken)
+private async Task PaginationUsingMinimalInput(CancellationToken cancellationToken)
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
@@ -443,16 +456,14 @@ private async Task PaginationUsingAllOptions(CancellationToken cancellationToken
 }
 ```
 
-### Other
+<a name="sql-query"></a>
 
-There are several other commands available on the API that are often unneeded if you're using an ORM. These miscellaneous commands are available if you should find that you need them
-
-#### SQL Query (Parameterized)
+### SQL Query (Parameterized)
 
 Input parameters require a database type parameter, which can often be inferred by looking at the type of the parameter value. Databases will cache the execution plan and prevent against SQL injection when you parameterize your queries like this:
 
 ```c#
-private async Task ExecuteSqlWithInput(CancellationToken cancellationToken)
+private async Task SqlQueryParameterized(CancellationToken cancellationToken)
 {
     SqlQueryResult result = await _databaseCommander.BuildCommand()
         .ForSqlQuery("SELECT * FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
@@ -467,12 +478,14 @@ private async Task ExecuteSqlWithInput(CancellationToken cancellationToken)
 }
 ```
 
-#### SQL Non-Query (Parameterized)
+<a name="sql-non-query"></a>
+
+### SQL Non-Query (Parameterized)
 
 SQL Insert and Delete statements can also be parameterized:
 
 ```c#
-private async Task ExecuteParameterizedInsertDeleteSql(CancellationToken cancellationToken)
+private async Task SqlNonQueryParameterizedInsertDeleteSql(CancellationToken cancellationToken)
 {
     string sampleVarChar = "Temporary Row";
     string createdBy = "FluentCommander";
@@ -518,12 +531,14 @@ VALUES
 }
 ```
 
-#### SQL Scalar Query (Parameterized)
+<a name="sql-scalar-query"></a>
+
+### SQL Scalar Query (Parameterized)
 
 SQL Scalar queries can also be parameterized:
 
 ```c#
-private async Task ExecuteScalarWithInput(CancellationToken cancellationToken)
+private async Task SqlScalarParameterized(CancellationToken cancellationToken)
 {
     bool result = await _databaseCommander.BuildCommand()
         .ForScalar<bool>("SELECT [SampleBit] FROM [dbo].[SampleTable] WHERE [SampleTableID] = @SampleTableID AND [SampleVarChar] = @SampleVarChar")
@@ -533,7 +548,7 @@ private async Task ExecuteScalarWithInput(CancellationToken cancellationToken)
 }
 ```
 
-### Database Commander Factory
+## Database Commander Factory
 
 If your application needs to connect to multiple different databases, you can create instances of IDatabaseCommanders with specific database connection strings. Specify the connection strings in the appsettings.json file, inject an instance of IDatabaseCommanderFactory, and reference the connection string name when calling IDatabaseCommanderFactory.Create().
 
@@ -614,7 +629,7 @@ namespace Samples
 }
 ```
 
-### Mocking IDatabaseCommander
+## Mocking IDatabaseCommander
 
 Here is an example of how you can mock IDatabaseCommander:
 
@@ -646,12 +661,12 @@ namespace Samples
             Assert.AreEqual(mockData.Rows.Count, result.DataTable.Rows.Count);
         }
 
-        protected Mock<IDatabaseCommander> CreateDatabaseCommanderMock(DataTable dataTable)
+        private Mock<IDatabaseCommander> CreateDatabaseCommanderMock(DataTable dataTable)
         {
             var databaseRequestHandlerMock = new Mock<IDatabaseRequestHandler>();
             databaseRequestHandlerMock
                 .Setup(mock => mock.ExecuteStoredProcedureAsync(It.IsAny<StoredProcedureRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new StoredProcedureResult(dataTable, null));
+                .ReturnsAsync(new StoredProcedureResult(dataTable));
 
             var databaseCommandBuilderMock = new Mock<IDatabaseCommandBuilder>();
             databaseCommandBuilderMock
@@ -669,7 +684,7 @@ namespace Samples
 }
 ```
 
-### More
+## More
 
 There are several other variations not documented here. You can find a Console Application with these samples [here](https://github.com/relay-dev/fluent-commander/tree/master/samples/FluentCommander.Samples/Commands).
 
