@@ -640,7 +640,7 @@ using Moq;
 using NUnit.Framework;
 using System.Data;
 
-namespace Samples
+namespace Samples.UnitTests
 {
     [TestFixture]
     public class DatabaseCommanderDependencyTests
