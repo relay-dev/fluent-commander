@@ -362,6 +362,39 @@ public async Task ExecuteStoredProcedureWithBehaviors(CancellationToken cancella
 }
 ```
 
+#### Projection
+
+The DataTable returned from the database can be parsed and projected into a concrete type if you'd rather return something strongly-typed:
+
+```c#
+public async Task ExecuteStoredProcedureWithProjection(CancellationToken cancellationToken)
+{
+    StoredProcedureResult<SampleEntity> result = await SUT.BuildCommand()
+        .ForStoredProcedure<SampleEntity>("[dbo].[usp_VarCharInput_NoOutput_TableResult]")
+        .AddInputParameter("SampleVarChar", "Row 1")
+        .Project(sample =>
+        {
+            sample.Property(s => s.SampleId).MapFrom("SampleTableID");
+            sample.Property(s => s.SampleInt).MapFrom("SampleInt");
+            sample.Property(s => s.SampleSmallInt).MapFrom("SampleSmallInt");
+            sample.Property(s => s.SampleTinyInt).MapFrom("SampleTinyInt");
+            sample.Property(s => s.SampleBit).MapFrom("SampleBit");
+            sample.Property(s => s.SampleDecimal).MapFrom("SampleDecimal");
+            sample.Property(s => s.SampleFloat).MapFrom("SampleFloat");
+            sample.Property(s => s.SampleDateTime).MapFrom("SampleDateTime");
+            sample.Property(s => s.SampleUniqueIdentifier).MapFrom("SampleUniqueIdentifier");
+            sample.Property(s => s.SampleVarChar).MapFrom("SampleVarChar");
+            sample.Property(s => s.CreatedBy).MapFrom("CreatedBy");
+            sample.Property(s => s.CreatedDate).MapFrom("CreatedDate");
+            sample.Property(s => s.ModifiedBy).MapFrom("ModifiedBy");
+            sample.Property(s => s.ModifiedDate).MapFrom("ModifiedDate");
+        })
+        .ExecuteAsync(cancellationToken);
+
+    List<SampleEntity> sampleEntities = result.Data;
+}
+```
+
 ### Pagination
 
 There are some cases where running pagination queries returned as a DataTable is convenient. This demonstrates how to build command for a SQL pagination query.
