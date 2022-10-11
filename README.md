@@ -232,6 +232,8 @@ private async Task BulkCopyUsingEvents(CancellationToken cancellationToken)
 
 #### All Options
 
+In this sample, all options are used:
+
 ```c#
 private async Task BulkCopyUsingAllOptions(CancellationToken cancellationToken)
 {
@@ -245,9 +247,7 @@ private async Task BulkCopyUsingAllOptions(CancellationToken cancellationToken)
         .Options(options => options.KeepNulls().CheckConstraints().TableLock(false).OpenConnectionWithoutRetry())
         .Mapping(mapping => mapping.UsePartialMap(entity =>
         {
-            entity
-                .Property(e => e.SampleVarChar)
-                .MapFrom("SampleString");
+            entity.Property(e => e.SampleVarChar).MapFrom("SampleString");
         }))
         .Events(events => events.NotifyAfter(10).OnRowsCopied((sender, e) =>
         {
