@@ -224,7 +224,7 @@ private async Task BulkCopyUsingEvents(CancellationToken cancellationToken)
 #### All Options
 
 ```c#
-private async Task BulkCopyUsingAllApis(CancellationToken cancellationToken)
+private async Task BulkCopyUsingAllOptions(CancellationToken cancellationToken)
 {
     DataTable dataTable = GetDataToInsert();
 
@@ -423,7 +423,7 @@ private async Task ExecutePaginationUsingMinimalInput(CancellationToken cancella
 In this sample, all options are used:
 
 ```c#
-private async Task ExecutePaginationAllSettingsAreUsed(CancellationToken cancellationToken)
+private async Task PaginationUsingAllOptions(CancellationToken cancellationToken)
 {
     PaginationResult result = await _databaseCommander.BuildCommand()
         .ForPagination()
@@ -609,6 +609,61 @@ namespace Samples
             string serverName = await databaseCommander.GetServerNameAsync(cancellationToken);
 
             Console.WriteLine("Connected to: {0}", serverName);
+        }
+    }
+}
+```
+
+### Mocking IDatabaseCommander
+
+Here is an example of how you can mock IDatabaseCommander:
+
+```c#
+using FluentCommander;
+using FluentCommander.StoredProcedure;
+using Moq;
+using NUnit.Framework;
+using System.Data;
+
+namespace Samples
+{
+    [TestFixture]
+    public class DatabaseCommanderDependencyTests
+    {
+        [Test]
+        public async Task TestDatabaseCommanderDependency()
+        {
+            // Arrange
+            DataTable mockData = GetMockData();
+            Mock<IDatabaseCommander> databaseCommanderMock = CreateDatabaseCommanderMock(mockData);
+
+            // Act
+            StoredProcedureResult result = await databaseCommanderMock.Object.BuildCommand()
+                .ForStoredProcedure("[dbo].[usp_AllInputTypes_NoOutput_TableResult]")
+                .ExecuteAsync(new CancellationTokenSource().Token);
+
+            // Assert
+            Assert.AreEqual(mockData.Rows.Count, result.DataTable.Rows.Count);
+        }
+
+        protected Mock<IDatabaseCommander> CreateDatabaseCommanderMock(DataTable dataTable)
+        {
+            var databaseRequestHandlerMock = new Mock<IDatabaseRequestHandler>();
+            databaseRequestHandlerMock
+                .Setup(mock => mock.ExecuteStoredProcedureAsync(It.IsAny<StoredProcedureRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new StoredProcedureResult(dataTable, null));
+
+            var databaseCommandBuilderMock = new Mock<IDatabaseCommandBuilder>();
+            databaseCommandBuilderMock
+                .Setup(mock => mock.ForStoredProcedure(It.IsAny<string>()))
+                .Returns(new StoredProcedureCommand(databaseRequestHandlerMock.Object));
+
+            var databaseCommanderMock = new Mock<IDatabaseCommander>();
+            databaseCommanderMock
+                .Setup(mock => mock.BuildCommand())
+                .Returns(databaseCommandBuilderMock.Object);
+
+            return databaseCommanderMock;
         }
     }
 }
