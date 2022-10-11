@@ -658,7 +658,7 @@ namespace Samples
                 .ExecuteAsync(new CancellationTokenSource().Token);
 
             // Assert
-            Assert.AreEqual(mockData.Rows.Count, result.DataTable.Rows.Count);
+            Assert.AreSame(mockData, result.DataTable);
         }
 
         private Mock<IDatabaseCommander> CreateDatabaseCommanderMock(DataTable dataTable)
